@@ -9,6 +9,7 @@
         "info": "info",
         "link": "link",
         "test": "test",
+        "if-user": "if-user",
         "translate": "translate"
     },
     "arguments": {
