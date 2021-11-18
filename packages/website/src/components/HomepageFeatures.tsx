@@ -38,7 +38,7 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: 'Documentation Prioritization',
-    image: '/img/index/undraw_open_source_-1-qxw.svg',
+    image: '/img/index/undraw_file_searching_re_3evy.svg',
     description: (
       <>
         We'll be prioritizing concise, well-written documentation to make it more enjoyable for 
