@@ -13,8 +13,9 @@ const config = {
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.svg',
-  organizationName: 'facebook', // Usually your GitHub org/user name.
+  organizationName: 'kennedy-steve', // Usually your GitHub org/user name.
   projectName: 'skylink-if', // Usually your repo name.
+  trailingSlash: false,
 
   presets: [
     [
