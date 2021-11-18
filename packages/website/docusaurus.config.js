@@ -13,8 +13,9 @@ const config = {
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.svg',
-  organizationName: 'facebook', // Usually your GitHub org/user name.
+  organizationName: 'kennedy-steve', // Usually your GitHub org/user name.
   projectName: 'skylink-if', // Usually your repo name.
+  trailingSlash: false,
 
   presets: [
     [
@@ -46,7 +47,7 @@ const config = {
           /** Left side */
           {
             type: 'doc',
-            docId: 'intro',
+            docId: 'contributing/intro',
             position: 'left',
             label: 'Contributing',
           },
@@ -68,7 +69,7 @@ const config = {
             items: [
               {
                 label: 'Contributing',
-                to: '/docs/intro',
+                to: '/docs/contributing/intro',
               },
             ],
           },
