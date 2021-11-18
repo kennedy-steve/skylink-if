@@ -9,7 +9,7 @@ const config = {
   title: 'Skylink-IF Beta',
   tagline: 'Bringing Infinite Flight to Discord',
   url: 'https://skylink-if.tisuela.com',
-  baseUrl: '/skylink-if/',
+  baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.svg',
