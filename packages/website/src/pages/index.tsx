@@ -25,7 +25,7 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--outline button--secondary button--lg"
-            to="https://forms.gle/NM17sCK82Wn75K337">
+            to="https://dsc.gg/skylink">
             Join our Discord 🎮
           </Link>
         </div>
