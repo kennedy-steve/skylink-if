@@ -47,7 +47,7 @@ const config = {
           /** Left side */
           {
             type: 'doc',
-            docId: 'intro',
+            docId: 'contributing/intro',
             position: 'left',
             label: 'Contributing',
           },
@@ -69,7 +69,7 @@ const config = {
             items: [
               {
                 label: 'Contributing',
-                to: '/docs/intro',
+                to: '/docs/contributing/intro',
               },
             ],
           },
