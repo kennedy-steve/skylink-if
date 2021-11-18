@@ -41,12 +41,20 @@ Discord.js is a library that allows you to connect to Discord servers. It's the 
 
 ### Infinite Flight Live API
 
+Infinite Flight -- the reason why this bot is created. Please [check out this page to request a token](https://infiniteflight.com/guide/developer-reference/live-api/overview#obtaining-an-api-key). 
+
+Template Email:
+
+> Hi, I am a developer working on an open-source Infinite Flight discord bot, and I'd like to request an API key. Visit https://skylink-if.tisuela.com/ for more information.
+
+
+Resources:
 
 * [Infinite Flight Live API Documentation](https://infiniteflight.com/guide/developer-reference)
 
-### Prism
+### Prisma
 
-* [Prism Documentation](https://prismjs.com/docs.html) 
+* [Prisma Documentation](https://www.prisma.io/docs/)
 
 ## How can I get involved?
 
