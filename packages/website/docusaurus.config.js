@@ -24,7 +24,7 @@ const config = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
-          editUrl: 'https://github.com/facebook/docusaurus/edit/main/website/',
+          editUrl: 'https://github.com/kennedy-steve/skylink-if/tree/development/packages/website',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -43,11 +43,20 @@ const config = {
           src: 'img/logo.svg',
         },
         items: [
+          /** Left side */
           {
             type: 'doc',
             docId: 'intro',
             position: 'left',
             label: 'Contributing',
+          },
+
+          /** Right side */
+          {
+            href: 'https://github.com/kennedy-steve/skylink-if',
+            position: 'right',
+            className: 'header-github-link',
+            'aria-label': 'GitHub repository',
           },
         ],
       },
@@ -67,16 +76,8 @@ const config = {
             title: 'Community',
             items: [
               {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-              },
-              {
                 label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
-              },
-              {
-                label: 'Twitter',
-                href: 'https://twitter.com/docusaurus',
+                href: 'https://dsc.gg/skylink',
               },
             ],
           },
@@ -85,7 +86,7 @@ const config = {
             items: [
               {
                 label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
+                href: 'https://github.com/kennedy-steve/skylink-if',
               },
             ],
           },
