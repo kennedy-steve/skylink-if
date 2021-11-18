@@ -9,10 +9,11 @@ import HomepageFeatures from '../components/HomepageFeatures';
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
   return (
-    <header className={clsx('hero hero--primary', styles.heroBanner)}>
+    <header className={clsx('hero shadow--lw', styles.heroBanner)}>
       <div className="container">
-        <h1 className="hero__title">{siteConfig.title}</h1>
+        <img src="img/index/skylink-hero-title.svg"/>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
+          
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
@@ -20,6 +21,16 @@ function HomepageHeader() {
             Submit your ideas 💡
           </Link>
         </div>
+
+        <div className={styles.buttons}>
+          <Link
+            className="button button--outline button--secondary button--lg"
+            to="https://forms.gle/NM17sCK82Wn75K337">
+            Join our Discord 🎮
+          </Link>
+        </div>
+ 
+        
       </div>
     </header>
   );
