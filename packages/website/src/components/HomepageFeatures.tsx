@@ -31,8 +31,10 @@ const FeatureList: FeatureItem[] = [
     image: '/img/index/undraw_open_source_-1-qxw.svg',
     description: (
       <>
-        If you feel inexperienced, we'd love to help you grow as a developer. 
-        If you're a Typescript master, have fun with us! Skylink-IF is designed to be a fun side project. 
+        Feeling inexperienced? We'd love to help you grow as a developer. 
+        If you're a Typescript master, have fun with us! Skylink-IF is designed to be a fun side project.
+        Get plugged in through our discord: 
+        <a href="https://dsc.gg/skylink"> https://dsc.gg/skylink</a>
       </>
     ),
   },
