@@ -12,8 +12,7 @@ datasource db {
 
 
 model User {
-  id      Int      @id @default(autoincrement())
-  discordUserID   String   @unique
+  discordUserID   String   @id
   infiniteFlightUserID    String?   @unique
   
 }
