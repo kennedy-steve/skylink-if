@@ -11,7 +11,8 @@ import {
     LinkCommand,
     TestCommand,
     TranslateCommand,
-    getPilotCommand,
+    GetPilotCommand,
+    RegisterMeCommand,
 } from './commands';
 import {
     CommandHandler,
@@ -47,7 +48,8 @@ async function start(): Promise<void> {
         new LinkCommand(),
         new TestCommand(),
         new TranslateCommand(),
-        new getPilotCommand(),
+        new GetPilotCommand(),
+        new RegisterMeCommand(),
     ].sort((a, b) => (a.data.name > b.data.name ? 1 : -1));
 
     // Event handlers

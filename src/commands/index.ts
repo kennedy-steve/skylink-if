@@ -5,4 +5,5 @@ export { InfoCommand } from './info-command';
 export { LinkCommand } from './link-command';
 export { TestCommand } from './test-command';
 export { TranslateCommand } from './translate-command';
-export { getPilotCommand } from './get-pilot-command';
+export { GetPilotCommand } from './get-pilot-command';
+export { RegisterMeCommand } from './register-me-command';
