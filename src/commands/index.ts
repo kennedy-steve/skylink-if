@@ -5,4 +5,4 @@ export { InfoCommand } from './info-command';
 export { LinkCommand } from './link-command';
 export { TestCommand } from './test-command';
 export { TranslateCommand } from './translate-command';
-export { IFUserCommand } from './if-user-command';
+export { getPilotCommand } from './get-pilot-command';

@@ -7,13 +7,13 @@ import { MessageUtils } from '../utils';
 import { Command } from './command';
 import * as infiniteFlightLive from '../lib/infinite-flight-live';
 
-export class IFUserCommand implements Command {
+export class getPilotCommand implements Command {
     public data: ApplicationCommandData = {
-        name: Lang.getCom('commands.if-user'),
-        description: Lang.getRef('commandDescs.if-user', Lang.Default),
+        name: Lang.getCom('commands.get-pilot'),
+        description: Lang.getRef('commandDescs.get-pilot', Lang.Default),
         options: [
             {
-                name: "if-username",
+                name: "ifc-username",
                 description: "sup",
                 type: ApplicationCommandOptionTypes.STRING
 
@@ -25,12 +25,12 @@ export class IFUserCommand implements Command {
     public requirePerms = [];
 
     public async execute(intr: CommandInteraction, data: EventData): Promise<void> {
-        const if_username = intr.options.getString('if-username');
+        const if_username = intr.options.getString('ifc-username');
 
 
 
         if (if_username == null) {
-            await MessageUtils.sendIntr(intr, `Please specify if-username (infinite flight username)`);
+            await MessageUtils.sendIntr(intr, `Please specify ifc-username (infinite flight username)`);
             return
         }
         else {

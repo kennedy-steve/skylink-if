@@ -11,7 +11,7 @@ import {
     LinkCommand,
     TestCommand,
     TranslateCommand,
-    IFUserCommand,
+    getPilotCommand,
 } from './commands';
 import {
     CommandHandler,
@@ -47,7 +47,7 @@ async function start(): Promise<void> {
         new LinkCommand(),
         new TestCommand(),
         new TranslateCommand(),
-        new IFUserCommand(),
+        new getPilotCommand(),
     ].sort((a, b) => (a.data.name > b.data.name ? 1 : -1));
 
     // Event handlers
@@ -90,8 +90,8 @@ async function registerCommands(commands: Command[]): Promise<void> {
 
     try {
         let rest = new REST({ version: '9' }).setToken(Config.client.token);
-        await rest.put(Routes.applicationCommands(Config.client.id), { body: [] });
-        await rest.put(Routes.applicationCommands(Config.client.id), { body: cmdDatas });
+        //await rest.put(Routes.applicationCommands(Config.client.id), { body: [] });
+        //await rest.put(Routes.applicationCommands(Config.client.id), { body: cmdDatas });
         await rest.put(Routes.applicationGuildCommands(Config.client.id, "910003714885042207"), { body: cmdDatas })
     } catch (error) {
         Logger.error(Logs.error.commandsRegistering, error);

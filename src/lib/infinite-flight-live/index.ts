@@ -12,7 +12,11 @@ import {
     OceanicTrack,
 } from './types';
 
-const IF_API_KEY = "nothing to see here";
+let Config = require('../../../config/config.json');
+
+const test = 2;
+
+const IF_API_KEY = Config.infiniteFlight.apiKey;
 const URLBASE = 'https://api.infiniteflight.com/public/v2';
 
 export async function sessions(): Promise<SessionInfo[]> {

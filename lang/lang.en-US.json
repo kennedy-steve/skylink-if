@@ -188,7 +188,7 @@
             "link": "Get links to invite, support, etc.",
             "test": "Run the test command.",
             "translate": "View translation info.",
-            "if-user": "Get Infinite Flight User"
+            "get-pilot": "Get Infinite Flight User"
         },
         "lists": {
             "languageItem": "**{{LANGUAGE_NAME}}** (`{{LANGUAGE_KEYWORD}}`)"
