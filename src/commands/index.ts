@@ -7,3 +7,4 @@ export { TestCommand } from './test-command';
 export { TranslateCommand } from './translate-command';
 export { GetPilotCommand } from './get-pilot-command';
 export { RegisterMeCommand } from './register-me-command';
+export { InfiniteFlightStatusCommand } from './infinite-flight-status-command';

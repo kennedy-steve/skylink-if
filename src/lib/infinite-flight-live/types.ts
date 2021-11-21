@@ -281,3 +281,7 @@ export interface InfiniteFlightSession {
     airports: AirportStatus[];
     atcFacilities: AtcEntry[];
 }
+
+export interface InfiniteFlightStatus {
+    sessions: InfiniteFlightSession[]
+}
