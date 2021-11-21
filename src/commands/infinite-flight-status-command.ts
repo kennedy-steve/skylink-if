@@ -2,7 +2,7 @@ import { ApplicationCommandData, CommandInteraction } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 
 import { EventData } from '../models/internal-models';
-import { Lang, Logger, prisma } from '../services';
+import { Lang, Logger, prismaClient } from '../services';
 import { MessageUtils } from '../utils';
 import { Command } from './command';
 import * as infiniteFlightLive from '../lib/infinite-flight-live';
@@ -30,8 +30,8 @@ export class InfiniteFlightStatusCommand implements Command {
                 pilots.push(flight.username);
             }
         }
-
-        await MessageUtils.sendIntr(commandInteraction, `${pilots.slice(0, 100)}`);
+        Logger.info(pilots.toString());
+        await MessageUtils.sendIntr(commandInteraction, `${pilots.slice(0, 100).toString()}`);
     }
 
 }

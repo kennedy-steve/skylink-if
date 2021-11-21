@@ -2,7 +2,7 @@ import { ApplicationCommandData, CommandInteraction } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 
 import { EventData } from '../models/internal-models';
-import { Lang, Logger, prisma } from '../services';
+import { Lang, Logger, prismaClient } from '../services';
 import { MessageUtils } from '../utils';
 import { Command } from './command';
 import * as infiniteFlightLive from '../lib/infinite-flight-live';
@@ -56,7 +56,7 @@ export class RegisterMeCommand implements Command {
         const infiniteFlightUserID = userStats.userId;
         const ifcUsername = userStats.discourseUsername;
         try {
-            const newUser = await prisma.user.create({
+            const newUser = await prismaClient.user.create({
                 data: {
                     discordUserID: discordUserID,
                     infiniteFlightUserID: infiniteFlightUserID,
@@ -95,7 +95,7 @@ export class RegisterMeCommand implements Command {
         const infiniteFlightUserID = userStats.userId;
         const ifcUsername = userStats.discourseUsername;
 
-        const updatedUser = await prisma.user.update({
+        const updatedUser = await prismaClient.user.update({
             where: {
                 discordUserID: discordUserID,
             },

@@ -24,6 +24,7 @@ import {
     TriggerHandler,
 } from './events';
 import { CustomClient } from './extensions';
+import { NotifyActiveInfiniteFlightUsersJob } from './jobs';
 import { JobService, Logger } from './services';
 
 let Config = require('../config/config.json');
@@ -61,6 +62,9 @@ async function start(): Promise<void> {
     let triggerHandler = new TriggerHandler([]);
     let messageHandler = new MessageHandler(triggerHandler);
     let reactionHandler = new ReactionHandler([]);
+    let jobService = new JobService([
+        new NotifyActiveInfiniteFlightUsersJob(client),
+    ]);
 
     let bot = new Bot(
         Config.client.token,
@@ -70,7 +74,7 @@ async function start(): Promise<void> {
         messageHandler,
         commandHandler,
         reactionHandler,
-        new JobService([])
+        jobService,
     );
 
     if (process.argv[2] === '--register') {
