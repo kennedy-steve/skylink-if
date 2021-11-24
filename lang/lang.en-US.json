@@ -131,6 +131,38 @@
                 "description": "Need help? Join our [support server]({{COM:links.support}})!"
             }
         },
+        "registerMeEmbeds": {
+            "commandIntr": {
+                "title": "Registration",
+                "description": "Check your Direct Messages -- I've sent you instructions for registering as {{IFC_USERNAME}}."
+            },
+            "dmInstructions": {
+                "title": "Registration Instructions",
+                "description": "To register as {{IFC_USERNAME}} please spawn in Infinite Flight following these conditions, and maintain that position until I notify you that our ground crew has verified you.",
+                "fields": [
+                    {
+                        "name": "Server",
+                        "value": "Casual Server"
+                    },
+                    {
+                        "name": "Airport",
+                        "value": "{{AIRPORT_ICAO}}"
+                    },
+                    {
+                        "name": "Aircraft",
+                        "value": "{{AIRCRAFT_NAME}}"
+                    },
+                    {
+                        "name": "Livery",
+                        "value": "{{LIVERY_NAME}}"
+                    },
+                    {
+                        "name": "True Heading",
+                        "value": "{{TRUE_HEADING}} degrees. Be sure that this is your TRUE heading, usually the compass in your HUD is your magnetic heading. Check the information options on your lower screen to display TRUE heading. "
+                    }
+                ]
+            }
+        },
         "validationEmbeds": {
             "devOnlyCommand": {
                 "description": "This command can only be used by developers.",
@@ -142,6 +174,25 @@
             },
             "permissionRequired": {
                 "description": "You don't have permission to run that command!",
+                "color": "{{COM:colors.warning}}"
+            },
+            "registerMeIFCUsernameNotSpecified": {
+                "title": " Specify ifc-username",
+                "description": "Please specify your Infinite Flight Community username.",
+                "color": "{{COM:colors.warning}}"
+            },
+            "registerMeuserHadFreshVerificationTicket": {
+                "description": "You recently requested to register. To prevent abuse, please wait {{STALE_MINUTES}} minutes from your last request before requesting again.",
+                "color": "{{COM:colors.warning}}"
+            },
+            "registerMeIFCUsernameNotFound": {
+                "title": "Username Not Found",
+                "description": "So I looked through all the pilot records and found that the Infinite Flight Community Username, {{IFC_USERNAME}}, does not exist. Please double check spelling and ensure this is the correct username.",
+                "color": "{{COM:colors.warning}}"
+            },
+            "registerMeIFCUsernameTaken": {
+                "title": "Username Already Registered",
+                "description": "My records show that the Infinite Flight Community Username, {{IFC_USERNAME}}, is already registered by either you or another pilot.",
                 "color": "{{COM:colors.warning}}"
             }
         },

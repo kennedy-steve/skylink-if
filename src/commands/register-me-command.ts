@@ -48,20 +48,42 @@ export class RegisterMeCommand implements Command {
         if (userHasFreshVerificationTicket) {
             await MessageUtils.sendIntr(
                 commandInteraction,
-                `You recently requested to register. To prevent abuse, please wait ${Config.modelConstants.verifyInfiniteFlightUserIDTicket.staleByMinutes} before requesting again`
+                Lang.getEmbed(
+                    'validationEmbeds.registerMeuserHadFreshVerificationTicket',
+                    data.lang(),
+                    {
+                        STALE_MINUTES: Config.modelConstants.verifyInfiniteFlightUserIDTicket.staleByMinutes,
+                    }
+                )
             );
         }
 
         // check if the user specified an ifc username
         else if (this.ifcUsername == null) {
-            await MessageUtils.sendIntr(commandInteraction, `Please specify ifc-username (infinite flight username)`);
+            await MessageUtils.sendIntr(
+                commandInteraction,
+                Lang.getEmbed(
+                    'validationEmbeds.registerMeIFCUsernameNotSpecified',
+                    data.lang()
+                )
+            );
         }
         else {
             const userHits = await infiniteFlightLive.userStats([], [], [this.ifcUsername]);
 
             // check if the ifc user exists
             if (userHits.length == 0) {
-                await MessageUtils.sendIntr(commandInteraction, `Sorry, I couldn't find anyone named ${this.ifcUsername} on Infinite Flight`);
+                await MessageUtils.sendIntr(
+                    commandInteraction,
+                    Lang.getEmbed(
+                        'validationEmbeds.registerMeIFCUsernameNotFound',
+                        data.lang(),
+                        {
+                            IFC_USERNAME: this.ifcUsername,
+                        }
+                    ),
+
+                );
             }
             else {
                 const userStats = userHits[0]
@@ -69,7 +91,16 @@ export class RegisterMeCommand implements Command {
 
                 // check if the infinite flight user has already been registered
                 if (infiniteFlightUserAlreadyRegistered) {
-                    await MessageUtils.sendIntr(commandInteraction, `Sorry, looks like either your or someone else has registered ${this.ifcUsername}`);
+                    await MessageUtils.sendIntr(
+                        commandInteraction,
+                        Lang.getEmbed(
+                            'validationEmbeds.registerMeIFCUsernameTaken',
+                            data.lang(),
+                            {
+                                IFC_USERNAME: this.ifcUsername,
+                            }
+                        )
+                    );
                 }
                 else {
                     await prismaClient.user.upsert({
@@ -87,12 +118,35 @@ export class RegisterMeCommand implements Command {
                         discordUser.id,
                         discordGuild.id,
                     );
-                    await discordMember.send(
-                        `To register as ${this.ifcUsername}, please spawn in a live server as a ${newVerifyInfiniteFlightUserIDTicket.aircraftName}, using ${newVerifyInfiniteFlightUserIDTicket.liveryName} as your livery. And turn to the TRUE heading of ${newVerifyInfiniteFlightUserIDTicket.heading}. Our ground crew will check on you to verify shortly`
-                    );
+
+                    MessageUtils.send(
+                        discordUser,
+                        Lang.getEmbed(
+                            'registerMeEmbeds.dmInstructions',
+                            data.lang(),
+                            {
+                                IFC_USERNAME: this.ifcUsername,
+
+                                // We don't randomize these, but maybe in the future.
+                                SERVER: "Casual Server",
+                                AIRPORT_ICAO: "Any airport is fine, though my favorite airport is KSMF. But seriously, any airport will do.",
+
+                                AIRCRAFT_NAME: newVerifyInfiniteFlightUserIDTicket.aircraftName,
+                                LIVERY_NAME: newVerifyInfiniteFlightUserIDTicket.liveryName,
+                                TRUE_HEADING: newVerifyInfiniteFlightUserIDTicket.heading.toString(),
+                            }
+                        )
+                    )
+
                     await MessageUtils.sendIntr(
                         commandInteraction,
-                        `Check your DMs!`
+                        Lang.getEmbed(
+                            'registerMeEmbeds.commandIntr',
+                            data.lang(),
+                            {
+                                IFC_USERNAME: this.ifcUsername,
+                            }
+                        )
                     );
                 }
 
