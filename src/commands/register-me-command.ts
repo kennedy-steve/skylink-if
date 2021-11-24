@@ -9,6 +9,7 @@ import * as infiniteFlightLive from '../lib/infinite-flight-live';
 import { prisma, Prisma, User, VerifyInfiniteFlightUserIDTicket } from '.prisma/client';
 import { off } from 'process';
 import { Aircraft, UserStats } from '../lib/infinite-flight-live/types';
+import { VerifyInfiniteFlightUserIDTicketUtils } from '../utils/verify-infinite-flight-user-id-ticket-utils';
 
 let Config = require('../../config/config.json');
 let InfiniteFlightPlanes = require('../../static/infinite-flight-planes.json');
@@ -98,6 +99,7 @@ export class RegisterMeCommand implements Command {
         const randomAircraft: Aircraft = this.getRandomAircraft();
         const verifyInfiniteFlightUserIDTicket: VerifyInfiniteFlightUserIDTicket = await prismaClient.verifyInfiniteFlightUserIDTicket.create({
             data: {
+                infiniteFlightUserID: infiniteFlightUserID,
                 discordUserID: discordUserId,
                 discordGuildID: discordGuildID,
                 aircraftID: randomAircraft.aircraftID,
@@ -121,21 +123,18 @@ export class RegisterMeCommand implements Command {
     }
 
     private async checkIfUserStillHasFreshVerificationTicket(discordUserID: string): Promise<boolean> {
-        const currentDateTime: Date = new Date();
-        const millisecondsPerMinute: number = 60000
-        const staleByMilliseconds: number = Config.modelConstants.verifyInfiniteFlightUserIDTicket.staleByMinutes * millisecondsPerMinute;
-        const freshTicketsDateTime: Date = new Date(currentDateTime.getTime() - staleByMilliseconds);
+        const freshTicketsCutoffDateTime: Date = VerifyInfiniteFlightUserIDTicketUtils.getFreshTicketsCutoffDateTime();
 
         const verificationTicket: VerifyInfiniteFlightUserIDTicket = await prismaClient.verifyInfiniteFlightUserIDTicket.findFirst({
             where: {
                 discordUserID: discordUserID,
                 created: {
-                    gt: freshTicketsDateTime
+                    gt: freshTicketsCutoffDateTime
                 }
             }
         })
 
-        Logger.info(`frash = ${verificationTicket}}`);
+        Logger.info(`frash = ${verificationTicket}`);
         return (verificationTicket !== null);
     }
 

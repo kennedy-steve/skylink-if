@@ -22,15 +22,17 @@ model VerifyInfiniteFlightUserIDTicket {
   id                      String   @id @default(cuid())
   created                 DateTime @default(now())
   verified                Boolean  @default(false)
+  rejected                Boolean  @default(false)
   verifiedByFlightEntryID String?
 
-  discordUserID  String
-  discordGuildID String
-  aircraftID     String
-  aircraftName   String
-  liveryID       String
-  liveryName     String
-  heading        Float
+  infiniteFlightUserID String
+  discordUserID        String
+  discordGuildID       String
+  aircraftID           String
+  aircraftName         String
+  liveryID             String
+  liveryName           String
+  heading              Float
 
   user User @relation(fields: [discordUserID], references: [discordUserID])
 }
