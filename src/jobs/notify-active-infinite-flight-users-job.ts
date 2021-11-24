@@ -1,11 +1,11 @@
 import { User, VerifyInfiniteFlightUserIDTicket } from '.prisma/client';
-import { ActivityType, Channel, Client, ShardingManager, TextChannel } from 'discord.js';
+import { ActivityType, Channel, Client, ShardingManager, TextChannel, User as DiscordUser } from 'discord.js';
 
 import { CustomClient } from '../extensions';
 import { FlightEntry, InfiniteFlightSession, InfiniteFlightStatus } from '../lib/infinite-flight-live/types';
 import { BotSite } from '../models/config-models';
 import { HttpService, Lang, Logger, prismaClient } from '../services';
-import { ShardUtils } from '../utils';
+import { ClientUtils, ShardUtils } from '../utils';
 import { Job } from './job';
 import * as infiniteFlightLive from '../lib/infinite-flight-live';
 import { ActivePilotUser } from './types';
@@ -121,7 +121,7 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
 
         for (var ticket of verifyInfiniteFlightUserIDTickets) {
             const flight: FlightEntry = activePilotInfiniteFlightMap.get(ticket.infiniteFlightUserID);
-            const testChannel: TextChannel = await this.getTestChannel();
+            const discordUser: DiscordUser = await ClientUtils.getUser(this.client, ticket.discordUserID);
 
             // TODO: fix potential bug, apprently this conditional doesn't work...
             if (flight !== null) {
@@ -131,17 +131,52 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
                 );
 
                 if (flightPassesAllChecks) {
-                    testChannel.send(`Woot woot, you are now verified!`);
+                    await this.updateModelsForVerifiedUser(discordUser.id, ticket.id, flight);
+                    discordUser.send(`Woot woot, you are now verified!`);
                 }
                 else {
-                    testChannel.send(`We detect that you're on Infinite Flight, but something is off (we won't tell you for security reasons). Check your True Heading, aircraft, and livery`);
+                    discordUser.send(`Our ground crew see your aircraft, but something is off (we won't tell you for security reasons). Check your True Heading, aircraft, and livery. Also sometimes we check too early, so if you think you're right, just stay still. We'll check your aircraft in a minute`);
                 }
             }
         }
     }
 
+    /**
+     * Update User and VerifyInfiniteFlightUserIDTicket
+     * @param discordUserID 
+     * @param ticketID 
+     * @param flight 
+     */
+    private async updateModelsForVerifiedUser(discordUserID: string, ticketID: string, flight: FlightEntry): Promise<void> {
+
+        // Now we finally register the Infinite Flight User ID
+        await prismaClient.user.update({
+            where: {
+                discordUserID: discordUserID,
+            },
+            data: {
+                infiniteFlightUserID: flight.userId,
+            },
+        });
+
+        // Verified tickets are not deleted, they are updated to show they are verified
+        // This helps for archival purposes and acts as our receipt. 
+        await prismaClient.verifyInfiniteFlightUserIDTicket.update({
+            where: {
+                id: ticketID,
+            },
+            data: {
+                verified: true,
+                verifiedByFlightEntryID: flight.flightId,
+            },
+        });
+    }
 
 
+    /**
+     * This is a test method, will be deprecated and deleted eventually
+     * @returns the channel the devs use for testing
+     */
     private async getTestChannel(): Promise<TextChannel> {
         const testChannel: TextChannel = (await this.client.channels.cache.get(
             Config.development.kennedySteveSpamChannelID) as TextChannel);

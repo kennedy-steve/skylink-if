@@ -1,4 +1,4 @@
-import { ApplicationCommandData, CommandInteraction } from 'discord.js';
+import { ApplicationCommandData, CommandInteraction, GuildMember, User as DiscordUser } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 
 import { EventData } from '../models/internal-models';
@@ -37,8 +37,11 @@ export class RegisterMeCommand implements Command {
 
     public async execute(commandInteraction: CommandInteraction, data: EventData): Promise<void> {
         this.ifcUsername = commandInteraction.options.getString('ifc-username');
-        const discordUser = commandInteraction.member.user;
+        const discordUser: DiscordUser = commandInteraction.member.user as DiscordUser;
         const discordGuild = commandInteraction.guild;
+        const discordMember: GuildMember = commandInteraction.member as GuildMember;
+
+
 
         // first check if user already has a fresh verification ticket to prevent abuse
         const userHasFreshVerificationTicket: boolean = await this.checkIfUserStillHasFreshVerificationTicket(discordUser.id);
@@ -84,9 +87,12 @@ export class RegisterMeCommand implements Command {
                         discordUser.id,
                         discordGuild.id,
                     );
+                    await discordMember.send(
+                        `To register as ${this.ifcUsername}, please spawn in a live server as a ${newVerifyInfiniteFlightUserIDTicket.aircraftName}, using ${newVerifyInfiniteFlightUserIDTicket.liveryName} as your livery. And turn to the TRUE heading of ${newVerifyInfiniteFlightUserIDTicket.heading}. Our ground crew will check on you to verify shortly`
+                    );
                     await MessageUtils.sendIntr(
                         commandInteraction,
-                        `${newVerifyInfiniteFlightUserIDTicket.aircraftName} ${newVerifyInfiniteFlightUserIDTicket.liveryName} ${newVerifyInfiniteFlightUserIDTicket.heading}`
+                        `Check your DMs!`
                     );
                 }
 
@@ -133,8 +139,6 @@ export class RegisterMeCommand implements Command {
                 }
             }
         })
-
-        Logger.info(`frash = ${verificationTicket}`);
         return (verificationTicket !== null);
     }
 
