@@ -66,6 +66,8 @@ export interface FlightEntry {
     track: number;
     heading: number;
     lastReport: Date;
+
+    sessionInfo?: SessionInfo;
 }
 
 export interface FlightPlanEntry {

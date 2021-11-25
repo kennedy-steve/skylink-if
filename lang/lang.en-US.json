@@ -163,6 +163,37 @@
                 ]
             }
         },
+        "notificationEmbedss": {
+            "activePilot": {
+                "title": "{{DISCORD_USERNAME}} is now online as {{IFC_USERNAME}}!",
+                "description": "<@{{DISCORD_ID}}> ({{IFC_USERNAME}}) is piloting a {{AIRCRAFT_NAME}} on Infinite Flight",
+                "fields": [
+                    {
+                        "name": "Server",
+                        "value": "{{SERVER_NAME}}"
+                    },
+                    {
+                        "name": "Aircraft",
+                        "value": "{{AIRCRAFT_NAME}}"
+                    },
+                    {
+                        "name": "Livery",
+                        "value": "{{LIVERY_NAME}}"
+                    },
+                    {
+                        "name": "Heading",
+                        "value": "{{HEADING}} degrees."
+                    },
+                    {
+                        "name": "Latitude, Longitude",
+                        "value": "{{LATITUDE}}, {{LONGITUDE}}"
+                    }
+                ]
+            },
+            "s": {
+                "title": "title"
+            }
+        },
         "validationEmbeds": {
             "devOnlyCommand": {
                 "description": "This command can only be used by developers.",

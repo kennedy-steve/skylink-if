@@ -5,12 +5,13 @@ import { CustomClient } from '../extensions';
 import { FlightEntry, InfiniteFlightSession, InfiniteFlightStatus } from '../lib/infinite-flight-live/types';
 import { BotSite } from '../models/config-models';
 import { HttpService, Lang, Logger, prismaClient } from '../services';
-import { ClientUtils, ShardUtils } from '../utils';
+import { ClientUtils, MessageUtils, ShardUtils } from '../utils';
 import { Job } from './job';
 import * as infiniteFlightLive from '../lib/infinite-flight-live';
 import { ActivePilotUser } from './types';
 import { VerifyInfiniteFlightUserIDTicketUtils } from '../utils/verify-infinite-flight-user-id-ticket-utils';
 import { validateSync } from 'class-validator';
+import { LangCode } from '../models/enums';
 
 let Config = require('../../config/config.json');
 let BotSites: BotSite[] = require('../../config/bot-sites.json');
@@ -50,8 +51,26 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
             const testChannel: TextChannel = (await this.client.channels.cache.get(
                 Config.development.kennedySteveSpamChannelID) as TextChannel);
 
-            testChannel.send(`<@${activePilotUser.user.discordUserID}> is active on infinite flight!`);
-            Logger.info(`<@${activePilotUser.user.discordUserID}> is active on infinite flight!`)
+            const discordUser = await ClientUtils.getUser(this.client, activePilotUser.user.discordUserID);
+            MessageUtils.send(
+                testChannel,
+                Lang.getEmbed(
+                    'notificationEmbedss.activePilot',
+                    LangCode.EN_US,
+                    {
+                        DISCORD_ID: discordUser.id,
+                        DISCORD_USERNAME: discordUser.username,
+                        IFC_USERNAME: activePilotUser.flight.username,
+                        SERVER_NAME: activePilotUser.flight.sessionInfo.name,
+                        AIRCRAFT_NAME: activePilotUser.flight.aircraftId,
+                        LIVERY_NAME: activePilotUser.flight.liveryId,
+                        HEADING: activePilotUser.flight.heading.toString(),
+                        LATITUDE: activePilotUser.flight.latitude.toString(),
+                        LONGITUDE: activePilotUser.flight.longitude.toString(),
+                    }
+
+                )
+            )
         }
     }
 
@@ -95,6 +114,10 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
 
         for (var session of this.infiniteFlightStatus.sessions) {
             for (var flight of session.flights) {
+
+                // attach session info to the flight
+                // This will help with data processing later 😉
+                flight.sessionInfo = session.sessionInfo;
                 activePilotInfiniteFlightMap.set(flight.userId, flight);
             }
         }
