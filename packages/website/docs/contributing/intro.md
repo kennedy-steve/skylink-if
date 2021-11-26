@@ -19,13 +19,33 @@ We want to have the following before we can start development as a team:
     ✅ A Website
     ✅ Proof-of-Concept Bot
     🔄 Documentation for development
-    ⬜ Suggested features from interested users
+    🔄 Suggested features from interested users
     ⬜ Roadmap developed by core developers and stakeholders
 
+
+## What do I need to install?
+
+There's a few things you need to install before working on our codebase, but if you're experienced with `git` and `nodejs`, you can skip this section.
+
+* [NodeJS](https://nodejs.org/en/download/)
+* [Git](https://git-scm.com/downloads)
+* [npm](https://docs.npmjs.com/getting-started/installing-node)
+* [Discord](https://discordapp.com/download)
+
+### Optional
+
+* [VSCode](https://code.visualstudio.com/download)
+* [Yarn](https://yarnpkg.com/en/docs/install)
 
 ## What do I need to know?
 
 Below, you'll find resources for learning the technologies Skylink-IF uses, such as Typescript. I'm actually new to most of these, so I'll be adding resources that have really helped me along the way.
+
+### Git 
+
+I'm not new to this one haha. Git is a version control system that allows you to track changes to your code and eases collaboration. I use git almost every day, and if you're into coding, you will too. 
+
+* [Check out my git guide](https://www.tisuela.com/git-with-the-flow)
 
 ### Typescript
 
@@ -53,6 +73,8 @@ Resources:
 * [Infinite Flight Live API Documentation](https://infiniteflight.com/guide/developer-reference)
 
 ### Prisma
+
+We use prisma as our ORM (Object Relational Mapper). It's a database abstraction layer that allows us to query our database. 
 
 * [Prisma Documentation](https://www.prisma.io/docs/)
 
