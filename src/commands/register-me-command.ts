@@ -126,6 +126,7 @@ export class RegisterMeCommand implements Command {
                             data.lang(),
                             {
                                 IFC_USERNAME: this.ifcUsername,
+                                STALE_MINUTES: Config.modelConstants.verifyInfiniteFlightUserIDTicket.staleByMinutes,
 
                                 // We don't randomize these, but maybe in the future.
                                 SERVER: "Casual Server",

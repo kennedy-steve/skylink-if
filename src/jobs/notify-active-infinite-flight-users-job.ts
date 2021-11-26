@@ -157,10 +157,28 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
 
                 if (flightPassesAllChecks) {
                     await this.updateModelsForVerifiedUser(discordUser.id, ticket.id, flight);
-                    discordUser.send(`Woot woot, you are now verified!`);
+                    MessageUtils.send(
+                        discordUser,
+                        Lang.getEmbed(
+                            'registerMeEmbeds.verified',
+                            LangCode.EN_US,
+                            {
+                                IFC_USERNAME: flight.username,
+                            }
+                        )
+                    )
                 }
                 else {
-                    discordUser.send(`Our ground crew see your aircraft, but something is off (we won't tell you for security reasons). Check your True Heading, aircraft, and livery. Also sometimes we check too early, so if you think you're right, just stay still. We'll check your aircraft in a minute`);
+                    MessageUtils.send(
+                        discordUser,
+                        Lang.getEmbed(
+                            'registerMeEmbeds.unsuccessfullVerification',
+                            LangCode.EN_US,
+                            {
+                                STALE_MINUTES: Config.development.staleVerificationMinutes,
+                            }
+                        )
+                    )
                 }
             }
         }
