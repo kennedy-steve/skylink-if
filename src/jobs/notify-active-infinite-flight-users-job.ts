@@ -175,7 +175,7 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
                             'registerMeEmbeds.unsuccessfullVerification',
                             LangCode.EN_US,
                             {
-                                STALE_MINUTES: Config.development.staleVerificationMinutes,
+                                STALE_MINUTES: Config.modelConstants.verifyInfiniteFlightUserIDTicket.staleByMinutes,
                             }
                         )
                     )
