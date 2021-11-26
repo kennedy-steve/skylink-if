@@ -9,3 +9,57 @@ sidebar_position: 1
 UNDER CONSTRUCTION
 
 :::
+
+
+## Clone the repository
+
+If you're new to git, cloning is kind of like downloading.
+
+In your terminal, navigate to where you want to store this, and future, projects. Then run this command:
+
+```
+git clone https://github.com/kennedy-steve/skylink-if.git
+```
+
+Next, navigate into the skylink-if directory, which was created when you did `git clone`.
+
+```
+cd skylink-if
+```
+
+Alternatively, you could open VSCode and open the `skylink-if` directory.
+
+## Install dependencies
+
+I like to use `yarn` for dependency management, but you can use `npm` if you prefer.
+
+```
+yarn install
+```
+
+## Create /config/config.json
+
+The easiest thing to do is contact a maintainer of the project and ask them to create a config file for you. But if you're on your own, follow these instructions:
+
+1. [Create a discord bot](https://discordapp.com/developers/applications/me)
+2. [Create a bot token](https://discordjs.guide/preparations/setting-up-a-bot-application.html)
+3. [Get an Infinite Flight Live API Key](hhttps://infiniteflight.com/guide/developer-reference/live-api/overview#obtaining-an-api-key)
+4. Copy the `config.example.json` file and name it `config.json`.
+5. Populate all fields named `<field>` with the appropriate values.
+
+## Register /slash commands
+
+```
+yarn register
+
+```
+
+## Run the bot
+
+The bot is technically a server. Let's run it!
+
+```
+yarn start:dev
+```
+
+If you want to play with the bot, create a test server and [invite your bot to it](https://discordjs.guide/preparations/adding-your-bot-to-servers.html).
