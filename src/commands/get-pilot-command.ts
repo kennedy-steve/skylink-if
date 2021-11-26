@@ -6,6 +6,7 @@ import { Lang } from '../services';
 import { MessageUtils } from '../utils';
 import { Command } from './command';
 import * as infiniteFlightLive from '../lib/infinite-flight-live';
+import { AircraftUtils } from '../utils/aircraft-utils';
 
 export class GetPilotCommand implements Command {
     public data: ApplicationCommandData = {
@@ -26,8 +27,6 @@ export class GetPilotCommand implements Command {
 
     public async execute(intr: CommandInteraction, data: EventData): Promise<void> {
         const ifcUsername = intr.options.getString('ifc-username');
-
-
 
         if (ifcUsername == null) {
             await MessageUtils.sendIntr(intr, `Please specify ifc-username (infinite flight username)`);

@@ -14,8 +14,8 @@ import { validateSync } from 'class-validator';
 import { LangCode } from '../models/enums';
 
 let Config = require('../../config/config.json');
-let BotSites: BotSite[] = require('../../config/bot-sites.json');
-let Logs = require('../../lang/logs.json');
+let AircraftNames = require('../../infinite-flight-data/aircraft-names.json');
+let LiveryNames = require('../../infinite-flight-data/livery-names.json');
 
 export class NotifyActiveInfiniteFlightUsersJob implements Job {
     public name = 'Notify Active Infinite Flight Users';
@@ -52,18 +52,20 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
                 Config.development.kennedySteveSpamChannelID) as TextChannel);
 
             const discordUser = await ClientUtils.getUser(this.client, activePilotUser.user.discordUserID);
+            const aircraftName = AircraftNames[activePilotUser.flight.aircraftId];
+            const liveryName = LiveryNames[activePilotUser.flight.liveryId];
             MessageUtils.send(
                 testChannel,
                 Lang.getEmbed(
-                    'notificationEmbedss.activePilot',
+                    'notificationEmbeds.activePilot',
                     LangCode.EN_US,
                     {
                         DISCORD_ID: discordUser.id,
                         DISCORD_USERNAME: discordUser.username,
                         IFC_USERNAME: activePilotUser.flight.username,
                         SERVER_NAME: activePilotUser.flight.sessionInfo.name,
-                        AIRCRAFT_NAME: activePilotUser.flight.aircraftId,
-                        LIVERY_NAME: activePilotUser.flight.liveryId,
+                        AIRCRAFT_NAME: aircraftName,
+                        LIVERY_NAME: liveryName,
                         HEADING: activePilotUser.flight.heading.toString(),
                         LATITUDE: activePilotUser.flight.latitude.toString(),
                         LONGITUDE: activePilotUser.flight.longitude.toString(),

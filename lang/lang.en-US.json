@@ -163,7 +163,7 @@
                 ]
             }
         },
-        "notificationEmbedss": {
+        "notificationEmbeds": {
             "activePilot": {
                 "title": "{{DISCORD_USERNAME}} is now online as {{IFC_USERNAME}}!",
                 "description": "<@{{DISCORD_ID}}> ({{IFC_USERNAME}}) is piloting a {{AIRCRAFT_NAME}} on Infinite Flight",

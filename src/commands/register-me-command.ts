@@ -12,7 +12,7 @@ import { Aircraft, UserStats } from '../lib/infinite-flight-live/types';
 import { VerifyInfiniteFlightUserIDTicketUtils } from '../utils/verify-infinite-flight-user-id-ticket-utils';
 
 let Config = require('../../config/config.json');
-let InfiniteFlightPlanes = require('../../static/infinite-flight-planes.json');
+let InfiniteFlightPlanes = require('../../infinite-flight-data/aircraft-and-liveries-list.json');
 
 export class RegisterMeCommand implements Command {
     public data: ApplicationCommandData = {
