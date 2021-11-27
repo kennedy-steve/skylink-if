@@ -11,7 +11,9 @@ import {
     LinkCommand,
     TestCommand,
     TranslateCommand,
-    IFUserCommand,
+    GetPilotCommand,
+    RegisterMeCommand,
+    InfiniteFlightStatusCommand,
 } from './commands';
 import {
     CommandHandler,
@@ -22,6 +24,7 @@ import {
     TriggerHandler,
 } from './events';
 import { CustomClient } from './extensions';
+import { NotifyActiveInfiniteFlightUsersJob } from './jobs';
 import { JobService, Logger } from './services';
 
 let Config = require('../config/config.json');
@@ -47,7 +50,9 @@ async function start(): Promise<void> {
         new LinkCommand(),
         new TestCommand(),
         new TranslateCommand(),
-        new IFUserCommand(),
+        new GetPilotCommand(),
+        new RegisterMeCommand(),
+        new InfiniteFlightStatusCommand(),
     ].sort((a, b) => (a.data.name > b.data.name ? 1 : -1));
 
     // Event handlers
@@ -57,6 +62,9 @@ async function start(): Promise<void> {
     let triggerHandler = new TriggerHandler([]);
     let messageHandler = new MessageHandler(triggerHandler);
     let reactionHandler = new ReactionHandler([]);
+    let jobService = new JobService([
+        new NotifyActiveInfiniteFlightUsersJob(client),
+    ]);
 
     let bot = new Bot(
         Config.client.token,
@@ -66,7 +74,7 @@ async function start(): Promise<void> {
         messageHandler,
         commandHandler,
         reactionHandler,
-        new JobService([])
+        jobService,
     );
 
     if (process.argv[2] === '--register') {
@@ -90,8 +98,8 @@ async function registerCommands(commands: Command[]): Promise<void> {
 
     try {
         let rest = new REST({ version: '9' }).setToken(Config.client.token);
-        await rest.put(Routes.applicationCommands(Config.client.id), { body: [] });
-        await rest.put(Routes.applicationCommands(Config.client.id), { body: cmdDatas });
+        //await rest.put(Routes.applicationCommands(Config.client.id), { body: [] });
+        //await rest.put(Routes.applicationCommands(Config.client.id), { body: cmdDatas });
         await rest.put(Routes.applicationGuildCommands(Config.client.id, "910003714885042207"), { body: cmdDatas })
     } catch (error) {
         Logger.error(Logs.error.commandsRegistering, error);

@@ -66,6 +66,8 @@ export interface FlightEntry {
     track: number;
     heading: number;
     lastReport: Date;
+
+    sessionInfo?: SessionInfo;
 }
 
 export interface FlightPlanEntry {
@@ -264,4 +266,24 @@ export interface OceanicTrack {
     westLevels: number[] | null;
     type: string;
     lastSeen: string;
+}
+
+
+/**
+ * Robust Types
+ * 
+ * These are types that do not mirror the resources that the Infinite Flight Live API returns.
+ * As such, some of these types may be require multiple requests to different API endpoints to be instantiated. 
+ */
+
+// Name is InfiniteFlightSession since "Session" is more suseptible to naming collisions
+export interface InfiniteFlightSession {
+    sessionInfo: SessionInfo;
+    flights: FlightEntry[];
+    airports: AirportStatus[];
+    atcFacilities: AtcEntry[];
+}
+
+export interface InfiniteFlightStatus {
+    sessions: InfiniteFlightSession[]
 }

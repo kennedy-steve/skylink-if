@@ -131,6 +131,89 @@
                 "description": "Need help? Join our [support server]({{COM:links.support}})!"
             }
         },
+        "registerMeEmbeds": {
+            "commandIntr": {
+                "title": "Registration",
+                "description": "Check your Direct Messages -- I've sent you instructions for registering as {{IFC_USERNAME}}."
+            },
+            "dmInstructions": {
+                "title": "Registration Verification Instructions",
+                "description": "To register as {{IFC_USERNAME}} please spawn in Infinite Flight following these conditions, and maintain that position until I notify you that our ground crew has verified you. You have {{STALE_MINUTES}} minutes until our groundcrew stop checking your aircraft. Once you are successfully verified, you'll never have to register again for any other server you join!",
+                "fields": [
+                    {
+                        "name": "Server",
+                        "value": "Casual Server"
+                    },
+                    {
+                        "name": "Airport",
+                        "value": "{{AIRPORT_ICAO}}"
+                    },
+                    {
+                        "name": "Aircraft",
+                        "value": "{{AIRCRAFT_NAME}}"
+                    },
+                    {
+                        "name": "Livery",
+                        "value": "{{LIVERY_NAME}}"
+                    },
+                    {
+                        "name": "True Heading",
+                        "value": "{{TRUE_HEADING}} degrees. Be sure that this is your TRUE heading, usually the compass in your HUD is your magnetic heading. Configure the status bar on your lower screen to display TRUE heading - https://infiniteflight.com/guide/getting-started-guide/pilot-user-interface/status-bar. "
+                    }
+                ]
+            },
+            "verified": {
+                "title": "Registration Verified",
+                "description": "Awesome, our groundcrew have checked your aircraft. You are now verified to fly as {{IFC_USERNAME}} on Infinite Flight! I'll remember your registration for all servers you join -- no need to register again unless you decide to change your Infinite Flight or Discord account."
+            },
+            "unsuccessfullVerification": {
+                "title": "Something is wrong",
+                "description": "Our groundcrew see your aircraft, but something is off. Not to worry, our groundcrew will come back every minute to check again. They'll keep checking until after {{STALE_MINUTES}} minutes from when you submitted your registration -- no need to register again until after that {{STALE_MINUTES}} minutes. Please check the instructions we originally sent you and check below for common mistakes:",
+                "fields": [
+                    {
+                        "name": "Server",
+                        "value": "Be sure that you are in the Casual Server"
+                    },
+                    {
+                        "name": "True Heading",
+                        "value": "Use the TRUE HEADING when adjusting your aircraft. You can find this in the Status Bar at the bottom of your screen -- toggle the option box to choose 'True Heading' https://infiniteflight.com/guide/getting-started-guide/pilot-user-interface/status-bar"
+                    },
+                    {
+                        "name": "Our fault",
+                        "value": "Sometimes our groundcrew check too early when you are still adjusting your aircraft. If you believe you have followed the instructions, do not worry. Just stay still and wait for our groundcrew to check again -- that should be within a minute from now."
+                    }
+                ],
+                "color": "{{COM:colors.warning}}"
+            }
+        },
+        "notificationEmbeds": {
+            "activePilot": {
+                "title": "{{DISCORD_USERNAME}} is now online as {{IFC_USERNAME}}!",
+                "description": "<@{{DISCORD_ID}}> ({{IFC_USERNAME}}) is piloting a {{AIRCRAFT_NAME}} on Infinite Flight",
+                "fields": [
+                    {
+                        "name": "Server",
+                        "value": "{{SERVER_NAME}}"
+                    },
+                    {
+                        "name": "Aircraft",
+                        "value": "{{AIRCRAFT_NAME}}"
+                    },
+                    {
+                        "name": "Livery",
+                        "value": "{{LIVERY_NAME}}"
+                    },
+                    {
+                        "name": "Heading",
+                        "value": "{{HEADING}} degrees."
+                    },
+                    {
+                        "name": "Latitude, Longitude",
+                        "value": "{{LATITUDE}}, {{LONGITUDE}}"
+                    }
+                ]
+            }
+        },
         "validationEmbeds": {
             "devOnlyCommand": {
                 "description": "This command can only be used by developers.",
@@ -142,6 +225,25 @@
             },
             "permissionRequired": {
                 "description": "You don't have permission to run that command!",
+                "color": "{{COM:colors.warning}}"
+            },
+            "registerMeIFCUsernameNotSpecified": {
+                "title": " Specify ifc-username",
+                "description": "Please specify your Infinite Flight Community username.",
+                "color": "{{COM:colors.warning}}"
+            },
+            "registerMeuserHadFreshVerificationTicket": {
+                "description": "You recently requested to register. To prevent abuse, please wait {{STALE_MINUTES}} minutes from your last request before requesting again.",
+                "color": "{{COM:colors.warning}}"
+            },
+            "registerMeIFCUsernameNotFound": {
+                "title": "Username Not Found",
+                "description": "So I looked through all the pilot records and found that the Infinite Flight Community Username, {{IFC_USERNAME}}, does not exist. Please double check spelling and ensure this is the correct username.",
+                "color": "{{COM:colors.warning}}"
+            },
+            "registerMeIFCUsernameTaken": {
+                "title": "Username Already Registered",
+                "description": "My records show that the Infinite Flight Community Username, {{IFC_USERNAME}}, is already registered by either you or another pilot.",
                 "color": "{{COM:colors.warning}}"
             }
         },
@@ -188,7 +290,7 @@
             "link": "Get links to invite, support, etc.",
             "test": "Run the test command.",
             "translate": "View translation info.",
-            "if-user": "Get Infinite Flight User"
+            "get-pilot": "Get Infinite Flight User"
         },
         "lists": {
             "languageItem": "**{{LANGUAGE_NAME}}** (`{{LANGUAGE_KEYWORD}}`)"

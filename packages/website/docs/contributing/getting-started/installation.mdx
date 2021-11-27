@@ -2,6 +2,8 @@
 sidebar_position: 1
 ---
 
+import ReactTermynal from '/src/components/termynal';
+
 # Installation
 
 :::caution
@@ -9,3 +11,64 @@ sidebar_position: 1
 UNDER CONSTRUCTION
 
 :::
+
+
+## Clone the repository
+
+If you're new to git, cloning is kind of like downloading.
+
+In your terminal, navigate to where you want to store this, and future, projects. Then, `git clone` the repository.
+
+<ReactTermynal>
+  <span data-ty="input">git clone https://github.com/kennedy-steve/skylink-if.git</span>
+  <span data-ty="progress"></span>
+  <span data-ty="input">cd skylink-if</span>
+  <span data-ty>😊 You are now in the skylink-if codebase</span>
+</ReactTermynal>
+
+Alternatively, you could use VSCode to clone and open skylink-if.
+
+## Install dependencies
+
+I like to use `yarn` for dependency management, but you can use `npm` if you prefer.
+
+<ReactTermynal>
+  <span data-ty="input">yarn install</span>
+  <span data-ty>Resolving packages...</span>
+  <span data-ty="progress"></span>
+</ReactTermynal>
+
+## Create /config/config.json
+
+The easiest thing to do is contact a maintainer of the project and ask them to create a config file for you. But if you're on your own, follow these instructions:
+
+1. [Create a discord bot](https://discordapp.com/developers/applications/me)
+2. [Create a bot token](https://discordjs.guide/preparations/setting-up-a-bot-application.html)
+3. [Get an Infinite Flight Live API Key](hhttps://infiniteflight.com/guide/developer-reference/live-api/overview#obtaining-an-api-key)
+4. Copy the `config.example.json` file and name it `config.json`.
+5. Populate all fields named `<field>` with the appropriate values.
+
+## Register /slash commands
+
+Discord slash commands are a new way to create commands for your Discord bot. They are new and Discord has made it clear that they want slash commands to be used as much as possible. You can read more about them [here](https://support.discord.com/hc/en-us/articles/1500000368501-Slash-Commands-FAQ).
+
+<ReactTermynal>
+  <span data-ty="input">yarn run register</span>
+  <span data-ty>INFO: Registering commands: 'dev', 'get-pilot', 'help', 'infinite-flight-status', 'info', 'link', 'register-me', 'test', 'translate'.</span>
+  <span data-ty>INFO: Commands registered.</span>
+  <span data-ty>Done in 1.23s.</span>
+</ReactTermynal>
+
+
+## Run the bot
+
+Running the bot isn't just about making it active and listening for commands, it also starts running scheduled jobs such as notifications for active Infinite Flight users.
+
+<ReactTermynal>
+  <span data-ty="input">yarn start:dev</span>
+  <span data-ty>INFO: Client logged in as 'Skylink IF Beta#3584'.</span>
+  <span data-ty>INFO: Scheduled job 'Notify Active Infinite Flight Users' for '0 */1 * * * *'.</span>
+  <span data-ty>INFO: Client is ready!</span>
+</ReactTermynal>
+
+If you want to play with the bot, create a test server and [invite your bot to it](https://discordjs.guide/preparations/adding-your-bot-to-servers.html).

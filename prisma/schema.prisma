@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  discordUserID                     String                             @id
+  infiniteFlightUserID              String?                            @unique
+  currentlyActiveOnFlight           Boolean                            @default(false)
+  currentlyActiveOnATC              Boolean                            @default(false)
+  verifyInfiniteFlightUserIDTickets VerifyInfiniteFlightUserIDTicket[]
+}
+
+model VerifyInfiniteFlightUserIDTicket {
+  id                      String   @id @default(cuid())
+  created                 DateTime @default(now())
+  verified                Boolean  @default(false)
+  rejected                Boolean  @default(false)
+  verifiedByFlightEntryID String?
+
+  infiniteFlightUserID String
+  discordUserID        String
+  discordGuildID       String
+  aircraftID           String
+  aircraftName         String
+  liveryID             String
+  liveryName           String
+  heading              Float
+
+  user User @relation(fields: [discordUserID], references: [discordUserID])
+}

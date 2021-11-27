@@ -10,12 +10,18 @@ import {
     ErrorCode,
     AirportStatus,
     OceanicTrack,
+    InfiniteFlightSession,
+    InfiniteFlightStatus,
 } from './types';
 
-const IF_API_KEY = "nothing to see here";
+let Config = require('../../../config/config.json');
+
+const test = 2;
+
+const IF_API_KEY = Config.infiniteFlight.apiKey;
 const URLBASE = 'https://api.infiniteflight.com/public/v2';
 
-export async function sessions(): Promise<SessionInfo[]> {
+export async function getSessionInfos(): Promise<SessionInfo[]> {
     const req = await fetch(`${URLBASE}/sessions`, {
         headers: {
             Authorization: `Bearer ${IF_API_KEY}`,
@@ -34,9 +40,9 @@ export async function sessions(): Promise<SessionInfo[]> {
     return response.result;
 }
 
-export async function flights(sessionId: string): Promise<FlightEntry[]> {
+export async function getFlights(sessionID: string): Promise<FlightEntry[]> {
     const req = await fetch(
-        `${URLBASE}/flights/${encodeURIComponent(sessionId)}`,
+        `${URLBASE}/flights/${encodeURIComponent(sessionID)}`,
         {
             headers: {
                 Authorization: `Bearer ${IF_API_KEY}`,
@@ -56,8 +62,8 @@ export async function flights(sessionId: string): Promise<FlightEntry[]> {
     return response.result;
 }
 
-export async function atc(sessionId: string): Promise<AtcEntry[]> {
-    const req = await fetch(`${URLBASE}/atc/${encodeURIComponent(sessionId)}`, {
+export async function atc(sessionID: string): Promise<AtcEntry[]> {
+    const req = await fetch(`${URLBASE}/atc/${encodeURIComponent(sessionID)}`, {
         headers: {
             Authorization: `Bearer ${IF_API_KEY}`,
         },
@@ -136,12 +142,12 @@ export async function userStats(
 
 export async function atis(
     airportIcao: string,
-    sessionId: string = '7e5dcd44-1fb5-49cc-bc2c-a9aab1f6a856'
+    sessionID: string = '7e5dcd44-1fb5-49cc-bc2c-a9aab1f6a856'
 ): Promise<string> {
     const req = await fetch(
         `${URLBASE}/atis/${encodeURIComponent(
             airportIcao
-        )}/${encodeURIComponent(sessionId)}`,
+        )}/${encodeURIComponent(sessionID)}`,
         {
             headers: {
                 Authorization: `Bearer ${IF_API_KEY}`,
@@ -163,12 +169,12 @@ export async function atis(
 
 export async function airportStatus(
     icao: string,
-    sessionId: string = '7e5dcd44-1fb5-49cc-bc2c-a9aab1f6a856'
+    sessionID: string = '7e5dcd44-1fb5-49cc-bc2c-a9aab1f6a856'
 ): Promise<AirportStatus> {
     const req = await fetch(
         `${URLBASE}/airport/${encodeURIComponent(
             icao
-        )}/status/${encodeURIComponent(sessionId)}`,
+        )}/status/${encodeURIComponent(sessionID)}`,
         {
             headers: {
                 Authorization: `Bearer ${IF_API_KEY}`,
@@ -205,4 +211,67 @@ export async function oceanicTracks(): Promise<OceanicTrack[]> {
     }
 
     return response.result;
+}
+
+
+export async function getWorldStatus(
+    sessionID: string = '7e5dcd44-1fb5-49cc-bc2c-a9aab1f6a856'
+): Promise<AirportStatus[]> {
+    const req = await fetch(
+        `${URLBASE}/world/status/${encodeURIComponent(sessionID)}`,
+        {
+            headers: {
+                Authorization: `Bearer ${IF_API_KEY}`,
+            },
+        }
+    );
+    const response: ApiResponse<AirportStatus[]> = await req.json();
+    if (response.errorCode != ErrorCode.Ok) {
+        await Promise.reject(
+            new Error(
+                'Invalid API Response Code. Expected 0, received ' +
+                response.errorCode
+            )
+        );
+    }
+
+    return response.result;
+}
+
+
+async function getInfiniteFlightSession(
+    sessionID: string = '7e5dcd44-1fb5-49cc-bc2c-a9aab1f6a856'
+): Promise<InfiniteFlightSession> {
+    const airports = await getWorldStatus(sessionID);
+    const flights = await getFlights(sessionID);
+    const atcFacilities = [];
+
+    for (var airportStatus of airports) {
+        for (var atcEntry of airportStatus.atcFacilities) {
+            atcFacilities.push(atcEntry);
+        }
+    }
+    const infiniteFlightSession: InfiniteFlightSession = {
+        sessionInfo: null,
+        flights: flights,
+        airports: airports,
+        atcFacilities: atcFacilities,
+    }
+    return infiniteFlightSession;
+}
+
+export async function getInfiniteFlightStatus(): Promise<InfiniteFlightStatus> {
+    const sessionInfos = await getSessionInfos();
+    const infiniteFlightSessions = [];
+
+    for (var sessionInfo of sessionInfos) {
+        var sessionID = sessionInfo.id;
+        var infiniteFlightSession = await getInfiniteFlightSession(sessionID);
+        infiniteFlightSession.sessionInfo = sessionInfo;
+        infiniteFlightSessions.push(infiniteFlightSession);
+    }
+    const infiniteFlightStatus: InfiniteFlightStatus = {
+        sessions: infiniteFlightSessions,
+    }
+    return infiniteFlightStatus;
 }

@@ -5,4 +5,6 @@ export { InfoCommand } from './info-command';
 export { LinkCommand } from './link-command';
 export { TestCommand } from './test-command';
 export { TranslateCommand } from './translate-command';
-export { IFUserCommand } from './if-user-command';
+export { GetPilotCommand } from './get-pilot-command';
+export { RegisterMeCommand } from './register-me-command';
+export { InfiniteFlightStatusCommand } from './infinite-flight-status-command';
