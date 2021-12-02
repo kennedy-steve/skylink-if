@@ -7,7 +7,6 @@ import { MessageUtils } from '../utils';
 import { Command } from './command';
 import * as infiniteFlightLive from '../lib/infinite-flight-live';
 import { prisma, Prisma, User, VerifyInfiniteFlightUserIDTicket } from '.prisma/client';
-import { off } from 'process';
 import { Aircraft, UserStats } from '../lib/infinite-flight-live/types';
 import { VerifyInfiniteFlightUserIDTicketUtils } from '../utils/verify-infinite-flight-user-id-ticket-utils';
 
@@ -32,8 +31,6 @@ export class RegisterMeCommand implements Command {
     public requirePerms = [];
 
     private ifcUsername;
-    private discordUser;
-    private user;
 
     public async execute(commandInteraction: CommandInteraction, data: EventData): Promise<void> {
         this.ifcUsername = commandInteraction.options.getString('ifc-username');

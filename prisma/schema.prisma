@@ -36,3 +36,16 @@ model VerifyInfiniteFlightUserIDTicket {
 
   user User @relation(fields: [discordUserID], references: [discordUserID])
 }
+
+
+model ActivePilotNotifications {
+  discordChannelID String @id
+
+  discordServerID String
+}
+
+model ActiveControllerNotifications {
+  discordChannelID String @id
+
+  discordServerID String
+}
