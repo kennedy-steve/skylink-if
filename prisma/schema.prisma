@@ -13,8 +13,8 @@ datasource db {
 model User {
   discordUserId                     String                             @id
   infiniteFlightUserId              String?                            @unique
-  currentlyActiveOnFlight           Boolean                            @default(false)
-  currentlyActiveOnATC              Boolean                            @default(false)
+  currentlyActiveAsPilot           Boolean                            @default(false)
+  currentlyActiveAsController              Boolean                            @default(false)
   verifyInfiniteFlightUserIdTickets VerifyInfiniteFlightUserIdTicket[]
 }
 

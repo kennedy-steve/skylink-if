@@ -2,8 +2,8 @@
 CREATE TABLE "User" (
     "discordUserId" TEXT NOT NULL PRIMARY KEY,
     "infiniteFlightUserId" TEXT,
-    "currentlyActiveOnFlight" BOOLEAN NOT NULL DEFAULT false,
-    "currentlyActiveOnATC" BOOLEAN NOT NULL DEFAULT false
+    "currentlyActiveAsPilot" BOOLEAN NOT NULL DEFAULT false,
+    "currentlyActiveAsController" BOOLEAN NOT NULL DEFAULT false
 );
 
 -- CreateTable

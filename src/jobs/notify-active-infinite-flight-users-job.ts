@@ -1,4 +1,4 @@
-import { ActivePilotNotificationsChannel, User, VerifyInfiniteFlightUserIdTicket } from '.prisma/client';
+import { ActivePilotNotificationsChannel, Prisma, User, VerifyInfiniteFlightUserIdTicket } from '.prisma/client';
 import { ActivityType, Channel, Client, Guild, GuildMember, Permissions, ShardingManager, TextChannel, User as DiscordUser } from 'discord.js';
 
 import { CustomClient } from '../extensions';
@@ -64,9 +64,15 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
                     const guildMember: GuildMember = await ClientUtils.findMember(guild, activePilotUser.user.discordUserId);
                     const channel: TextChannel = await this.client.channels.fetch(activePilotNotificationChannel.discordChannelId) as TextChannel;
 
+                    // check if user can view channel
                     const userCanViewChannel: boolean = await this.checkIfUserCanViewChannel(guildMember, channel);
                     if (userCanViewChannel) {
+                        // send notification
                         await this.sendActivePilotNotification(activePilotUser, guildMember, channel);
+
+                        // set user as active pilot
+                        // This will prevent duplicate notifications
+                        await this.setUserAsActivePilot(activePilotUser.user.discordUserId);
                     }
                 } catch (error) {
                     Logger.error(`Error looking if a notification needs to be sent in a channel for a user. Discord User ID ${activePilotUser.user.discordUserId} | Channel ID: ${activePilotNotificationChannel.discordChannelId} | Guild ID: ${activePilotNotificationChannel.discordGuildId}`, error);
@@ -80,9 +86,19 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
     /**
      * Set user as active pilot
      * @param guildMember 
-     * @returns void
+     * @returns the updated user
      */
-
+    private async setUserAsActivePilot(discordUserId: string): Promise<User> {
+        const user: User = await prismaClient.user.update({
+            where: {
+                discordUserId: discordUserId
+            },
+            data: {
+                currentlyActiveAsPilot: true
+            }
+        })
+        return user;
+    }
 
     /**
      * Sends active pilot notification to a channel
@@ -134,6 +150,7 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
 
     /**
      * TODO: fix smelly code
+     * Gets active user and toggles active pilot status for inactive pilots.
      * @returns a list of database users that are online as pilots
      */
     private async getActivePilotUsers(): Promise<ActivePilotUser[]> {
@@ -147,9 +164,25 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
             where: {
                 infiniteFlightUserId: {
                     in: activePilotInfiniteFlightUserIds
-                }
+                },
+                currentlyActiveAsPilot: false
             }
         });
+
+        // toggle active users as inactive if not in active pilot list
+        const inactiveUsersBatch: Prisma.BatchPayload = await prismaClient.user.updateMany({
+            where: {
+                infiniteFlightUserId: {
+                    notIn: activePilotInfiniteFlightUserIds
+                },
+                currentlyActiveAsPilot: true
+            },
+            data: {
+                currentlyActiveAsPilot: false
+            }
+        });
+
+        Logger.info(`Found ${users.length} new active pilots and ${inactiveUsersBatch.count} new inactive pilots.`);
 
         const activePilotUsers: ActivePilotUser[] = new Array();
         for (var user of users) {

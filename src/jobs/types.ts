@@ -1,7 +1,17 @@
 import { User } from ".prisma/client";
-import { FlightEntry } from "../lib/infinite-flight-live/types";
+import { Airport, AtcEntry, FlightEntry } from "../lib/infinite-flight-live/types";
 
-export interface ActivePilotUser {
-    user: User,
-    flight: FlightEntry,
+export interface ActiveInfiniteFlightUser {
+    user: User;
+}
+
+export interface ActivePilotUser extends ActiveInfiniteFlightUser {
+    flight: FlightEntry;
+    inboundAirport?: Airport;
+    outboundAirport?: Airport;
+}
+
+export interface ActiveControllerUser extends ActiveInfiniteFlightUser {
+    AtcFacility: AtcEntry;
+    airport: Airport;
 }
