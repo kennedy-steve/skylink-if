@@ -1,5 +1,5 @@
-import { User, VerifyInfiniteFlightUserIDTicket } from '.prisma/client';
-import { ActivityType, Channel, Client, ShardingManager, TextChannel, User as DiscordUser } from 'discord.js';
+import { ActivePilotNotificationsChannel, User, VerifyInfiniteFlightUserIDTicket } from '.prisma/client';
+import { ActivityType, Channel, Client, Guild, GuildMember, Permissions, ShardingManager, TextChannel, User as DiscordUser } from 'discord.js';
 
 import { CustomClient } from '../extensions';
 import { FlightEntry, InfiniteFlightSession, InfiniteFlightStatus } from '../lib/infinite-flight-live/types';
@@ -52,16 +52,52 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
                 Config.development.kennedySteveSpamChannelID) as TextChannel);
 
             const discordUser = await ClientUtils.getUser(this.client, activePilotUser.user.discordUserID);
-            const aircraftName = AircraftNames[activePilotUser.flight.aircraftId];
-            const liveryName = LiveryNames[activePilotUser.flight.liveryId];
+
+            // Check if user is in any notifications channels
+            const allActivePilotNotificationChannels: ActivePilotNotificationsChannel[] = await prismaClient.activePilotNotificationsChannel.findMany();
+
+            for (var activePilotNotificationChannel of allActivePilotNotificationChannels) {
+
+                // channel may no longer exist
+                try {
+                    const guild: Guild = await this.client.guilds.fetch(activePilotNotificationChannel.discordServerID);
+                    const guildMember: GuildMember = await ClientUtils.findMember(guild, activePilotUser.user.discordUserID);
+                    const channel: TextChannel = await this.client.channels.fetch(activePilotNotificationChannel.discordChannelID) as TextChannel;
+
+                    const userCanViewChannel: boolean = await this.checkIfUserCanViewChannel(guildMember, channel);
+                    if (userCanViewChannel) {
+                        await this.sendActivePilotNotification(activePilotUser, guildMember, channel);
+                    }
+                } catch (error) {
+                    Logger.error(`Error looking if a notification needs to be sent in a channel for a user. Discord User ID ${activePilotUser.user.discordUserID} | Channel ID: ${activePilotNotificationChannel.discordChannelID} | Server ID: ${activePilotNotificationChannel.discordServerID}`, error);
+                }
+            }
+
+        }
+    }
+
+
+    /**
+     * Sends active pilot notification to a channel
+     * @param activePilotUser
+     * @param discordUser 
+     * @param channel 
+     * @returns void
+     */
+    private async sendActivePilotNotification(activePilotUser: ActivePilotUser, guildMember: GuildMember, channel: TextChannel): Promise<void> {
+        // we may no longer have permissions to the channel
+        const aircraftName = AircraftNames[activePilotUser.flight.aircraftId];
+        const liveryName = LiveryNames[activePilotUser.flight.liveryId];
+
+        try {
             MessageUtils.send(
-                testChannel,
+                channel,
                 Lang.getEmbed(
                     'notificationEmbeds.activePilot',
                     LangCode.EN_US,
                     {
-                        DISCORD_ID: discordUser.id,
-                        DISCORD_USERNAME: discordUser.username,
+                        DISCORD_ID: guildMember.id,
+                        GUILD_DISPLAY_NAME: guildMember.displayName,
                         IFC_USERNAME: activePilotUser.flight.username,
                         SERVER_NAME: activePilotUser.flight.sessionInfo.name,
                         AIRCRAFT_NAME: aircraftName,
@@ -73,7 +109,20 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
 
                 )
             )
+        } catch (error) {
+            Logger.error(`Error sending active pilot notification. Discord User ID ${activePilotUser.user.discordUserID}`, error);
         }
+    }
+
+
+    /**
+     * 
+     * @param user 
+     * @param channel 
+     * @returns if user can view channel
+     */
+    private async checkIfUserCanViewChannel(guildMember: GuildMember, channel: TextChannel): Promise<boolean> {
+        return (channel.permissionsFor(guildMember).has(Permissions.FLAGS.VIEW_CHANNEL));
     }
 
     /**

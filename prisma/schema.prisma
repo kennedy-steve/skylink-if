@@ -38,13 +38,13 @@ model VerifyInfiniteFlightUserIDTicket {
 }
 
 
-model ActivePilotNotifications {
+model ActivePilotNotificationsChannel {
   discordChannelID String @id
 
   discordServerID String
 }
 
-model ActiveControllerNotifications {
+model ActiveControllerNotificationsChannel {
   discordChannelID String @id
 
   discordServerID String

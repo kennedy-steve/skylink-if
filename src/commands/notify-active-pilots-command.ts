@@ -1,4 +1,4 @@
-import { ActivePilotNotifications, Prisma } from '.prisma/client';
+import { ActivePilotNotificationsChannel, Prisma } from '.prisma/client';
 import { ApplicationCommandData, Permissions, PermissionResolvable, CommandInteraction, CacheType, GuildChannel, TextChannel, TextBasedChannels } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { EventData } from '../models/internal-models';
@@ -78,7 +78,7 @@ export class NotifyActivePilotsCommand implements Command {
         else {
             try {
 
-                const activePilotNotification: ActivePilotNotifications = await prismaClient.activePilotNotifications.create({
+                const activePilotNotificationChannel: ActivePilotNotificationsChannel = await prismaClient.activePilotNotificationsChannel.create({
                     data: {
                         discordChannelID: channel.id,
                         discordServerID: intr.guildId
