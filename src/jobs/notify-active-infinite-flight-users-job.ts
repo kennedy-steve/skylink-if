@@ -1,4 +1,4 @@
-import { ActivePilotNotificationsChannel, User, VerifyInfiniteFlightUserIDTicket } from '.prisma/client';
+import { ActivePilotNotificationsChannel, User, VerifyInfiniteFlightUserIdTicket } from '.prisma/client';
 import { ActivityType, Channel, Client, Guild, GuildMember, Permissions, ShardingManager, TextChannel, User as DiscordUser } from 'discord.js';
 
 import { CustomClient } from '../extensions';
@@ -9,7 +9,7 @@ import { ClientUtils, MessageUtils, ShardUtils } from '../utils';
 import { Job } from './job';
 import * as infiniteFlightLive from '../lib/infinite-flight-live';
 import { ActivePilotUser } from './types';
-import { VerifyInfiniteFlightUserIDTicketUtils } from '../utils/verify-infinite-flight-user-id-ticket-utils';
+import { VerifyInfiniteFlightUserIdTicketUtils } from '../utils/verify-infinite-flight-user-id-ticket-utils';
 import { validateSync } from 'class-validator';
 import { LangCode } from '../models/enums';
 
@@ -49,9 +49,9 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
 
         for (var activePilotUser of activePilotUsers) {
             const testChannel: TextChannel = (await this.client.channels.cache.get(
-                Config.development.kennedySteveSpamChannelID) as TextChannel);
+                Config.development.kennedySteveSpamChannelId) as TextChannel);
 
-            const discordUser = await ClientUtils.getUser(this.client, activePilotUser.user.discordUserID);
+            const discordUser = await ClientUtils.getUser(this.client, activePilotUser.user.discordUserId);
 
             // Check if user is in any notifications channels
             const allActivePilotNotificationChannels: ActivePilotNotificationsChannel[] = await prismaClient.activePilotNotificationsChannel.findMany();
@@ -60,21 +60,28 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
 
                 // channel may no longer exist
                 try {
-                    const guild: Guild = await this.client.guilds.fetch(activePilotNotificationChannel.discordServerID);
-                    const guildMember: GuildMember = await ClientUtils.findMember(guild, activePilotUser.user.discordUserID);
-                    const channel: TextChannel = await this.client.channels.fetch(activePilotNotificationChannel.discordChannelID) as TextChannel;
+                    const guild: Guild = await this.client.guilds.fetch(activePilotNotificationChannel.discordGuildId);
+                    const guildMember: GuildMember = await ClientUtils.findMember(guild, activePilotUser.user.discordUserId);
+                    const channel: TextChannel = await this.client.channels.fetch(activePilotNotificationChannel.discordChannelId) as TextChannel;
 
                     const userCanViewChannel: boolean = await this.checkIfUserCanViewChannel(guildMember, channel);
                     if (userCanViewChannel) {
                         await this.sendActivePilotNotification(activePilotUser, guildMember, channel);
                     }
                 } catch (error) {
-                    Logger.error(`Error looking if a notification needs to be sent in a channel for a user. Discord User ID ${activePilotUser.user.discordUserID} | Channel ID: ${activePilotNotificationChannel.discordChannelID} | Server ID: ${activePilotNotificationChannel.discordServerID}`, error);
+                    Logger.error(`Error looking if a notification needs to be sent in a channel for a user. Discord User ID ${activePilotUser.user.discordUserId} | Channel ID: ${activePilotNotificationChannel.discordChannelId} | Guild ID: ${activePilotNotificationChannel.discordGuildId}`, error);
                 }
             }
 
         }
     }
+
+
+    /**
+     * Set user as active pilot
+     * @param guildMember 
+     * @returns void
+     */
 
 
     /**
@@ -110,7 +117,7 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
                 )
             )
         } catch (error) {
-            Logger.error(`Error sending active pilot notification. Discord User ID ${activePilotUser.user.discordUserID}`, error);
+            Logger.error(`Error sending active pilot notification. Discord User ID ${activePilotUser.user.discordUserId}`, error);
         }
     }
 
@@ -132,21 +139,21 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
     private async getActivePilotUsers(): Promise<ActivePilotUser[]> {
         const activePilotInfiniteFlightMap: Map<string, FlightEntry> = await this.getActivePilotInfiniteFlightMap()
         const flights: Array<FlightEntry> = Array.from(activePilotInfiniteFlightMap.values());
-        const activePilotInfiniteFlightUserIDs: Array<string> = flights.map(flight => flight.userId);
+        const activePilotInfiniteFlightUserIds: Array<string> = flights.map(flight => flight.userId);
 
         await this.verify(activePilotInfiniteFlightMap);
 
         const users: User[] = await prismaClient.user.findMany({
             where: {
-                infiniteFlightUserID: {
-                    in: activePilotInfiniteFlightUserIDs
+                infiniteFlightUserId: {
+                    in: activePilotInfiniteFlightUserIds
                 }
             }
         });
 
         const activePilotUsers: ActivePilotUser[] = new Array();
         for (var user of users) {
-            const flight = activePilotInfiniteFlightMap.get(user.infiniteFlightUserID);
+            const flight = activePilotInfiniteFlightMap.get(user.infiniteFlightUserId);
             const activePilotUser: ActivePilotUser = {
                 user: user,
                 flight: flight
@@ -177,13 +184,13 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
 
     private async verify(activePilotInfiniteFlightMap: Map<string, FlightEntry>): Promise<void> {
         const flights: Array<FlightEntry> = Array.from(activePilotInfiniteFlightMap.values());
-        const activePilotInfiniteFlightUserIDs: Array<string> = flights.map(flight => flight.userId);
+        const activePilotInfiniteFlightUserIds: Array<string> = flights.map(flight => flight.userId);
 
-        const freshTicketsCutoffDateTime: Date = VerifyInfiniteFlightUserIDTicketUtils.getFreshTicketsCutoffDateTime();
-        const verifyInfiniteFlightUserIDTickets: VerifyInfiniteFlightUserIDTicket[] = await prismaClient.verifyInfiniteFlightUserIDTicket.findMany({
+        const freshTicketsCutoffDateTime: Date = VerifyInfiniteFlightUserIdTicketUtils.getFreshTicketsCutoffDateTime();
+        const verifyInfiniteFlightUserIdTickets: VerifyInfiniteFlightUserIdTicket[] = await prismaClient.verifyInfiniteFlightUserIdTicket.findMany({
             where: {
-                infiniteFlightUserID: {
-                    in: activePilotInfiniteFlightUserIDs
+                infiniteFlightUserId: {
+                    in: activePilotInfiniteFlightUserIds
                 },
                 created: {
                     gt: freshTicketsCutoffDateTime
@@ -193,13 +200,13 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
             }
         });
 
-        for (var ticket of verifyInfiniteFlightUserIDTickets) {
-            const flight: FlightEntry = activePilotInfiniteFlightMap.get(ticket.infiniteFlightUserID);
-            const discordUser: DiscordUser = await ClientUtils.getUser(this.client, ticket.discordUserID);
+        for (var ticket of verifyInfiniteFlightUserIdTickets) {
+            const flight: FlightEntry = activePilotInfiniteFlightMap.get(ticket.infiniteFlightUserId);
+            const discordUser: DiscordUser = await ClientUtils.getUser(this.client, ticket.discordUserId);
 
             // TODO: fix potential bug, apprently this conditional doesn't work...
             if (flight !== null) {
-                const flightPassesAllChecks: boolean = VerifyInfiniteFlightUserIDTicketUtils.checkIfFlightPassesAllChecks(
+                const flightPassesAllChecks: boolean = VerifyInfiniteFlightUserIdTicketUtils.checkIfFlightPassesAllChecks(
                     flight,
                     ticket,
                 );
@@ -224,7 +231,7 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
                             'registerMeEmbeds.unsuccessfullVerification',
                             LangCode.EN_US,
                             {
-                                STALE_MINUTES: Config.modelConstants.verifyInfiniteFlightUserIDTicket.staleByMinutes,
+                                STALE_MINUTES: Config.modelConstants.verifyInfiniteFlightUserIdTicket.staleByMinutes,
                             }
                         )
                     )
@@ -234,32 +241,32 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
     }
 
     /**
-     * Update User and VerifyInfiniteFlightUserIDTicket
-     * @param discordUserID 
-     * @param ticketID 
+     * Update User and VerifyInfiniteFlightUserIdTicket
+     * @param discordUserId 
+     * @param ticketId 
      * @param flight 
      */
-    private async updateModelsForVerifiedUser(discordUserID: string, ticketID: string, flight: FlightEntry): Promise<void> {
+    private async updateModelsForVerifiedUser(discordUserId: string, ticketId: string, flight: FlightEntry): Promise<void> {
 
         // Now we finally register the Infinite Flight User ID
         await prismaClient.user.update({
             where: {
-                discordUserID: discordUserID,
+                discordUserId: discordUserId,
             },
             data: {
-                infiniteFlightUserID: flight.userId,
+                infiniteFlightUserId: flight.userId,
             },
         });
 
         // Verified tickets are not deleted, they are updated to show they are verified
         // This helps for archival purposes and acts as our receipt. 
-        await prismaClient.verifyInfiniteFlightUserIDTicket.update({
+        await prismaClient.verifyInfiniteFlightUserIdTicket.update({
             where: {
-                id: ticketID,
+                id: ticketId,
             },
             data: {
                 verified: true,
-                verifiedByFlightEntryID: flight.flightId,
+                verifiedByFlightEntryId: flight.flightId,
             },
         });
     }
@@ -271,7 +278,7 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
      */
     private async getTestChannel(): Promise<TextChannel> {
         const testChannel: TextChannel = (await this.client.channels.cache.get(
-            Config.development.kennedySteveSpamChannelID) as TextChannel);
+            Config.development.kennedySteveSpamChannelId) as TextChannel);
 
         return testChannel;
     }

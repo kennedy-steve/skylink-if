@@ -237,8 +237,8 @@ export interface AirportRunway {
 }
 
 export interface Aircraft {
-    liveryID: string;
-    aircraftID: string;
+    liveryId: string;
+    aircraftId: string;
     aircraftName: string;
     liveryName: string;
     maxTakeoffWeight: number;

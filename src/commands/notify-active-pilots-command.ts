@@ -25,8 +25,8 @@ export class NotifyActivePilotsCommand extends AbstractNotifyCommand {
     protected async createNotifyChannel(intr: CommandInteraction<CacheType>, channel: GuildChannel): Promise<void> {
         await prismaClient.activePilotNotificationsChannel.create({
             data: {
-                discordChannelID: channel.id,
-                discordServerID: intr.guildId
+                discordChannelId: channel.id,
+                discordGuildId: intr.guildId
             }
         })
     }

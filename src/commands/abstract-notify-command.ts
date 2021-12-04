@@ -98,7 +98,7 @@ export abstract class AbstractNotifyCommand implements Command {
             } catch (error) {
 
                 if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                    if (error.code === "P2002" && "discordChannelID" === error.meta['target'][0]) {
+                    if (error.code === "P2002" && "discordChannelId" === error.meta['target'][0]) {
                         await MessageUtils.sendIntr(
                             intr,
                             Lang.getEmbed(

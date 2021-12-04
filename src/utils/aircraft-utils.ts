@@ -11,7 +11,7 @@ export class AircraftUtils {
 
         for (var i in InfiniteFlightPlanes) {
             let plane = InfiniteFlightPlanes[i];
-            aircraft[plane.aircraftID] = plane.aircraftName;
+            aircraft[plane.aircraftId] = plane.aircraftName;
         }
 
         const aircraftJson: string = JSON.stringify(aircraft);
@@ -28,7 +28,7 @@ export class AircraftUtils {
 
         for (var i in InfiniteFlightPlanes) {
             let plane = InfiniteFlightPlanes[i];
-            liveries[plane.liveryID] = plane.liveryName;
+            liveries[plane.liveryId] = plane.liveryName;
         }
 
         const liveriesJson: string = JSON.stringify(liveries);
