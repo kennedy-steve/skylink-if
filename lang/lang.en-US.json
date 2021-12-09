@@ -208,9 +208,31 @@
                 "description": "I don't have permission to send messages in <#{{CHANNEL_ID}}>. Please make sure I have the permissions to send messages in <#{{CHANNEL_ID}}>, or choose a different channel."
             }
         },
+        "notifyActiveControllersEmbeds": {
+            "subscribed": {
+                "title": "Subscribed!",
+                "description": "<#{{CHANNEL_ID}}> will now receive notifications for active controllers on Infinite Flight."
+            },
+            "alreadySubscribed": {
+                "title": "Channel is already subscribed",
+                "description": "<#{{CHANNEL_ID}}> is already subscribed to active pilot notifications"
+            },
+            "invalidChannel": {
+                "title": "Invalid Channel",
+                "description": "<#{{CHANNEL_ID}}> is not a valid channel. The channel must be a text channel."
+            },
+            "cannotViewChannel": {
+                "title": "Cannot View Channel",
+                "description": "I don't have permission to view <#{{CHANNEL_ID}}>. Please make sure I have the permissions to view <#{{CHANNEL_ID}}>, or choose a different channel."
+            },
+            "cannotSendMessages": {
+                "title": "Cannot Send Messages",
+                "description": "I don't have permission to send messages in <#{{CHANNEL_ID}}>. Please make sure I have the permissions to send messages in <#{{CHANNEL_ID}}>, or choose a different channel."
+            }
+        },
         "notificationEmbeds": {
             "activePilot": {
-                "title": "{{GUILD_DISPLAY_NAME}} is now online as {{IFC_USERNAME}}!",
+                "title": "Pilot {{GUILD_DISPLAY_NAME}} is now online as {{IFC_USERNAME}}!",
                 "description": "<@{{DISCORD_ID}}> ({{IFC_USERNAME}}) is piloting a {{AIRCRAFT_NAME}} on Infinite Flight",
                 "fields": [
                     {
@@ -232,6 +254,24 @@
                     {
                         "name": "Latitude, Longitude",
                         "value": "{{LATITUDE}}, {{LONGITUDE}}"
+                    }
+                ]
+            },
+            "activeController": {
+                "title": "Controller {{GUILD_DISPLAY_NAME}} is now online as {{IFC_USERNAME}}!",
+                "description": "<@{{DISCORD_ID}}> ({{IFC_USERNAME}}) is controlling {{AIRPORT_NAME}} {{FREQUENCY_TYPE}} on Infinite Flight",
+                "fields": [
+                    {
+                        "name": "Server",
+                        "value": "{{SERVER_NAME}}"
+                    },
+                    {
+                        "name": "Airport",
+                        "value": "{{AIRPORT_NAME}}"
+                    },
+                    {
+                        "name": "Frequency",
+                        "value": "{{FREQUENCY_TYPE}}"
                     }
                 ]
             }

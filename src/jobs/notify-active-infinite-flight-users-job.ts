@@ -2,16 +2,17 @@ import { ActivePilotNotificationsChannel, Prisma, User, VerifyInfiniteFlightUser
 import { ActivityType, Channel, Client, Guild, GuildMember, Permissions, ShardingManager, TextChannel, User as DiscordUser } from 'discord.js';
 
 import { CustomClient } from '../extensions';
-import { FlightEntry, InfiniteFlightSession, InfiniteFlightStatus } from '../lib/infinite-flight-live/types';
+import { AtcEntry, FlightEntry, FrequencyType, InfiniteFlightSession, InfiniteFlightStatus } from '../lib/infinite-flight-live/types';
 import { BotSite } from '../models/config-models';
 import { HttpService, Lang, Logger, prismaClient } from '../services';
 import { ClientUtils, MessageUtils, ShardUtils } from '../utils';
 import { Job } from './job';
 import * as infiniteFlightLive from '../lib/infinite-flight-live';
-import { ActivePilotUser } from './types';
+import { ActiveControllerUser, ActivePilotUser } from '../models/infinite-flight-user-models';
 import { VerifyInfiniteFlightUserIdTicketUtils } from '../utils/verify-infinite-flight-user-id-ticket-utils';
 import { validateSync } from 'class-validator';
 import { LangCode } from '../models/enums';
+import { ActiveControllerNotificationsChannel } from '@prisma/client';
 
 let Config = require('../../config/config.json');
 let AircraftNames = require('../../infinite-flight-data/aircraft-names.json');
@@ -38,6 +39,7 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
     public async run(): Promise<void> {
         this.infiniteFlightStatus = await infiniteFlightLive.getInfiniteFlightStatus();
         await this.notifyActivePilotsOnGuildChannels();
+        await this.notifyActiveControllersOnGuildChannels();
 
     }
     /**
@@ -48,8 +50,6 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
         const activePilotUsers: ActivePilotUser[] = await this.getActivePilotUsers();
 
         for (var activePilotUser of activePilotUsers) {
-            const testChannel: TextChannel = (await this.client.channels.cache.get(
-                Config.development.kennedySteveSpamChannelId) as TextChannel);
 
             const discordUser = await ClientUtils.getUser(this.client, activePilotUser.user.discordUserId);
 
@@ -82,10 +82,49 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
         }
     }
 
+    /**
+     * Sends out the notification to subscribed guild channels
+     * @returns void
+     */
+    private async notifyActiveControllersOnGuildChannels(): Promise<void> {
+        const activeControllerUsers: ActiveControllerUser[] = await this.getActiveControllerUsers();
+
+        for (var activeControllerUser of activeControllerUsers) {
+            const discordUser = await ClientUtils.getUser(this.client, activeControllerUser.user.discordUserId);
+
+            // Check if user is in any notifications channels
+            const allActiveControllerNotificationChannels: ActiveControllerNotificationsChannel[] = await prismaClient.activeControllerNotificationsChannel.findMany();
+
+            for (var activeControllerNotificationChannel of allActiveControllerNotificationChannels) {
+
+                // channel may no longer exist
+                try {
+                    const guild: Guild = await this.client.guilds.fetch(activeControllerNotificationChannel.discordGuildId);
+                    const guildMember: GuildMember = await ClientUtils.findMember(guild, activeControllerUser.user.discordUserId);
+                    const channel: TextChannel = await this.client.channels.fetch(activeControllerNotificationChannel.discordChannelId) as TextChannel;
+
+                    // check if user can view channel
+                    const userCanViewChannel: boolean = await this.checkIfUserCanViewChannel(guildMember, channel);
+                    if (userCanViewChannel) {
+                        // send notification
+                        await this.sendActiveControllerNotification(activeControllerUser, guildMember, channel);
+
+                        // set user as active pilot
+                        // This will prevent duplicate notifications
+                        await this.setUserAsActiveController(activeControllerUser.user.discordUserId);
+                    }
+                } catch (error) {
+                    Logger.error(`Error looking if a notification needs to be sent in a channel for a user. Discord User ID ${activeControllerUser.user.discordUserId} | Channel ID: ${activeControllerNotificationChannel.discordChannelId} | Guild ID: ${activeControllerNotificationChannel.discordGuildId}`, error);
+                }
+            }
+
+        }
+    }
+
 
     /**
      * Set user as active pilot
-     * @param guildMember 
+     * @param discordUserId 
      * @returns the updated user
      */
     private async setUserAsActivePilot(discordUserId: string): Promise<User> {
@@ -95,6 +134,23 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
             },
             data: {
                 currentlyActiveAsPilot: true
+            }
+        })
+        return user;
+    }
+
+    /**
+     * Set user as active controller
+     * @param discordUserId 
+     * @returns the updated user
+     */
+    private async setUserAsActiveController(discordUserId: string): Promise<User> {
+        const user: User = await prismaClient.user.update({
+            where: {
+                discordUserId: discordUserId
+            },
+            data: {
+                currentlyActiveAsController: true
             }
         })
         return user;
@@ -137,6 +193,36 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
         }
     }
 
+    /**
+     * Sends active controller notification to a channel
+     * @param activeControllerUser 
+     * @param GuildMember
+     * @param TextChannel 
+     * @returns void
+     */
+    private async sendActiveControllerNotification(activeControllerUser: ActiveControllerUser, guildMember: GuildMember, channel: TextChannel): Promise<void> {
+        // we may no longer have permissions to the channel
+
+        try {
+            MessageUtils.send(
+                channel,
+                Lang.getEmbed(
+                    'notificationEmbeds.activeController',
+                    LangCode.EN_US,
+                    {
+                        DISCORD_ID: guildMember.id,
+                        GUILD_DISPLAY_NAME: guildMember.displayName,
+                        IFC_USERNAME: activeControllerUser.atcFacility.username,
+                        SERVER_NAME: activeControllerUser.atcFacility.sessionInfo.name,
+                        AIRPORT_NAME: activeControllerUser.atcFacility.airportName,
+                        FREQUENCY_TYPE: FrequencyType[activeControllerUser.atcFacility.type],
+                    }
+                )
+            );
+        } catch (error) {
+            Logger.error(`Error sending active controller notification. Discord User ID ${activeControllerUser.user.discordUserId}`, error);
+        }
+    }
 
     /**
      * 
@@ -149,7 +235,6 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
     }
 
     /**
-     * TODO: fix smelly code
      * Gets active user and toggles active pilot status for inactive pilots.
      * @returns a list of database users that are online as pilots
      */
@@ -168,7 +253,6 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
                 currentlyActiveAsPilot: false
             }
         });
-
         // toggle active users as inactive if not in active pilot list
         const inactiveUsersBatch: Prisma.BatchPayload = await prismaClient.user.updateMany({
             where: {
@@ -198,6 +282,53 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
     }
 
     /**
+     * Gets active user and toggles active pilot status for inactive pilots.
+     * @returns a list of database users that are online as pilots
+     */
+    private async getActiveControllerUsers(): Promise<ActiveControllerUser[]> {
+        const activeControllerInfiniteFlightMap: Map<string, AtcEntry> = await this.getActiveControllerInfiniteFlightMap()
+        const atcFacilities: Array<AtcEntry> = Array.from(activeControllerInfiniteFlightMap.values());
+        const activeControllerInfiniteFlightUserIds: Array<string> = atcFacilities.map(flight => flight.userId);
+
+
+        const users: User[] = await prismaClient.user.findMany({
+            where: {
+                infiniteFlightUserId: {
+                    in: activeControllerInfiniteFlightUserIds
+                },
+                currentlyActiveAsController: false
+            }
+        });
+        // toggle active users as inactive if not in active pilot list
+        const inactiveUsersBatch: Prisma.BatchPayload = await prismaClient.user.updateMany({
+            where: {
+                infiniteFlightUserId: {
+                    notIn: activeControllerInfiniteFlightUserIds
+                },
+                currentlyActiveAsController: true
+            },
+            data: {
+                currentlyActiveAsController: false
+            }
+        });
+
+        Logger.info(`Found ${users.length} new active controllers and ${inactiveUsersBatch.count} new inactive controllers.`);
+
+        const activeControllerUsers: ActiveControllerUser[] = new Array();
+        for (var user of users) {
+            const flight = activeControllerInfiniteFlightMap.get(user.infiniteFlightUserId);
+            const activeControllerUser: ActiveControllerUser = {
+                user: user,
+                atcFacility: flight,
+                airport: null,
+            };
+            activeControllerUsers.push(activeControllerUser);
+        }
+
+        return activeControllerUsers;
+    }
+
+    /**
      * @returns a list of Infinite Flight User IDs of Active Pilots
      */
     private async getActivePilotInfiniteFlightMap(): Promise<Map<string, FlightEntry>> {
@@ -215,6 +346,33 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
         return activePilotInfiniteFlightMap;
     }
 
+
+    /**
+     * @returns a list of Infinite Flight User IDs of Active Controllers
+     */
+    private async getActiveControllerInfiniteFlightMap(): Promise<Map<string, AtcEntry>> {
+        const activeControllerInfiniteFlightMap: Map<string, AtcEntry> = new Map();
+
+        for (var session of this.infiniteFlightStatus.sessions) {
+            for (var airportStatus of session.airportStatuses) {
+
+                for (var atc of airportStatus.atcFacilities) {
+                    // attach session info to the flight
+                    // This will help with data processing later 😉
+                    atc.sessionInfo = session.sessionInfo;
+                    activeControllerInfiniteFlightMap.set(atc.userId, atc);
+                }
+            }
+        }
+        return activeControllerInfiniteFlightMap;
+    }
+
+    // --- REGISTRATION VERIFICATION METHODS --- //
+
+    /**
+     * Verification of infinite flight user registration
+     * @param activePilotInfiniteFlightMap 
+     */
     private async verify(activePilotInfiniteFlightMap: Map<string, FlightEntry>): Promise<void> {
         const flights: Array<FlightEntry> = Array.from(activePilotInfiniteFlightMap.values());
         const activePilotInfiniteFlightUserIds: Array<string> = flights.map(flight => flight.userId);
@@ -304,16 +462,5 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
         });
     }
 
-
-    /**
-     * This is a test method, will be deprecated and deleted eventually
-     * @returns the channel the devs use for testing
-     */
-    private async getTestChannel(): Promise<TextChannel> {
-        const testChannel: TextChannel = (await this.client.channels.cache.get(
-            Config.development.kennedySteveSpamChannelId) as TextChannel);
-
-        return testChannel;
-    }
 
 }

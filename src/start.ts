@@ -15,6 +15,7 @@ import {
     RegisterMeCommand,
     InfiniteFlightStatusCommand,
     NotifyActivePilotsCommand,
+    NotifyActiveControllersCommand,
     AdminRegisterMeCommand,
 } from './commands';
 import {
@@ -57,6 +58,7 @@ async function start(): Promise<void> {
         new InfiniteFlightStatusCommand(),
         new NotifyActivePilotsCommand(),
         new AdminRegisterMeCommand(),
+        new NotifyActiveControllersCommand(),
     ].sort((a, b) => (a.data.name > b.data.name ? 1 : -1));
 
     // Event handlers

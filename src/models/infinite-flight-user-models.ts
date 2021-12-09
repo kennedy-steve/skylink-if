@@ -12,6 +12,6 @@ export interface ActivePilotUser extends ActiveInfiniteFlightUser {
 }
 
 export interface ActiveControllerUser extends ActiveInfiniteFlightUser {
-    AtcFacility: AtcEntry;
+    atcFacility: AtcEntry;
     airport: Airport;
 }

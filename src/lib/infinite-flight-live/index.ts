@@ -254,7 +254,7 @@ async function getInfiniteFlightSession(
     const infiniteFlightSession: InfiniteFlightSession = {
         sessionInfo: null,
         flights: flights,
-        airports: airports,
+        airportStatuses: airports,
         atcFacilities: atcFacilities,
     }
     return infiniteFlightSession;
