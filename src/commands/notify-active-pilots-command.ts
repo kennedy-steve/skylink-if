@@ -1,6 +1,6 @@
 import { ActivePilotNotificationsChannel, Prisma } from '.prisma/client';
 import { ApplicationCommandData, Permissions, PermissionResolvable, CommandInteraction, CacheType, GuildChannel, TextChannel, TextBasedChannels } from 'discord.js';
-import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
+import { ApplicationCommandOptionTypes, ChannelTypes } from 'discord.js/typings/enums';
 import { EventData } from '../models/internal-models';
 import { Lang, prismaClient } from '../services';
 import { ClientUtils, MessageUtils } from '../utils';
@@ -16,6 +16,7 @@ export class NotifyActivePilotsCommand extends AbstractNotifyCommand {
                 name: "channel",
                 description: "The channel to send notifications to",
                 type: ApplicationCommandOptionTypes.CHANNEL,
+                channelTypes: [ChannelTypes.GUILD_TEXT],
             }
         ]
     };
