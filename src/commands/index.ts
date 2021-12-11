@@ -12,3 +12,4 @@ export { NotifyActivePilotsCommand } from './notify-active-pilots-command';
 export { AdminRegisterMeCommand } from './admin-register-me-command';
 export { NotifyActiveControllersCommand } from './notify-active-controllers-command';
 export { DisableNotificationsCommand } from './disable-notifications-command';
+export { EnableNotificationsCommand } from './enable-notifications-command';

@@ -18,6 +18,7 @@ import {
     NotifyActiveControllersCommand,
     AdminRegisterMeCommand,
     DisableNotificationsCommand,
+    EnableNotificationsCommand,
 } from './commands';
 import {
     CommandHandler,
@@ -61,6 +62,7 @@ async function start(): Promise<void> {
         new AdminRegisterMeCommand(),
         new NotifyActiveControllersCommand(),
         new DisableNotificationsCommand(),
+        new EnableNotificationsCommand,
     ].sort((a, b) => (a.data.name > b.data.name ? 1 : -1));
 
     // Event handlers

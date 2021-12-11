@@ -1,4 +1,4 @@
-import { ActivePilotNotificationsChannel, Prisma, prisma } from ".prisma/client";
+import { ActiveControllerNotificationsChannel, ActivePilotNotificationsChannel, Prisma, prisma } from ".prisma/client";
 import { ApplicationCommandOptionType } from "discord-api-types";
 import { ApplicationCommandOptionChoice, PermissionResolvable, CommandInteraction, CacheType, Permissions, ApplicationCommandData, GuildChannel } from "discord.js";
 import { ApplicationCommandOptionTypes, ChannelTypes } from "discord.js/typings/enums";
@@ -56,12 +56,12 @@ export class DisableNotificationsCommand implements Command {
      * @returns the deleted Channel ID
      */
     protected async disableControllerNotifications(intr: CommandInteraction<CacheType>, channel: GuildChannel): Promise<string> {
-        let activePilotNotificationsChannel: ActivePilotNotificationsChannel = await prismaClient.activePilotNotificationsChannel.delete({
+        let ActiveControllerNotificationsChannel: ActiveControllerNotificationsChannel = await prismaClient.activeControllerNotificationsChannel.delete({
             where: {
                 discordChannelId: channel.id
             }
         });
-        return activePilotNotificationsChannel.discordChannelId;
+        return ActiveControllerNotificationsChannel.discordChannelId;
     }
 
 
@@ -179,7 +179,7 @@ export class DisableNotificationsCommand implements Command {
         }
         else if (notificationType.toUpperCase() == 'CONTROLLER') {
             try {
-                await this.disablePilotNotifications(intr, channel);
+                await this.disableControllerNotifications(intr, channel);
                 await this.sendSuccessfullyDisabledNotificationsMessage(intr, data, channel, 'Active Controller Notifications');
             } catch (error) {
                 this.catchActiveUserNotificationsChannelNotFound(
@@ -207,7 +207,7 @@ export class DisableNotificationsCommand implements Command {
             }
 
             try {
-                await this.disablePilotNotifications(intr, channel);
+                await this.disableControllerNotifications(intr, channel);
                 await this.sendSuccessfullyDisabledNotificationsMessage(intr, data, channel, 'Active Controller Notifications');
             } catch (error) {
                 this.catchActiveUserNotificationsChannelNotFound(
@@ -281,7 +281,7 @@ export class DisableNotificationsCommand implements Command {
         }
         else {
             // Now we can disable notifications
-            let notificationType: string = intr.options.getString("notificationType");
+            let notificationType: string = intr.options.getString("notification-type");
             await this.disableNotifications(intr, data, channel, notificationType);
         }
 

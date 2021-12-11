@@ -214,8 +214,34 @@
                 "description": "<#{{CHANNEL_ID}}> will no longer receive notifications for {{NOTIFICATION_TYPE}} on Infinite Flight."
             },
             "notEnabled": {
-                "title": "Notifications Were Not Enabled for {{NOTIFICATION_TYPE}}",
-                "description": "I did not need to disable {{NOTIFICATION_TYPE}} notifications for <#{{CHANNEL_ID}}>. <#{{CHANNEL_ID}}> was never subscribed to notifications for {{NOTIFICATION_TYPE}} on Infinite Flight.",
+                "title": "Notifications were Already Disabled for {{NOTIFICATION_TYPE}}",
+                "description": "I did not need to disable {{NOTIFICATION_TYPE}} notifications for <#{{CHANNEL_ID}}>. <#{{CHANNEL_ID}}> was not subscribed to notifications for {{NOTIFICATION_TYPE}} on Infinite Flight.",
+                "color": "{{COM:colors.warning}}"
+            },
+            "invalidChannel": {
+                "title": "Invalid Channel",
+                "description": "<#{{CHANNEL_ID}}> is not a valid channel. The channel must be a text channel.",
+                "color": "{{COM:colors.warning}}"
+            },
+            "cannotViewChannel": {
+                "title": "Cannot View Channel",
+                "description": "I don't have permission to view <#{{CHANNEL_ID}}>. Please make sure I have the permissions to view <#{{CHANNEL_ID}}>, or choose a different channel.",
+                "color": "{{COM:colors.warning}}"
+            },
+            "cannotSendMessages": {
+                "title": "Cannot Send Messages",
+                "description": "I don't have permission to send messages in <#{{CHANNEL_ID}}>. Please make sure I have the permissions to send messages in <#{{CHANNEL_ID}}>, or choose a different channel.",
+                "color": "{{COM:colors.warning}}"
+            }
+        },
+        "enableNotificationsEmbeds": {
+            "success": {
+                "title": "{{NOTIFICATION_TYPE}} Enabled",
+                "description": "<#{{CHANNEL_ID}}> will now receive notifications for {{NOTIFICATION_TYPE}} on Infinite Flight."
+            },
+            "alreadyEnabled": {
+                "title": "{{NOTIFICATION_TYPE}} were Already Enabled",
+                "description": "I did not need to enable {{NOTIFICATION_TYPE}} notifications for <#{{CHANNEL_ID}}>. <#{{CHANNEL_ID}}> was already subscribed to {{NOTIFICATION_TYPE}} on Infinite Flight.",
                 "color": "{{COM:colors.warning}}"
             },
             "invalidChannel": {
@@ -389,6 +415,11 @@
         },
         "other": {
             "na": "N/A"
+        },
+        "notificationTypeDescriptions": {
+            "ACTIVE_PILOT": "Active Pilot Notifications",
+            "ACTIVE_CONTROLLER": "Active Controller Notifications",
+            "ALL": "All Notifications"
         },
         "links": {
             "inviteEmbed": "[Invite {{COM:bot.name}} to a Server!]({{COM:links.invite}})",
