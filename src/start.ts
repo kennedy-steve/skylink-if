@@ -14,8 +14,6 @@ import {
     GetPilotCommand,
     RegisterMeCommand,
     InfiniteFlightStatusCommand,
-    NotifyActivePilotsCommand,
-    NotifyActiveControllersCommand,
     AdminRegisterMeCommand,
     DisableNotificationsCommand,
     EnableNotificationsCommand,
@@ -58,9 +56,7 @@ async function start(): Promise<void> {
         new GetPilotCommand(),
         new RegisterMeCommand(),
         new InfiniteFlightStatusCommand(),
-        new NotifyActivePilotsCommand(),
         new AdminRegisterMeCommand(),
-        new NotifyActiveControllersCommand(),
         new DisableNotificationsCommand(),
         new EnableNotificationsCommand,
     ].sort((a, b) => (a.data.name > b.data.name ? 1 : -1));
