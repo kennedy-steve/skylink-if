@@ -130,8 +130,123 @@ export class EnableNotificationsCommand implements Command {
                 error,
                 NotificationType.ACTIVE_CONTROLLER
             );
-            Logger.info(error);
         }
+    }
+
+
+    private async enableAllNotifications(
+        intr: CommandInteraction,
+        data: EventData,
+        channel: GuildChannel,
+    ): Promise<void> {
+        let activePilotNotificationsEnabled: boolean = false;
+        let activeControllerNotificationsEnabled: boolean = false;
+
+        // Attempt to enable active pilot notifications
+        try {
+            await prismaClient.activePilotNotificationsChannel.create({
+                data: {
+                    discordChannelId: channel.id,
+                    discordGuildId: intr.guildId,
+                }
+            });
+            activePilotNotificationsEnabled = true;
+        } catch (error) {
+            if (error instanceof Prisma.PrismaClientKnownRequestError) {
+                if (error.code === "P2002" && "discordChannelId" === error.meta['target'][0]) {
+                    // do nothing
+                }
+                else {
+                    throw (error);
+                }
+            }
+            else {
+                throw (error);
+            }
+        }
+
+        // Attempt to enable active controller notifications
+        try {
+            await prismaClient.activeControllerNotificationsChannel.create({
+                data: {
+                    discordChannelId: channel.id,
+                    discordGuildId: intr.guildId,
+                }
+            });
+            activeControllerNotificationsEnabled = true;
+        } catch (error) {
+            if (error instanceof Prisma.PrismaClientKnownRequestError) {
+                if (error.code === "P2002" && "discordChannelId" === error.meta['target'][0]) {
+                }
+                else {
+                    throw (error);
+                }
+            }
+            else {
+                throw (error);
+            }
+        }
+
+        /**
+         * Now that we've attempted to enable all notifications,
+         * let us tell the user which notifications were successfully
+         * enabled.
+         */
+
+        // First, let's check if none of them succeeded
+        if (!activePilotNotificationsEnabled && !activeControllerNotificationsEnabled) {
+            // This most likely means they all were already enabled
+            await MessageUtils.sendIntr(
+                intr,
+                Lang.getEmbed(
+                    `${this.commandEmbedName}.alreadyEnabled`,
+                    data.lang(),
+                    {
+                        CHANNEL_ID: channel.id,
+                        NOTIFICATION_TYPE: Lang.getRef(
+                            `notificationTypeDescriptions.${NotificationType.ALL}`,
+                            data.lang()
+                        ),
+                    }
+                )
+            );
+        }
+        // Otherwise, let's tell em wassup 
+        else {
+
+            // we'll append the enabled notifs to this list
+            let enabledNotificationsDescriptions: string[] = [];
+            if (activePilotNotificationsEnabled) {
+                enabledNotificationsDescriptions.push(
+                    Lang.getRef(
+                        `notificationTypeDescriptions.${NotificationType.ACTIVE_PILOT}`,
+                        data.lang()
+                    ),
+                )
+            }
+            if (activeControllerNotificationsEnabled) {
+                enabledNotificationsDescriptions.push(
+                    Lang.getRef(
+                        `notificationTypeDescriptions.${NotificationType.ACTIVE_CONTROLLER}`,
+                        data.lang()
+                    ),
+                )
+            }
+            await MessageUtils.sendIntr(
+                intr,
+                Lang.getEmbed(
+                    `${this.commandEmbedName}.successAll`,
+                    data.lang(),
+                    {
+                        CHANNEL_ID: channel.id,
+                        NOTIFICATION_TYPES: enabledNotificationsDescriptions.join(' & '),
+                    }
+                )
+            )
+
+
+        }
+
     }
 
     /**
@@ -163,7 +278,11 @@ export class EnableNotificationsCommand implements Command {
 
         // Default is to enable all notifications
         else {
-
+            await this.enableAllNotifications(
+                intr,
+                data,
+                channel,
+            );
         }
     }
 
