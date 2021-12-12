@@ -47,11 +47,16 @@ const config = {
           /** Left side */
           {
             type: 'doc',
+            docId: 'help/intro',
+            position: 'left',
+            label: 'Help',
+          },
+          {
+            type: 'doc',
             docId: 'contributing/intro',
             position: 'left',
             label: 'Contributing',
           },
-
           /** Right side */
           {
             href: 'https://github.com/kennedy-steve/skylink-if',
@@ -67,6 +72,10 @@ const config = {
           {
             title: 'Docs',
             items: [
+              {
+                label: 'Help',
+                to: '/docs/help/intro',
+              },
               {
                 label: 'Contributing',
                 to: '/docs/contributing/intro',
