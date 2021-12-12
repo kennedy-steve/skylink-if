@@ -86,13 +86,19 @@ export class EnableNotificationsCommand implements Command {
                 )
             )
         } catch (error) {
-            await this.catchActiveUserNotificationsChannelAlreadyCreated(
-                intr,
-                data,
-                channel,
-                error,
-                NotificationType.ACTIVE_PILOT
-            )
+            if (error instanceof Prisma.PrismaClientKnownRequestError) {
+                error = error as Prisma.PrismaClientKnownRequestError;
+                await this.catchActiveUserNotificationsChannelAlreadyCreated(
+                    intr,
+                    data,
+                    channel,
+                    error,
+                    NotificationType.ACTIVE_PILOT
+                );
+            }
+            else {
+                throw (error);
+            }
         }
     }
 
@@ -123,13 +129,19 @@ export class EnableNotificationsCommand implements Command {
                 )
             )
         } catch (error) {
-            await this.catchActiveUserNotificationsChannelAlreadyCreated(
-                intr,
-                data,
-                channel,
-                error,
-                NotificationType.ACTIVE_CONTROLLER
-            );
+            if (error instanceof Prisma.PrismaClientKnownRequestError) {
+                error = error as Prisma.PrismaClientKnownRequestError;
+                await this.catchActiveUserNotificationsChannelAlreadyCreated(
+                    intr,
+                    data,
+                    channel,
+                    error,
+                    NotificationType.ACTIVE_CONTROLLER
+                );
+            }
+            else {
+                throw (error);
+            }
         }
     }
 
@@ -153,6 +165,7 @@ export class EnableNotificationsCommand implements Command {
             activePilotNotificationsEnabled = true;
         } catch (error) {
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
+                error = error as Prisma.PrismaClientKnownRequestError;
                 if (error.code === 'P2002' && 'discordChannelId' === error.meta.target[0]) {
                     // do nothing
                 }
@@ -176,6 +189,7 @@ export class EnableNotificationsCommand implements Command {
             activeControllerNotificationsEnabled = true;
         } catch (error) {
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
+                error = error as Prisma.PrismaClientKnownRequestError;
                 if (error.code === 'P2002' && 'discordChannelId' === error.meta.target[0]) {
                 }
                 else {
@@ -298,35 +312,35 @@ export class EnableNotificationsCommand implements Command {
         intr: CommandInteraction,
         data: EventData,
         channel: GuildChannel,
-        error: Error,
+        error: Prisma.PrismaClientKnownRequestError,
         notificationType: string,
     ): Promise<void> {
-        if (error instanceof Prisma.PrismaClientKnownRequestError) {
-            if (error.code === 'P2002' && 'discordChannelId' === error.meta.target[0]) {
-                await MessageUtils.sendIntr(
-                    intr,
-                    Lang.getEmbed(
-                        `${this.commandEmbedName}.alreadyEnabled`,
-                        data.lang(),
-                        {
-                            CHANNEL_ID: channel.id,
-                            NOTIFICATION_TYPE: Lang.getRef(
-                                `notificationTypeDescriptions.${notificationType}`,
-                                data.lang()
-                            ),
-                        }
-                    )
-                );
-            }
-            else {
-                // TODO: Have an embed for database (prisma) errors
-                throw (error);
-            }
+
+        // handling errors r kinda smellyyyyy
+        let errorMeta: any = error.meta
+        if (error.code === 'P2002' && 'discordChannelId' === errorMeta.target[0]) {
+            await MessageUtils.sendIntr(
+                intr,
+                Lang.getEmbed(
+                    `${this.commandEmbedName}.alreadyEnabled`,
+                    data.lang(),
+                    {
+                        CHANNEL_ID: channel.id,
+                        NOTIFICATION_TYPE: Lang.getRef(
+                            `notificationTypeDescriptions.${notificationType}`,
+                            data.lang()
+                        ),
+                    }
+                )
+            );
         }
         else {
+            // TODO: Have an embed for database (prisma) errors
             throw (error);
         }
     }
+
+
 
     /**
      * Executes the command. Saves a notification channel
