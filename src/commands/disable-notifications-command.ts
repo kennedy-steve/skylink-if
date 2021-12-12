@@ -1,11 +1,11 @@
-import { ActiveControllerNotificationsChannel, ActivePilotNotificationsChannel, Prisma, prisma } from ".prisma/client";
-import { ApplicationCommandOptionType } from "discord-api-types";
-import { ApplicationCommandOptionChoice, PermissionResolvable, CommandInteraction, CacheType, Permissions, ApplicationCommandData, GuildChannel } from "discord.js";
-import { ApplicationCommandOptionTypes, ChannelTypes } from "discord.js/typings/enums";
-import { EventData } from "../models/internal-models";
-import { Lang, prismaClient } from "../services";
-import { MessageUtils } from "../utils";
-import { Command } from "./command";
+import { ApplicationCommandOptionType } from 'discord-api-types';
+import { ApplicationCommandData, ApplicationCommandOptionChoice, CacheType, CommandInteraction, GuildChannel, PermissionResolvable, Permissions } from 'discord.js';
+import { ApplicationCommandOptionTypes, ChannelTypes } from 'discord.js/typings/enums';
+import { EventData } from '../models/internal-models';
+import { Lang, prismaClient } from '../services';
+import { MessageUtils } from '../utils';
+import { Command } from './command';
+import { ActiveControllerNotificationsChannel, ActivePilotNotificationsChannel, Prisma, prisma } from '.prisma/client';
 
 
 // Disable notifications to channel
@@ -18,18 +18,18 @@ export class DisableNotificationsCommand implements Command {
     public commandEmbedName: string = 'disableNotificationsEmbeds';
 
     public data: ApplicationCommandData = {
-        name: "disable-notifications",
-        description: "Disable notifications to a channel",
+        name: 'disable-notifications',
+        description: 'Disable notifications to a channel',
         options: [
             {
-                name: "channel",
-                description: "The channel to disable notifications",
+                name: 'channel',
+                description: 'The channel to disable notifications',
                 type: ApplicationCommandOptionTypes.CHANNEL,
                 channelTypes: [ChannelTypes.GUILD_TEXT],
             },
             {
-                name: "notification-type",
-                description: "The type of notification to disable",
+                name: 'notification-type',
+                description: 'The type of notification to disable',
                 type: ApplicationCommandOptionType.String.valueOf(),
                 choices: [
                     {
@@ -51,8 +51,8 @@ export class DisableNotificationsCommand implements Command {
 
     /**
      * Disables Active Controller notifications to channel by deleting it from the database
-     * @param intr 
-     * @param channel 
+     * @param intr
+     * @param channel
      * @returns the deleted Channel ID
      */
     protected async disableControllerNotifications(intr: CommandInteraction<CacheType>, channel: GuildChannel): Promise<string> {
@@ -67,7 +67,7 @@ export class DisableNotificationsCommand implements Command {
 
     /**
      * Disables Active Pilot notifications to channel by deleting it from the database
-     * @param intr: CommandInteraction 
+     * @param intr: CommandInteraction
      * @param channel: The channel to disable notifications
      * @return the deleted Channel ID
      */
@@ -126,8 +126,8 @@ export class DisableNotificationsCommand implements Command {
 
     /**
      * Send message that notifications have been disabled
-     * @param intr 
-     * @param data 
+     * @param intr
+     * @param data
      * @param channel The channel to disable notifications
      * @param notificationTypeDescription The description of the notification type that was disabled
      */
@@ -152,10 +152,10 @@ export class DisableNotificationsCommand implements Command {
 
     /**
      * Disable Active User notifications based on user input
-     * @param intr 
+     * @param intr
      * @param data
      * @param channel The channel to disable notifications
-     * @param notificationType Notification Type 
+     * @param notificationType Notification Type
      */
     protected async disableNotifications(intr: CommandInteraction<CacheType>, data: EventData, channel: GuildChannel, notificationType: string): Promise<void> {
         // Default notification type is ALL
@@ -227,14 +227,14 @@ export class DisableNotificationsCommand implements Command {
 
     /**
      * Execute command
-     * @param intr 
-     * @param data 
+     * @param intr
+     * @param data
      */
     public async execute(intr: CommandInteraction<CacheType>, data: EventData): Promise<void> {
         let channel: GuildChannel = intr.channel as GuildChannel;
 
         // Check if channel is specified
-        let channelFromOptions: GuildChannel = intr.options.getChannel("channel") as GuildChannel;
+        let channelFromOptions: GuildChannel = intr.options.getChannel('channel') as GuildChannel;
         if (channelFromOptions !== null) {
 
             channel = channelFromOptions;
@@ -281,7 +281,7 @@ export class DisableNotificationsCommand implements Command {
         }
         else {
             // Now we can disable notifications
-            let notificationType: string = intr.options.getString("notification-type");
+            let notificationType: string = intr.options.getString('notification-type');
             await this.disableNotifications(intr, data, channel, notificationType);
         }
 

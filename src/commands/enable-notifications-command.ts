@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { ApplicationCommandOptionType } from 'discord-api-types';
-import { ApplicationCommandData, Permissions, PermissionResolvable, CommandInteraction, CacheType, GuildChannel, TextChannel, TextBasedChannels } from 'discord.js';
+import { ApplicationCommandData, CacheType, CommandInteraction, GuildChannel, PermissionResolvable, Permissions, TextBasedChannels, TextChannel } from 'discord.js';
 import { ApplicationCommandOptionTypes, ChannelTypes } from 'discord.js/typings/enums';
 import { NotificationType } from '../models/enums';
 import { EventData } from '../models/internal-models';
@@ -19,18 +19,18 @@ export class EnableNotificationsCommand implements Command {
     public commandEmbedName: string = 'enableNotificationsEmbeds';
 
     public data: ApplicationCommandData = {
-        name: "enable-notifications",
-        description: "Enable notifications in a channel",
+        name: 'enable-notifications',
+        description: 'Enable notifications in a channel',
         options: [
             {
-                name: "channel",
-                description: "The channel to enable notifications",
+                name: 'channel',
+                description: 'The channel to enable notifications',
                 type: ApplicationCommandOptionTypes.CHANNEL,
                 channelTypes: [ChannelTypes.GUILD_TEXT],
             },
             {
-                name: "notification-type",
-                description: "The type of notification to enable",
+                name: 'notification-type',
+                description: 'The type of notification to enable',
                 type: ApplicationCommandOptionType.String.valueOf(),
                 choices: [
                     {
@@ -153,7 +153,7 @@ export class EnableNotificationsCommand implements Command {
             activePilotNotificationsEnabled = true;
         } catch (error) {
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                if (error.code === "P2002" && "discordChannelId" === error.meta['target'][0]) {
+                if (error.code === 'P2002' && 'discordChannelId' === error.meta.target[0]) {
                     // do nothing
                 }
                 else {
@@ -176,7 +176,7 @@ export class EnableNotificationsCommand implements Command {
             activeControllerNotificationsEnabled = true;
         } catch (error) {
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                if (error.code === "P2002" && "discordChannelId" === error.meta['target'][0]) {
+                if (error.code === 'P2002' && 'discordChannelId' === error.meta.target[0]) {
                 }
                 else {
                     throw (error);
@@ -211,7 +211,7 @@ export class EnableNotificationsCommand implements Command {
                 )
             );
         }
-        // Otherwise, let's tell em wassup 
+        // Otherwise, let's tell em wassup
         else {
 
             // we'll append the enabled notifs to this list
@@ -253,8 +253,8 @@ export class EnableNotificationsCommand implements Command {
      * Enable specific or all Notifications in a Channel
      * This creates a NotificationsChannel record via prisma.
      * This does NOT create a channel in discord. This creates a record in prisma.
-     * @param intr 
-     * @param channel 
+     * @param intr
+     * @param channel
      */
     protected async enableNotifications(intr: CommandInteraction, data: EventData, channel: GuildChannel, notificationType: string): Promise<void> {
 
@@ -287,12 +287,12 @@ export class EnableNotificationsCommand implements Command {
     }
 
     /**
-     * Reply that channel has already enabled certain notifications 
-     * @param intr 
-     * @param data 
-     * @param channel 
-     * @param error 
-     * @param notificationType 
+     * Reply that channel has already enabled certain notifications
+     * @param intr
+     * @param data
+     * @param channel
+     * @param error
+     * @param notificationType
      */
     protected async catchActiveUserNotificationsChannelAlreadyCreated(
         intr: CommandInteraction,
@@ -302,7 +302,7 @@ export class EnableNotificationsCommand implements Command {
         notificationType: string,
     ): Promise<void> {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
-            if (error.code === "P2002" && "discordChannelId" === error.meta['target'][0]) {
+            if (error.code === 'P2002' && 'discordChannelId' === error.meta.target[0]) {
                 await MessageUtils.sendIntr(
                     intr,
                     Lang.getEmbed(
@@ -330,15 +330,15 @@ export class EnableNotificationsCommand implements Command {
 
     /**
      * Executes the command. Saves a notification channel
-     * @param intr 
-     * @param data 
-     * @returns 
+     * @param intr
+     * @param data
+     * @returns
      */
     public async execute(intr: CommandInteraction<CacheType>, data: EventData): Promise<void> {
         let channel: GuildChannel = intr.channel as GuildChannel;
 
         // Check if channel is specified
-        let channelFromOptions: GuildChannel = intr.options.getChannel("channel") as GuildChannel;
+        let channelFromOptions: GuildChannel = intr.options.getChannel('channel') as GuildChannel;
         if (channelFromOptions !== null) {
 
             channel = channelFromOptions;
@@ -385,7 +385,7 @@ export class EnableNotificationsCommand implements Command {
         }
         // Now we're good to go!
         else {
-            let notificationType: string = intr.options.getString("notification-type");
+            let notificationType: string = intr.options.getString('notification-type');
             // Default notification type is ALL
             if (notificationType === null) {
                 notificationType = 'ALL';

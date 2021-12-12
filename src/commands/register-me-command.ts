@@ -1,14 +1,14 @@
 import { ApplicationCommandData, CommandInteraction, GuildMember, User as DiscordUser } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 
+import * as infiniteFlightLive from '../lib/infinite-flight-live';
+import { Aircraft, UserStats } from '../lib/infinite-flight-live/types';
 import { EventData } from '../models/internal-models';
 import { Lang, Logger, prismaClient } from '../services';
 import { MessageUtils } from '../utils';
-import { Command } from './command';
-import * as infiniteFlightLive from '../lib/infinite-flight-live';
-import { prisma, Prisma, User, VerifyInfiniteFlightUserIdTicket } from '.prisma/client';
-import { Aircraft, UserStats } from '../lib/infinite-flight-live/types';
 import { VerifyInfiniteFlightUserIdTicketUtils } from '../utils/verify-infinite-flight-user-id-ticket-utils';
+import { Command } from './command';
+import { prisma, Prisma, User, VerifyInfiniteFlightUserIdTicket } from '.prisma/client';
 
 let Config = require('../../config/config.json');
 let InfiniteFlightPlanes = require('../../infinite-flight-data/aircraft-and-liveries-list.json');
@@ -19,8 +19,8 @@ export class RegisterMeCommand implements Command {
         description: 'Register your Infinite Flight Username',
         options: [
             {
-                name: "ifc-username",
-                description: "sup",
+                name: 'ifc-username',
+                description: 'sup',
                 type: ApplicationCommandOptionTypes.STRING
 
             }
@@ -126,8 +126,8 @@ export class RegisterMeCommand implements Command {
                                 STALE_MINUTES: Config.modelConstants.verifyInfiniteFlightUserIdTicket.staleByMinutes,
 
                                 // We don't randomize these, but maybe in the future.
-                                SERVER: "Casual Server",
-                                AIRPORT_ICAO: "Any airport is fine, though my favorite airport is KSMF. But seriously, any airport will do.",
+                                SERVER: 'Casual Server',
+                                AIRPORT_ICAO: 'Any airport is fine, though my favorite airport is KSMF. But seriously, any airport will do.',
 
                                 AIRCRAFT_NAME: newVerifyInfiniteFlightUserIdTicket.aircraftName,
                                 LIVERY_NAME: newVerifyInfiniteFlightUserIdTicket.liveryName,
@@ -157,9 +157,9 @@ export class RegisterMeCommand implements Command {
         const randomAircraft: Aircraft = this.getRandomAircraft();
         const verifyInfiniteFlightUserIdTicket: VerifyInfiniteFlightUserIdTicket = await prismaClient.verifyInfiniteFlightUserIdTicket.create({
             data: {
-                infiniteFlightUserId: infiniteFlightUserId,
-                discordUserId: discordUserId,
-                discordGuildId: discordGuildId,
+                infiniteFlightUserId,
+                discordUserId,
+                discordGuildId,
                 aircraftId: randomAircraft.aircraftId,
                 aircraftName: randomAircraft.aircraftName,
                 liveryId: randomAircraft.liveryId,
@@ -185,7 +185,7 @@ export class RegisterMeCommand implements Command {
 
         const verificationTicket: VerifyInfiniteFlightUserIdTicket = await prismaClient.verifyInfiniteFlightUserIdTicket.findFirst({
             where: {
-                discordUserId: discordUserId,
+                discordUserId,
                 created: {
                     gt: freshTicketsCutoffDateTime
                 }
@@ -195,14 +195,14 @@ export class RegisterMeCommand implements Command {
     }
 
     /**
-     * 
-     * @param infiniteFlightUserId 
+     *
+     * @param infiniteFlightUserId
      * @returns if Infinite Flight user is already registered
      */
     private async checkIfInfiniteFlightUserAlreadyRegistered(infiniteFlightUserId: string): Promise<boolean> {
         const user: User = await prismaClient.user.findUnique({
             where: {
-                infiniteFlightUserId: infiniteFlightUserId
+                infiniteFlightUserId
             }
         });
 
