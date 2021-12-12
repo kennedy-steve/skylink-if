@@ -1,7 +1,7 @@
 {
     "bot": {
-        "name": "My Bot",
-        "author": "My Name"
+        "name": "Skylink-IF",
+        "author": "Tisuela"
     },
     "commands": {
         "dev": "dev",

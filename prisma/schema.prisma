@@ -11,41 +11,41 @@ datasource db {
 }
 
 model User {
-  discordUserID                     String                             @id
-  infiniteFlightUserID              String?                            @unique
-  currentlyActiveOnFlight           Boolean                            @default(false)
-  currentlyActiveOnATC              Boolean                            @default(false)
-  verifyInfiniteFlightUserIDTickets VerifyInfiniteFlightUserIDTicket[]
+  discordUserId                     String                             @id
+  infiniteFlightUserId              String?                            @unique
+  currentlyActiveAsPilot           Boolean                            @default(false)
+  currentlyActiveAsController              Boolean                            @default(false)
+  verifyInfiniteFlightUserIdTickets VerifyInfiniteFlightUserIdTicket[]
 }
 
-model VerifyInfiniteFlightUserIDTicket {
+model VerifyInfiniteFlightUserIdTicket {
   id                      String   @id @default(cuid())
   created                 DateTime @default(now())
   verified                Boolean  @default(false)
   rejected                Boolean  @default(false)
-  verifiedByFlightEntryID String?
+  verifiedByFlightEntryId String?
 
-  infiniteFlightUserID String
-  discordUserID        String
-  discordGuildID       String
-  aircraftID           String
+  infiniteFlightUserId String
+  discordUserId        String
+  discordGuildId       String
+  aircraftId           String
   aircraftName         String
-  liveryID             String
+  liveryId             String
   liveryName           String
   heading              Float
 
-  user User @relation(fields: [discordUserID], references: [discordUserID])
+  user User @relation(fields: [discordUserId], references: [discordUserId])
 }
 
 
-model ActivePilotNotifications {
-  discordChannelID String @id
+model ActivePilotNotificationsChannel {
+  discordChannelId String @id
 
-  discordServerID String
+  discordGuildId String
 }
 
-model ActiveControllerNotifications {
-  discordChannelID String @id
+model ActiveControllerNotificationsChannel {
+  discordChannelId String @id
 
-  discordServerID String
+  discordGuildId String
 }
