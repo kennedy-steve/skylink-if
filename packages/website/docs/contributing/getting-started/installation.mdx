@@ -2,10 +2,9 @@
 sidebar_position: 1
 ---
 
-import ReactTermynal from '/src/components/termynal';
 import {
   Terminal,
-  GitCloneRepostiory,
+  GitCloneRepository,
   YarnInstallDependencies,
   YarnRegisterCommands,
   YarnStartBot,
@@ -15,20 +14,19 @@ import {
 
 # Installation
 
-:::caution
-
-UNDER CONSTRUCTION
-
-:::
-
+If you want to run Skylink-IF locally, you'll need to install and configure Skylink-IF
 
 ## Clone the repository
 
 If you're new to git, cloning is kind of like downloading.
-
 In your terminal, navigate to where you want to store this, and future, projects. Then, `git clone` the repository.
 
+```
+git clone https://github.com/kennedy-steve/skylink-if.git
+```
 
+<Terminal command={GitCloneRepository} />
+<br />
 
 Alternatively, you could use VSCode to clone and open skylink-if.
 
@@ -36,6 +34,12 @@ Alternatively, you could use VSCode to clone and open skylink-if.
 
 I like to use `yarn` for dependency management, but you can use `npm` if you prefer.
 
+```
+yarn install
+```
+
+<Terminal command={YarnInstallDependencies} />
+<br />
 
 
 ## Create /config/config.json
@@ -52,12 +56,22 @@ The easiest thing to do is contact a maintainer of the project and ask them to c
 
 Discord slash commands are a new way to create commands for your Discord bot. They are new and Discord has made it clear that they want slash commands to be used as much as possible. You can read more about them [here](https://support.discord.com/hc/en-us/articles/1500000368501-Slash-Commands-FAQ).
 
+```
+yarn run register
+```
+
+<Terminal command={YarnRegisterCommands} />
+<br />
 
 
 
 ## Run the bot
 
 Running the bot isn't just about making it active and listening for commands, it also starts running scheduled jobs such as notifications for active Infinite Flight users.
+
+```
+yarn start:dev
+```
 
 <Terminal command={YarnStartBot} />
 <br />

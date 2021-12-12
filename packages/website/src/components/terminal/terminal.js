@@ -8,6 +8,7 @@ import Termynal from "./termynal";
 
 export function Terminal({ command }) {
   let terminal = null;
+  let initialInView = true;
 
   const elRefs = useRef([]);
 
@@ -33,7 +34,7 @@ export function Terminal({ command }) {
 
   return (
     <InView as="div" onChange={startAnimation}>
-      <div className={clsx(styles.terminalContainer)}>
+      <div className={clsx(styles.terminalContainer)} >
         <img
           src="/img/refresh.svg"
           className={clsx(styles.refreshButton)}
