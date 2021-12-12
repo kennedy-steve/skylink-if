@@ -6,7 +6,7 @@ import { InView } from "react-intersection-observer";
 import styles from "./terminal.module.css";
 import Termynal from "./termynal";
 
-function Terminal({ command }) {
+export function Terminal({ command }) {
   let terminal = null;
 
   const elRefs = useRef([]);
@@ -17,10 +17,10 @@ function Terminal({ command }) {
     ref: elRefs.current[i] || createRef(),
   }));
 
-  const ref = useCallback((node) => {
+  const ref = (node) => {
     if (node === null) return;
     terminal = new Termynal(node, children);
-  }, []);
+  };
 
   const playAnimation = () => {
     terminal.restart(children);
@@ -49,4 +49,4 @@ function Terminal({ command }) {
   );
 }
 
-export default Terminal;
+
