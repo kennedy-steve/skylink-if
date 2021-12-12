@@ -1,14 +1,14 @@
 import { ApplicationCommandData, CommandInteraction } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 
+import { off } from 'process';
+import * as infiniteFlightLive from '../lib/infinite-flight-live';
+import { UserStats } from '../lib/infinite-flight-live/types';
 import { EventData } from '../models/internal-models';
 import { Lang, Logger, prismaClient } from '../services';
 import { MessageUtils } from '../utils';
 import { Command } from './command';
-import * as infiniteFlightLive from '../lib/infinite-flight-live';
 import { Prisma } from '.prisma/client';
-import { off } from 'process';
-import { UserStats } from '../lib/infinite-flight-live/types';
 
 
 
@@ -18,8 +18,8 @@ export class AdminRegisterMeCommand implements Command {
         description: '(Admin use only) Register your Infinite Flight Username',
         options: [
             {
-                name: "ifc-username",
-                description: "sup",
+                name: 'ifc-username',
+                description: 'sup',
                 type: ApplicationCommandOptionTypes.STRING
 
             }
@@ -58,8 +58,8 @@ export class AdminRegisterMeCommand implements Command {
         try {
             const newUser = await prismaClient.user.create({
                 data: {
-                    discordUserID: discordUserID,
-                    infiniteFlightUserID: infiniteFlightUserID,
+                    discordUserID,
+                    infiniteFlightUserID,
                 }
             });
             Logger.info(`Registered user - IFC username: ${ifcUsername}`);
@@ -71,11 +71,11 @@ export class AdminRegisterMeCommand implements Command {
 
                 // Handle when unique constant is violated
                 if (prismaErrorCode === 'P2002') {
-                    const offendingFields = error.meta["target"];
-                    if (offendingFields.includes("infiniteFlightUserID")) {
+                    const offendingFields = error.meta.target;
+                    if (offendingFields.includes('infiniteFlightUserID')) {
                         await MessageUtils.sendIntr(commandInteraction, `${ifcUsername} is already registered, either by you or another Discord user`);
                     }
-                    else if (offendingFields.includes("discordUserID")) {
+                    else if (offendingFields.includes('discordUserID')) {
 
                         await MessageUtils.sendIntr(commandInteraction, `We've updated ${ifcUsername} to be your registered infinite flight user  <@${discordUserID}>!`);
                     }
@@ -97,10 +97,10 @@ export class AdminRegisterMeCommand implements Command {
 
         const updatedUser = await prismaClient.user.update({
             where: {
-                discordUserID: discordUserID,
+                discordUserID,
             },
             data: {
-                infiniteFlightUserID: infiniteFlightUserID,
+                infiniteFlightUserID,
             }
         });
         Logger.info(`Updated user - IFC username: ${ifcUsername}`);

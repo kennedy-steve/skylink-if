@@ -17,7 +17,7 @@ export class MessageHandler implements EventHandler {
             const userHits = await infiniteFlightLive.userStats([], [], ['N8te']);
 
             if (userHits.length == 0) {
-                await msg.channel.send("htrgbskerjgaelrklejkgejklarb")
+                await msg.channel.send('htrgbskerjgaelrklejkgejklarb')
             }
             else {
                 const userStats = userHits[0];

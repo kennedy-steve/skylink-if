@@ -1,14 +1,14 @@
 import { ApplicationCommandData, CommandInteraction } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 
+import { off } from 'process';
+import * as infiniteFlightLive from '../lib/infinite-flight-live';
+import { UserStats } from '../lib/infinite-flight-live/types';
 import { EventData } from '../models/internal-models';
 import { Lang, Logger, prismaClient } from '../services';
 import { MessageUtils } from '../utils';
 import { Command } from './command';
-import * as infiniteFlightLive from '../lib/infinite-flight-live';
 import { Prisma } from '.prisma/client';
-import { off } from 'process';
-import { UserStats } from '../lib/infinite-flight-live/types';
 
 
 
@@ -25,8 +25,8 @@ export class InfiniteFlightStatusCommand implements Command {
         const infiniteFlightStatus = await infiniteFlightLive.getInfiniteFlightStatus();
         const pilots = [];
 
-        for (var infiniteFlightSession of infiniteFlightStatus.sessions) {
-            for (var flight of infiniteFlightSession.flights) {
+        for (let infiniteFlightSession of infiniteFlightStatus.sessions) {
+            for (let flight of infiniteFlightSession.flights) {
                 pilots.push(flight.username);
             }
         }

@@ -6,15 +6,15 @@ import { Bot } from './bot';
 import {
     Command,
     DevCommand,
+    GetPilotCommand,
     HelpCommand,
+    InfiniteFlightStatusCommand,
     InfoCommand,
     LinkCommand,
+    NotifyActivePilotsCommand,
+    RegisterMeCommand,
     TestCommand,
     TranslateCommand,
-    GetPilotCommand,
-    RegisterMeCommand,
-    InfiniteFlightStatusCommand,
-    NotifyActivePilotsCommand,
 } from './commands';
 import {
     CommandHandler,
@@ -100,9 +100,9 @@ async function registerCommands(commands: Command[]): Promise<void> {
 
     try {
         let rest = new REST({ version: '9' }).setToken(Config.client.token);
-        //await rest.put(Routes.applicationCommands(Config.client.id), { body: [] });
-        //await rest.put(Routes.applicationCommands(Config.client.id), { body: cmdDatas });
-        await rest.put(Routes.applicationGuildCommands(Config.client.id, "910003714885042207"), { body: cmdDatas })
+        // await rest.put(Routes.applicationCommands(Config.client.id), { body: [] });
+        // await rest.put(Routes.applicationCommands(Config.client.id), { body: cmdDatas });
+        await rest.put(Routes.applicationGuildCommands(Config.client.id, '910003714885042207'), { body: cmdDatas })
     } catch (error) {
         Logger.error(Logs.error.commandsRegistering, error);
         return;

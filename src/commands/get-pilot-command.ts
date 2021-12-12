@@ -1,12 +1,12 @@
 import { ApplicationCommandData, CommandInteraction } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 
+import * as infiniteFlightLive from '../lib/infinite-flight-live';
 import { EventData } from '../models/internal-models';
 import { Lang } from '../services';
 import { MessageUtils } from '../utils';
-import { Command } from './command';
-import * as infiniteFlightLive from '../lib/infinite-flight-live';
 import { AircraftUtils } from '../utils/aircraft-utils';
+import { Command } from './command';
 
 export class GetPilotCommand implements Command {
     public data: ApplicationCommandData = {
@@ -14,8 +14,8 @@ export class GetPilotCommand implements Command {
         description: Lang.getRef('commandDescs.get-pilot', Lang.Default),
         options: [
             {
-                name: "ifc-username",
-                description: "sup",
+                name: 'ifc-username',
+                description: 'sup',
                 type: ApplicationCommandOptionTypes.STRING
 
             }

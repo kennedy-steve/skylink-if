@@ -1,17 +1,17 @@
-import { User, VerifyInfiniteFlightUserIDTicket } from '.prisma/client';
 import { ActivityType, Channel, Client, ShardingManager, TextChannel, User as DiscordUser } from 'discord.js';
+import { User, VerifyInfiniteFlightUserIDTicket } from '.prisma/client';
 
+import { validateSync } from 'class-validator';
 import { CustomClient } from '../extensions';
+import * as infiniteFlightLive from '../lib/infinite-flight-live';
 import { FlightEntry, InfiniteFlightSession, InfiniteFlightStatus } from '../lib/infinite-flight-live/types';
 import { BotSite } from '../models/config-models';
+import { LangCode } from '../models/enums';
 import { HttpService, Lang, Logger, prismaClient } from '../services';
 import { ClientUtils, MessageUtils, ShardUtils } from '../utils';
-import { Job } from './job';
-import * as infiniteFlightLive from '../lib/infinite-flight-live';
-import { ActivePilotUser } from './types';
 import { VerifyInfiniteFlightUserIDTicketUtils } from '../utils/verify-infinite-flight-user-id-ticket-utils';
-import { validateSync } from 'class-validator';
-import { LangCode } from '../models/enums';
+import { Job } from './job';
+import { ActivePilotUser } from './types';
 
 let Config = require('../../config/config.json');
 let AircraftNames = require('../../infinite-flight-data/aircraft-names.json');
@@ -26,8 +26,8 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
     private client: Client;
 
     /**
-     * TODO: check smelly code... 
-     * @param theClient 
+     * TODO: check smelly code...
+     * @param theClient
      */
     constructor(
         private theClient: Client,
@@ -47,7 +47,7 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
     private async notifyActivePilotsOnGuildChannels(): Promise<void> {
         const activePilotUsers: ActivePilotUser[] = await this.getActivePilotUsers();
 
-        for (var activePilotUser of activePilotUsers) {
+        for (let activePilotUser of activePilotUsers) {
             const testChannel: TextChannel = (await this.client.channels.cache.get(
                 Config.development.kennedySteveSpamChannelID) as TextChannel);
 
@@ -82,8 +82,8 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
      */
     private async getActivePilotUsers(): Promise<ActivePilotUser[]> {
         const activePilotInfiniteFlightMap: Map<string, FlightEntry> = await this.getActivePilotInfiniteFlightMap()
-        const flights: Array<FlightEntry> = Array.from(activePilotInfiniteFlightMap.values());
-        const activePilotInfiniteFlightUserIDs: Array<string> = flights.map(flight => flight.userId);
+        const flights: FlightEntry[] = Array.from(activePilotInfiniteFlightMap.values());
+        const activePilotInfiniteFlightUserIDs: string[] = flights.map(flight => flight.userId);
 
         await this.verify(activePilotInfiniteFlightMap);
 
@@ -96,11 +96,11 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
         });
 
         const activePilotUsers: ActivePilotUser[] = new Array();
-        for (var user of users) {
+        for (let user of users) {
             const flight = activePilotInfiniteFlightMap.get(user.infiniteFlightUserID);
             const activePilotUser: ActivePilotUser = {
-                user: user,
-                flight: flight
+                user,
+                flight
             };
             activePilotUsers.push(activePilotUser);
         }
@@ -114,8 +114,8 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
     private async getActivePilotInfiniteFlightMap(): Promise<Map<string, FlightEntry>> {
         const activePilotInfiniteFlightMap: Map<string, FlightEntry> = new Map();
 
-        for (var session of this.infiniteFlightStatus.sessions) {
-            for (var flight of session.flights) {
+        for (let session of this.infiniteFlightStatus.sessions) {
+            for (let flight of session.flights) {
 
                 // attach session info to the flight
                 // This will help with data processing later 😉
@@ -127,8 +127,8 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
     }
 
     private async verify(activePilotInfiniteFlightMap: Map<string, FlightEntry>): Promise<void> {
-        const flights: Array<FlightEntry> = Array.from(activePilotInfiniteFlightMap.values());
-        const activePilotInfiniteFlightUserIDs: Array<string> = flights.map(flight => flight.userId);
+        const flights: FlightEntry[] = Array.from(activePilotInfiniteFlightMap.values());
+        const activePilotInfiniteFlightUserIDs: string[] = flights.map(flight => flight.userId);
 
         const freshTicketsCutoffDateTime: Date = VerifyInfiniteFlightUserIDTicketUtils.getFreshTicketsCutoffDateTime();
         const verifyInfiniteFlightUserIDTickets: VerifyInfiniteFlightUserIDTicket[] = await prismaClient.verifyInfiniteFlightUserIDTicket.findMany({
@@ -144,7 +144,7 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
             }
         });
 
-        for (var ticket of verifyInfiniteFlightUserIDTickets) {
+        for (let ticket of verifyInfiniteFlightUserIDTickets) {
             const flight: FlightEntry = activePilotInfiniteFlightMap.get(ticket.infiniteFlightUserID);
             const discordUser: DiscordUser = await ClientUtils.getUser(this.client, ticket.discordUserID);
 
@@ -186,16 +186,16 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
 
     /**
      * Update User and VerifyInfiniteFlightUserIDTicket
-     * @param discordUserID 
-     * @param ticketID 
-     * @param flight 
+     * @param discordUserID
+     * @param ticketID
+     * @param flight
      */
     private async updateModelsForVerifiedUser(discordUserID: string, ticketID: string, flight: FlightEntry): Promise<void> {
 
         // Now we finally register the Infinite Flight User ID
         await prismaClient.user.update({
             where: {
-                discordUserID: discordUserID,
+                discordUserID,
             },
             data: {
                 infiniteFlightUserID: flight.userId,
@@ -203,7 +203,7 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
         });
 
         // Verified tickets are not deleted, they are updated to show they are verified
-        // This helps for archival purposes and acts as our receipt. 
+        // This helps for archival purposes and acts as our receipt.
         await prismaClient.verifyInfiniteFlightUserIDTicket.update({
             where: {
                 id: ticketID,

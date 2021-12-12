@@ -1,6 +1,6 @@
-import { VerifyInfiniteFlightUserIDTicket } from "@prisma/client";
-import { FlightEntry } from "../lib/infinite-flight-live/types";
-import { Logger } from "../services";
+import { VerifyInfiniteFlightUserIDTicket } from '@prisma/client';
+import { FlightEntry } from '../lib/infinite-flight-live/types';
+import { Logger } from '../services';
 
 let Config = require('../../config/config.json');
 
@@ -24,9 +24,9 @@ export class VerifyInfiniteFlightUserIDTicketUtils {
     }
 
     /**
-     * 
-     * @param flight 
-     * @param ticket 
+     *
+     * @param flight
+     * @param ticket
      * @returns boolean if the heading delta is within the threshold
      */
     private static checkHeading(flight: FlightEntry, ticket: VerifyInfiniteFlightUserIDTicket): boolean {
@@ -40,9 +40,9 @@ export class VerifyInfiniteFlightUserIDTicketUtils {
     }
 
     /**
-     * 
-     * @param flight 
-     * @param ticket 
+     *
+     * @param flight
+     * @param ticket
      * @returns if the aircrafts match
      */
     private static checkAircraft(flight: FlightEntry, ticket: VerifyInfiniteFlightUserIDTicket): boolean {
@@ -51,9 +51,9 @@ export class VerifyInfiniteFlightUserIDTicketUtils {
     }
 
     /**
-     * 
-     * @param flight 
-     * @param ticket 
+     *
+     * @param flight
+     * @param ticket
      * @returns if the liveries match
      */
     private static checkLivery(flight: FlightEntry, ticket: VerifyInfiniteFlightUserIDTicket): boolean {

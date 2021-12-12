@@ -1,19 +1,19 @@
-import { ActivePilotNotifications, Prisma } from '.prisma/client';
-import { ApplicationCommandData, Permissions, PermissionResolvable, CommandInteraction, CacheType, GuildChannel, TextChannel, TextBasedChannels } from 'discord.js';
+import { ApplicationCommandData, CacheType, CommandInteraction, GuildChannel, PermissionResolvable, Permissions, TextBasedChannels, TextChannel } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { EventData } from '../models/internal-models';
 import { Lang, prismaClient } from '../services';
 import { ClientUtils, MessageUtils } from '../utils';
 import { Command } from './command';
+import { ActivePilotNotifications, Prisma } from '.prisma/client';
 
 export class NotifyActivePilotsCommand implements Command {
     data: ApplicationCommandData = {
-        name: "notify-active-pilots",
-        description: "Send notifications of active pilots in a channel",
+        name: 'notify-active-pilots',
+        description: 'Send notifications of active pilots in a channel',
         options: [
             {
-                name: "channel",
-                description: "The channel to send notifications to",
+                name: 'channel',
+                description: 'The channel to send notifications to',
                 type: ApplicationCommandOptionTypes.CHANNEL,
             }
         ]
@@ -29,7 +29,7 @@ export class NotifyActivePilotsCommand implements Command {
         let channel: GuildChannel = intr.channel as GuildChannel;
 
         // Check if channel is specified
-        let channelFromOptions: GuildChannel = intr.options.getChannel("channel") as GuildChannel;
+        let channelFromOptions: GuildChannel = intr.options.getChannel('channel') as GuildChannel;
         if (channelFromOptions !== null) {
 
             channel = channelFromOptions;
@@ -88,7 +88,7 @@ export class NotifyActivePilotsCommand implements Command {
                 await MessageUtils.sendIntr(
                     intr,
                     Lang.getEmbed(
-                        "notifyActivePilotsEmbeds.subscribed",
+                        'notifyActivePilotsEmbeds.subscribed',
                         data.lang(),
                         {
                             CHANNEL_ID: channel.id,
@@ -99,11 +99,11 @@ export class NotifyActivePilotsCommand implements Command {
             } catch (error) {
 
                 if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                    if (error.code === "P2002" && "discordChannelID" === error.meta['target'][0]) {
+                    if (error.code === 'P2002' && 'discordChannelID' === error.meta.target[0]) {
                         await MessageUtils.sendIntr(
                             intr,
                             Lang.getEmbed(
-                                "notifyActivePilotsEmbeds.alreadySubscribed",
+                                'notifyActivePilotsEmbeds.alreadySubscribed',
                                 data.lang(),
                                 {
                                     CHANNEL_ID: channel.id,

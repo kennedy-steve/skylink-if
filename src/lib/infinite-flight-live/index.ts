@@ -1,17 +1,17 @@
 import fetch from 'node-fetch';
 
 import {
-    UserGradeInfo,
-    SessionInfo,
-    FlightEntry,
-    AtcEntry,
-    UserStats,
-    ApiResponse,
-    ErrorCode,
     AirportStatus,
-    OceanicTrack,
+    ApiResponse,
+    AtcEntry,
+    ErrorCode,
+    FlightEntry,
     InfiniteFlightSession,
     InfiniteFlightStatus,
+    OceanicTrack,
+    SessionInfo,
+    UserGradeInfo,
+    UserStats,
 } from './types';
 
 let Config = require('../../../config/config.json');
@@ -246,16 +246,16 @@ async function getInfiniteFlightSession(
     const flights = await getFlights(sessionID);
     const atcFacilities = [];
 
-    for (var airportStatus of airports) {
-        for (var atcEntry of airportStatus.atcFacilities) {
+    for (let airportStatus of airports) {
+        for (let atcEntry of airportStatus.atcFacilities) {
             atcFacilities.push(atcEntry);
         }
     }
     const infiniteFlightSession: InfiniteFlightSession = {
         sessionInfo: null,
-        flights: flights,
-        airports: airports,
-        atcFacilities: atcFacilities,
+        flights,
+        airports,
+        atcFacilities,
     }
     return infiniteFlightSession;
 }
@@ -264,9 +264,9 @@ export async function getInfiniteFlightStatus(): Promise<InfiniteFlightStatus> {
     const sessionInfos = await getSessionInfos();
     const infiniteFlightSessions = [];
 
-    for (var sessionInfo of sessionInfos) {
-        var sessionID = sessionInfo.id;
-        var infiniteFlightSession = await getInfiniteFlightSession(sessionID);
+    for (let sessionInfo of sessionInfos) {
+        let sessionID = sessionInfo.id;
+        let infiniteFlightSession = await getInfiniteFlightSession(sessionID);
         infiniteFlightSession.sessionInfo = sessionInfo;
         infiniteFlightSessions.push(infiniteFlightSession);
     }
