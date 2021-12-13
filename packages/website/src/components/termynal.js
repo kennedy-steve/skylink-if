@@ -48,7 +48,7 @@
          this.inView = options.inView
              || parseFloat(this.container.getAttribute(`${this.pfx}-inView`)) || true;
          this.loadLines()
-         this.terminalName = `data-${options.prefix || 'termynal'}`;
+         this.terminalName = `data-${options.terminalName || 'termynal'}`;
          if (!options.noInit) this.init()
      }
  
