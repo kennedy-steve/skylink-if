@@ -12,7 +12,7 @@
     --color-text-subtle: #a2a2a2;
 }
 
-[data-termynal] {
+[data-discord] {
     width: 750px;
     max-width: 100%;
     background: var(--color-bg);
@@ -26,7 +26,7 @@
             box-sizing: border-box;
 }
 
-[data-termynal]:before {
+[data-discord]:before {
     content: '';
     position: absolute;
     top: 15px;
@@ -41,7 +41,7 @@
             box-shadow: 25px 0 0 #f4c025, 50px 0 0 #3ec930;
 }
 
-[data-termynal]:after {
+[data-discord]:after {
     content: 'Discord';
     position: absolute;
     color: var(--color-text-subtle);

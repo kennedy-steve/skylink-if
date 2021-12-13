@@ -5,6 +5,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './index.module.css';
 import HomepageFeatures from '../components/HomepageFeatures';
+import HomepageDemo from '../components/HomepageDemo';
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
@@ -44,6 +45,7 @@ export default function Home(): JSX.Element {
       description="Bringing Infinite Flight to Discord">
       <HomepageHeader />
       <main>
+        <HomepageDemo />
         <HomepageFeatures />
       </main>
     </Layout>

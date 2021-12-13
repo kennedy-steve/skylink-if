@@ -11,7 +11,7 @@ export default class Terminal extends React.Component {
     componentDidMount() {
         this.discordTerminal = new Termynal(this.t, {
             typeDelay: 40,
-            lineDelay: 700,
+            lineDelay: 2000,
             cursor: '|',
             prefix: 'disco',
             terminalName: 'discord',
@@ -35,7 +35,7 @@ export default class Terminal extends React.Component {
                    this.restartDiscordTerminal(this.discordTerminal, inView)
                }
            }>
-                <div data-termynal style={this.props.style} ref={t => this.t = t}>
+                <div data-discord style={this.props.style} ref={t => this.t = t}>
                     {this.props.children}
                 </div>
            </InView>

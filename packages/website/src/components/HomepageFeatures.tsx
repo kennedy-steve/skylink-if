@@ -68,7 +68,7 @@ function Feature({title, image, description}: FeatureItem) {
 export default function HomepageFeatures(): JSX.Element {
   return (
     <section className={styles.features}>
-      <div className="container">
+      <div className="container item shadow--tl">
         <div className="row">
           {FeatureList.map((props, idx) => (
             <Feature key={idx} {...props} />
