@@ -7,7 +7,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import styles from './HomepageDemo.module.css';
-import DiscordTerminal from './DiscordTerminal';
+import DiscordTerminal from './Terminals/DiscordTerminal';
 
 type DemoItem = {
   title: string;
