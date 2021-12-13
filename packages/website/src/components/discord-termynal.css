@@ -42,7 +42,7 @@
 }
 
 [data-termynal]:after {
-    content: 'Terminal';
+    content: 'Discord';
     position: absolute;
     color: var(--color-text-subtle);
     top: 5px;
@@ -51,34 +51,34 @@
     text-align: center;
 }
 
-[data-ty] {
+[data-disco] {
     display: block;
     line-height: 2;
 }
 
-[data-ty]:before {
+[data-disco]:before {
     /* Set up defaults and ensure empty lines are displayed. */
     content: '';
     display: inline-block;
     vertical-align: middle;
 }
 
-[data-ty="input"]:before,
-[data-ty-prompt]:before {
+[data-disco="input"]:before,
+[data-disco-prompt]:before {
     margin-right: 0.75em;
     color: var(--color-text-subtle);
 }
 
-[data-ty="input"]:before {
-    content: '$';
+[data-disco="input"]:before {
+    content: '🧑 You';
 }
 
-[data-ty][data-ty-prompt]:before {
-    content: attr(data-ty-prompt);
+[data-disco][data-disco-prompt]:before {
+    content: attr(data-disco-prompt);
 }
 
-[data-ty-cursor]:after {
-    content: attr(data-ty-cursor);
+[data-disco-cursor]:after {
+    content: attr(data-disco-cursor);
     font-family: monospace;
     margin-left: 0.5em;
     -webkit-animation: blink 1s infinite;

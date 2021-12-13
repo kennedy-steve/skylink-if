@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-import Terminal from '/src/components/ReactTermynal';
+import Terminal from '/src/components/Terminal';
 
 # Installation
 
@@ -19,12 +19,12 @@ If you're new to git, cloning is kind of like downloading.
 
 In your terminal, navigate to where you want to store this, and future, projects. Then, `git clone` the repository.
 
-<ReactTermynal>
+<Terminal>
   <span data-ty="input">git clone https://github.com/kennedy-steve/skylink-if.git</span>
   <span data-ty="progress"></span>
   <span data-ty="input">cd skylink-if</span>
   <span data-ty>😊 You are now in the skylink-if codebase</span>
-</ReactTermynal>
+</Terminal>
 
 Alternatively, you could use VSCode to clone and open skylink-if.
 
@@ -32,11 +32,11 @@ Alternatively, you could use VSCode to clone and open skylink-if.
 
 I like to use `yarn` for dependency management, but you can use `npm` if you prefer.
 
-<ReactTermynal>
+<Terminal>
   <span data-ty="input">yarn install</span>
   <span data-ty>Resolving packages...</span>
   <span data-ty="progress"></span>
-</ReactTermynal>
+</Terminal>
 
 ## Create /config/config.json
 
@@ -52,23 +52,23 @@ The easiest thing to do is contact a maintainer of the project and ask them to c
 
 Discord slash commands are a new way to create commands for your Discord bot. They are new and Discord has made it clear that they want slash commands to be used as much as possible. You can read more about them [here](https://support.discord.com/hc/en-us/articles/1500000368501-Slash-Commands-FAQ).
 
-<ReactTermynal>
+<Terminal>
   <span data-ty="input">yarn run register</span>
   <span data-ty>INFO: Registering commands: 'dev', 'get-pilot', 'help', 'infinite-flight-status', 'info', 'link', 'register-me', 'test', 'translate'.</span>
   <span data-ty>INFO: Commands registered.</span>
   <span data-ty>Done in 1.23s.</span>
-</ReactTermynal>
+</Terminal>
 
 
 ## Run the bot
 
 Running the bot isn't just about making it active and listening for commands, it also starts running scheduled jobs such as notifications for active Infinite Flight users.
 
-<ReactTermynal>
+<Terminal>
   <span data-ty="input">yarn start:dev</span>
   <span data-ty>INFO: Client logged in as 'Skylink IF Beta#3584'.</span>
   <span data-ty>INFO: Scheduled job 'Notify Active Infinite Flight Users' for '0 */1 * * * *'.</span>
   <span data-ty>INFO: Client is ready!</span>
-</ReactTermynal>
+</Terminal>
 
 If you want to play with the bot, create a test server and [invite your bot to it](https://discordjs.guide/preparations/adding-your-bot-to-servers.html).
