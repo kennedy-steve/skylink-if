@@ -9,7 +9,7 @@
  */
 
  'use strict';
-
+ 
  /** Generate a terminal widget. */
  class Termynal {
      /**
@@ -45,6 +45,8 @@
          this.cursor = options.cursor
              || this.container.getAttribute(`${this.pfx}-cursor`) || '▋';
          this.lineData = this.lineDataToElements(options.lineData || []);
+         this.inView = options.inView
+             || parseFloat(this.container.getAttribute(`${this.pfx}-inView`)) || true;
          this.loadLines()
          if (!options.noInit) this.init()
      }
@@ -88,7 +90,7 @@
          for (let line of this.lines) {
              line.style.visibility = 'visible'
          }
-         this.start();
+         
      }
  
      /**
@@ -97,6 +99,7 @@
      async start() {
          this.addFinish()
          await this._wait(this.startDelay);
+
  
          for (let line of this.lines) {
              const type = line.getAttribute(this.pfx);
@@ -133,6 +136,7 @@
              e.preventDefault()
              this.container.innerHTML = ''
              this.init()
+             this.start()
          }
          restart.href = '#'
          restart.setAttribute('data-terminal-control', '')
@@ -257,24 +261,42 @@
  
  
  import React from "react";
+ import { InView } from "react-intersection-observer";
  import './termynal.css';
  
  export default class ReactTermynal extends React.Component {
+
+    terminal = null;
+    startedAlready = false;
  
      componentDidMount() {
-         new Termynal(this.t, {
+         this.terminal = new Termynal(this.t, {
              typeDelay: 40,
              lineDelay: 700
          });
      }
+
+     restartTerminal(terminal, inView) {
+        
+        if (inView && terminal != null && !this.startedAlready) {
+            terminal.start();
+            this.startedAlready = true;
+        }
+        
+        
+     }
  
      render() {
          return (
-             <div>
+            <InView as="div" onChange={
+                (inView, entry, observer) => {
+                    this.restartTerminal(this.terminal, inView)
+                }
+            }>
                  <div data-terminal style={this.props.style} ref={t => this.t = t}>
                      {this.props.children}
                  </div>
-             </div>
+            </InView>
          );
      }
  }
