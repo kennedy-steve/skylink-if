@@ -17,17 +17,9 @@ function HomepageHeader() {
           
         <div className={styles.buttons}>
           <Link
-            className="button button--secondary button--lg"
+            className="button button--primary button--lg"
             to="https://forms.gle/NM17sCK82Wn75K337">
-            Submit your ideas 💡
-          </Link>
-        </div>
-
-        <div className={styles.buttons}>
-          <Link
-            className="button button--outline button--secondary button--lg"
-            to="https://dsc.gg/skylink">
-            Join our Discord 🎮
+            Add to Discord
           </Link>
         </div>
  

@@ -16,7 +16,7 @@ type DemoItem = {
 };
 
 const DemoRegister: DemoItem = {
-  title: 'Integrate your Infinite Flight account',
+  title: 'Register your Infinite Flight account',
   discordTerminal: (
     <DiscordTerminal>
       <span data-disco="input">/register-me infinite-flight-username: N8te</span>
@@ -30,13 +30,13 @@ const DemoRegister: DemoItem = {
       Infinite Flight account on Discord! Skylink-IF will remember your
       registration for all servers you are in. No more manual mapping or
       shady registration -- Skylink-IF is the only Infinite Flight Discord Bot 
-      with "ground crew" verification.
+      with "ground crew" verification 👷‍♂️👋
     </>
   ),
 };
 
 const DemoNotifications: DemoItem = {
-  title: 'Notifications to join Friends',
+  title: 'Know when to join your Friends',
   discordTerminal: (
     <DiscordTerminal>
       <span data-disco>🤖 Woozy#1234 is piloting a Boeing-787 at KLAX</span>

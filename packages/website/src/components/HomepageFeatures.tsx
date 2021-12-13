@@ -20,7 +20,7 @@ const FeatureList: FeatureItem[] = [
     image: '/img/index/undraw_new_ideas_jdea.svg',
     description: (
       <>
-        Skylink-IF is currently in very early development. 
+        Skylink-IF is an Infinite Flight Discord Bot that is actively being developed. 
         How can we make Infinite Flight more fun for you? Put your ideas here: 
         <a href="https://forms.gle/NM17sCK82Wn75K337"> https://forms.gle/NM17sCK82Wn75K337</a>
       </>

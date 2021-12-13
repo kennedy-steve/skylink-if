@@ -6,8 +6,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Skylink-IF Beta',
-  tagline: 'Bringing Infinite Flight to Discord',
+  title: 'Skylink-IF',
+  tagline: 'An Infinite Flight Discord Bot ✈🎮',
   url: 'https://skylink-if.tisuela.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
