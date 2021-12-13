@@ -40,7 +40,7 @@ const GetPilotCommand: CommandCardItem = {
         </>
     ),
     admin: false,
-    documentation: '/docs/help/commands#register-me'
+    documentation: '/docs/help/commands#get-pilot'
 }
 
 const EnableNotificationsCommand: CommandCardItem = {
