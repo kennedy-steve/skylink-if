@@ -1,0 +1,15 @@
+.partnerCards {
+  display: flex;
+  align-items: center;
+  padding: 2rem 10rem;
+  width: 100%;
+}
+
+.partnerCard {
+  padding: 1rem 0;
+}
+
+.partnerCardImage {
+  object-fit: cover;
+}
+

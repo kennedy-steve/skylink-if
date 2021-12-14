@@ -1,0 +1,24 @@
+.heroBanner {
+    padding: 4rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  @media screen and (max-width: 966px) {
+    .heroBanner {
+      padding: 2rem;
+    }
+  }
+  
+
+.heroSvg {
+    height: 25rem;
+  }
+  
+
+
+.heroText {
+    text-align: left;
+    padding-top: 5rem;
+    padding-left: 10rem;
+}

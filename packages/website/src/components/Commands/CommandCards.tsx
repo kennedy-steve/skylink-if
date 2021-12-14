@@ -24,7 +24,7 @@ const RegisterMeCommand: CommandCardItem = {
     command: '/register-me',
     description: (
         <>
-            Register yourself Infinite Flight account. 
+            Register your Infinite Flight account. 
             It's quick and gives you access to cool features 😎
         </>
     ),
@@ -94,7 +94,7 @@ function CommandCard({
                     </div>
                     <div className="card__footer">
                         <Link
-                            className="button button--outline button--block"
+                            className="button button--outline button--secondary"
                             to={documentation}>
                             More
                         </Link>
