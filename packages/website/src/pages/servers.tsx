@@ -2,10 +2,10 @@ import React from 'react';
 import clsx from 'clsx';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
-import styles from './partners.module.css';
+import styles from './servers.module.css';
 import PartnerCards from '../components/Partners/PartnerCards';
 
-function PartnersHero() {
+function ServersHero() {
   return (
     <header className={clsx('hero shadow--lw', styles.heroBanner)}>
       <div className="container">
@@ -33,12 +33,12 @@ function PartnersHero() {
   );
 }
 
-export default function Home(): JSX.Element {
+export default function Servers(): JSX.Element {
   return (
     <Layout
-      title="Partners"
-      description="Bringing Infinite Flight to Discord">
-      <PartnersHero />
+      title="Servers"
+      description="Thank you to the Infinite Flight Community">
+      <ServersHero />
       <main>
         <PartnerCards />
       </main>

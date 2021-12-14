@@ -57,6 +57,10 @@ const config = {
             position: 'left',
             label: 'Contributing',
           },
+          {
+            to: 'servers',
+            label: 'Servers'
+          },
           /** Right side */
           {
             href: 'https://github.com/kennedy-steve/skylink-if',
