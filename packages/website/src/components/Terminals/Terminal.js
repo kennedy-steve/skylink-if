@@ -11,7 +11,7 @@ export default class Terminal extends React.Component {
     componentDidMount() {
         this.terminal = new Termynal(this.t, {
             typeDelay: 40,
-            lineDelay: 700
+            lineDelay: 700,
         });
     }
 
@@ -32,7 +32,7 @@ export default class Terminal extends React.Component {
                    this.restartTerminal(this.terminal, inView)
                }
            }>
-                <div data-terminal style={this.props.style} ref={t => this.t = t}>
+                <div data-termynal style={this.props.style} ref={t => this.t = t}>
                     {this.props.children}
                 </div>
            </InView>

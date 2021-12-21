@@ -1,0 +1,13 @@
+.demoItems {
+  display: flex;
+  align-items: center;
+  padding: 2rem 0;
+  width: 100%;
+  background-color: var(--ifm-color-emphasis-100);
+}
+
+
+.demoItem {
+  padding: 2rem 0;
+}
+

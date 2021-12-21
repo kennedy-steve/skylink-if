@@ -48,6 +48,7 @@
          this.inView = options.inView
              || parseFloat(this.container.getAttribute(`${this.pfx}-inView`)) || true;
          this.loadLines()
+         this.terminalName = `data-${options.terminalName || 'termynal'}`;
          if (!options.noInit) this.init()
      }
  
@@ -68,7 +69,7 @@
          const restart = this.generateRestart()
          restart.style.visibility = 'hidden'
          this.container.appendChild(restart)
-         this.container.setAttribute('data-termynal', '');
+         this.container.setAttribute(`data-${this.terminalName}`, '');
      }
  
      /**
@@ -85,7 +86,7 @@
          this.container.style.minHeight = containerStyle.height !== '0px' ? 
              containerStyle.height : undefined;
  
-         this.container.setAttribute('data-termynal', '');
+         this.container.setAttribute(`data-${this.terminalName}`, '');
          this.container.innerHTML = '';
          for (let line of this.lines) {
              line.style.visibility = 'visible'
