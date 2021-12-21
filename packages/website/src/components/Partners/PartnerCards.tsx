@@ -1,5 +1,5 @@
-import React from 'react';
 import Link from '@docusaurus/Link';
+import React from 'react';
 import styles from './PartnerCards.module.css';
 
 type PartnerCardItem = {
@@ -16,7 +16,7 @@ const SkylinkPartner: PartnerCardItem = {
             The birthplace of Skylink-IF
         </>
     ),
-    invite: 'https://dsc.gg/skylink',	
+    invite: 'https://dsc.gg/skylink',
     imageUrl: 'img/partners/skylink_logo.png',
 }
 
@@ -27,7 +27,7 @@ const YourServerHerePartner: PartnerCardItem = {
             Join Skylink and ask the developers to become a partner!
         </>
     ),
-    invite: 'https://www.youtube.com/watch?v=crg0WAlBdTo',	
+    invite: 'https://www.youtube.com/watch?v=crg0WAlBdTo',
     imageUrl: 'img/partners/food-potato.png',
 }
 
@@ -49,10 +49,10 @@ function PartnerCard({
     }: PartnerCardItem
 ) {
     return (
-        <div className="col col--3">
+        <div className='col col--3'>
             <div className={styles.partnerCard}>
-                <div className="card">
-                    <div className="card__image">
+                <div className='card'>
+                    <div className='card__image'>
                         <img
                             className={styles.partnerCardImage}
                             src={imageUrl}
@@ -60,15 +60,15 @@ function PartnerCard({
                             title={name}
                         />
                     </div>
-                    <div className="card__body">
+                    <div className='card__body'>
                         <h3>{name}</h3>
                         <p>
                             {description}
                         </p>
                     </div>
-                    <div className="card__footer">
+                    <div className='card__footer'>
                         <Link
-                            className="button button--outline button--secondary"
+                            className='button button--outline button--secondary'
                             to={invite}>
                             Join
                         </Link>
@@ -81,9 +81,9 @@ function PartnerCard({
 
 export default function PartnerCards() {
     return (
-        
+
         <section className={styles.partnerCards}>
-            <div className="row">
+            <div className='row'>
                 {PartnerCardList.map(card => (
                     <PartnerCard
                         key={card.name}
@@ -95,6 +95,6 @@ export default function PartnerCards() {
                 ))}
             </div>
         </section>
-        
+
     )
 }

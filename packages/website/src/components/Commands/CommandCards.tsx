@@ -1,5 +1,5 @@
-import React from 'react';
 import Link from '@docusaurus/Link';
+import React from 'react';
 import styles from './CommandCards.module.css';
 
 type CommandCardItem = {
@@ -24,7 +24,7 @@ const RegisterMeCommand: CommandCardItem = {
     command: '/register-me',
     description: (
         <>
-            Register your Infinite Flight account. 
+            Register your Infinite Flight account.
             It's quick and gives you access to cool features 😎
         </>
     ),
@@ -81,20 +81,20 @@ function CommandCard({
     }: CommandCardItem
 ) {
     return (
-        <div className="col col--4">
+        <div className='col col--4'>
             <div className={styles.commandCard}>
-                <div className="card">
-                    <div className="card__header">
+                <div className='card'>
+                    <div className='card__header'>
                         <h3>{command}</h3>
                     </div>
-                    <div className="card__body">
+                    <div className='card__body'>
                         <p>
                             {description}
                         </p>
                     </div>
-                    <div className="card__footer">
+                    <div className='card__footer'>
                         <Link
-                            className="button button--outline button--secondary"
+                            className='button button--outline button--secondary'
                             to={documentation}>
                             More
                         </Link>
@@ -108,7 +108,7 @@ function CommandCard({
 export default function CommandCards() {
     return (
         <div className={styles.commandCards}>
-            <div className="row">
+            <div className='row'>
                 {CommandCardList.map(commandCard => (
                     <CommandCard
                         key={commandCard.command}
