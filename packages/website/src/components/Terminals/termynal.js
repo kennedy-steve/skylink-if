@@ -9,9 +9,9 @@
  */
 
  'use strict';
-
+ 
  /** Generate a terminal widget. */
- class Termynal {
+ export default class Termynal {
      /**
       * Construct the widget's settings.
       * @param {(string|Node)=} container - Query selector or container element.
@@ -45,7 +45,10 @@
          this.cursor = options.cursor
              || this.container.getAttribute(`${this.pfx}-cursor`) || '▋';
          this.lineData = this.lineDataToElements(options.lineData || []);
+         this.inView = options.inView
+             || parseFloat(this.container.getAttribute(`${this.pfx}-inView`)) || true;
          this.loadLines()
+         this.terminalName = `data-${options.terminalName || 'termynal'}`;
          if (!options.noInit) this.init()
      }
  
@@ -66,7 +69,7 @@
          const restart = this.generateRestart()
          restart.style.visibility = 'hidden'
          this.container.appendChild(restart)
-         this.container.setAttribute('data-termynal', '');
+         this.container.setAttribute(`data-${this.terminalName}`, '');
      }
  
      /**
@@ -83,12 +86,12 @@
          this.container.style.minHeight = containerStyle.height !== '0px' ? 
              containerStyle.height : undefined;
  
-         this.container.setAttribute('data-termynal', '');
+         this.container.setAttribute(`data-${this.terminalName}`, '');
          this.container.innerHTML = '';
          for (let line of this.lines) {
              line.style.visibility = 'visible'
          }
-         this.start();
+         
      }
  
      /**
@@ -97,6 +100,7 @@
      async start() {
          this.addFinish()
          await this._wait(this.startDelay);
+
  
          for (let line of this.lines) {
              const type = line.getAttribute(this.pfx);
@@ -133,6 +137,7 @@
              e.preventDefault()
              this.container.innerHTML = ''
              this.init()
+             this.start()
          }
          restart.href = '#'
          restart.setAttribute('data-terminal-control', '')
@@ -256,25 +261,3 @@
  }
  
  
- import React from "react";
- import './termynal.css';
- 
- export default class ReactTermynal extends React.Component {
- 
-     componentDidMount() {
-         new Termynal(this.t, {
-             typeDelay: 40,
-             lineDelay: 700
-         });
-     }
- 
-     render() {
-         return (
-             <div>
-                 <div data-terminal style={this.props.style} ref={t => this.t = t}>
-                     {this.props.children}
-                 </div>
-             </div>
-         );
-     }
- }

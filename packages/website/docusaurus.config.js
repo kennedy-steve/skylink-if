@@ -6,8 +6,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Skylink-IF Beta',
-  tagline: 'Bringing Infinite Flight to Discord',
+  title: 'Skylink-IF',
+  tagline: 'An Infinite Flight Discord Bot ✈🎮',
   url: 'https://skylink-if.tisuela.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
@@ -47,11 +47,20 @@ const config = {
           /** Left side */
           {
             type: 'doc',
+            docId: 'help/intro',
+            position: 'left',
+            label: 'Help',
+          },
+          {
+            type: 'doc',
             docId: 'contributing/intro',
             position: 'left',
             label: 'Contributing',
           },
-
+          {
+            to: 'servers',
+            label: 'Servers'
+          },
           /** Right side */
           {
             href: 'https://github.com/kennedy-steve/skylink-if',
@@ -67,6 +76,10 @@ const config = {
           {
             title: 'Docs',
             items: [
+              {
+                label: 'Help',
+                to: '/docs/help/intro',
+              },
               {
                 label: 'Contributing',
                 to: '/docs/contributing/intro',

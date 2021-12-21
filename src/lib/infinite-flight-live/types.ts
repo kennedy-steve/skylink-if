@@ -33,6 +33,8 @@ export interface AtcEntry {
     latitude: number;
     longitude: number;
     startTime: Date;
+
+    sessionInfo?: SessionInfo;
 }
 
 export enum FrequencyType {
@@ -237,8 +239,8 @@ export interface AirportRunway {
 }
 
 export interface Aircraft {
-    liveryID: string;
-    aircraftID: string;
+    liveryId: string;
+    aircraftId: string;
     aircraftName: string;
     liveryName: string;
     maxTakeoffWeight: number;
@@ -257,6 +259,8 @@ export interface AirportStatus {
     outboundFlightsCount: number;
     outboundFlights: string[];
     atcFacilities: AtcEntry[];
+
+    sessionInfo?: SessionInfo;
 }
 
 export interface OceanicTrack {
@@ -280,7 +284,7 @@ export interface OceanicTrack {
 export interface InfiniteFlightSession {
     sessionInfo: SessionInfo;
     flights: FlightEntry[];
-    airports: AirportStatus[];
+    airportStatuses: AirportStatus[];
     atcFacilities: AtcEntry[];
 }
 

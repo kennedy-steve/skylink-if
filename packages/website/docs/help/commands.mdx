@@ -1,0 +1,97 @@
+---
+sidebar_position: 2
+---
+
+import DiscordTerminal from '/src/components/Terminals/DiscordTerminal';
+
+# Commands
+
+Welcome to the Source of Truth for all Skylink-IF commands! This is a work in progress, so please be patient.
+
+## General commands
+
+Commands anyone can use! 
+
+### `/help`
+
+We all know this command. Lists available commands for Skylink-IF bot.
+
+#### Demo
+
+<DiscordTerminal>
+  <span data-disco="input">/help</span>
+  <span data-disco>I have the following commands: /help, /register-me, /get-pilot</span>
+</DiscordTerminal>
+
+### `/register-me`
+
+Register your Infinite Flight account with Skylink-IF. This will allow your friends and servers to see your activity on Infinite Flight. 
+You'll also be able to unlock future features!
+
+#### Ground Crew Verification
+
+When you register, Skylink-IF will Direct Message you instructions for verification. You will be asked to spawn in Infinite Flight with a certain livery and True Heading. 
+Our ground crew will then verify that you followed the instructions we gave you. This process may take a couple of minutes, and Skylink-IF will notify you when it's complete. 
+This process prevents abuse of registration.
+
+#### Demo
+
+<DiscordTerminal>
+  <span data-disco="input">/register-me infinite-flight-username: N8te</span>
+  <span data-disco>🤖 To register as N8te please spawn as a Boeing-737 and turn to a heading of 123 Degrees.</span>
+  <span data-disco>🤖 Our ground crew see your aircraft, but something is off... Double check your aircraft and heading.</span>
+  <span data-disco>🤖 Our ground crew have checked your aircraft. You are now verified!</span>
+  <span data-disco="input">Cool beaaanssss!</span>
+</DiscordTerminal>
+
+### `/get-pilot`
+
+Get Infinite Flight pilot stats by specifying their Infinite Flight username.
+
+#### Demo
+
+<DiscordTerminal>
+  <span data-disco="input">/get-pilot N8te</span>
+  <span data-disco>🤖 N8te has landed 50 times and has had 200 violations.</span>
+</DiscordTerminal>
+
+## Admin commands
+
+These commands are to be used by server staff. These do *not* necessarily require an admin. They *do* require elevated permissions
+
+### `/enable-notifications`
+
+Enable notifications for a channel. You can specify the type of notifications and channel. The current notification types are for `Active Pilot` and `Active Controller`. 
+A notification is only sent when a user, who can see the channel, is online on Infinite Flight either as a Pilot or as an ATC Controller. 
+
+#### Permissions
+
+- Manage Channels
+
+#### Demo
+
+<DiscordTerminal>
+  <span data-disco="input">/enable-notifications</span>
+  <span data-disco>🤖 All notifications enabled in #current-channel ✅</span>
+  <span data-disco="input">/enable-notifications notification-type: Active Pilot Notifications</span>
+  <span data-disco>🤖 Notifications were already enabled for Active Pilot Notifications in #current-channel ⚠</span>
+  <span data-disco="input">/enable-notifications channel: #spam notification-type: Active Pilot Notifications</span>
+  <span data-disco>🤖 Notifications Enabled for Active Pilot Notifications in #spam ✅</span>
+</DiscordTerminal>
+
+### `/disable-notifications`
+
+Disable notifications for a channel. You can specify the type of notifications and channel.
+
+#### Permissions
+
+- Manage Channels
+
+#### Demo
+
+<DiscordTerminal>
+  <span data-disco="input">/disable-notifications notification-type: Active Controller Notifications</span>
+  <span data-disco>🤖 Notifications were already Disabled for Active Controller Notifications in #current-channel ⚠</span>
+  <span data-disco="input">/disable-notifications</span>
+  <span data-disco>🤖 Disabled Active Pilot Notifications in #current-channel ✅</span>
+</DiscordTerminal>

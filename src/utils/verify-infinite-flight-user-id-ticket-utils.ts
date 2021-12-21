@@ -1,20 +1,20 @@
-import { VerifyInfiniteFlightUserIDTicket } from "@prisma/client";
+import { VerifyInfiniteFlightUserIdTicket } from "@prisma/client";
 import { FlightEntry } from "../lib/infinite-flight-live/types";
 import { Logger } from "../services";
 
 let Config = require('../../config/config.json');
 
-export class VerifyInfiniteFlightUserIDTicketUtils {
+export class VerifyInfiniteFlightUserIdTicketUtils {
     public static getFreshTicketsCutoffDateTime(): Date {
         const currentDateTime: Date = new Date();
         const millisecondsPerMinute: number = 60000
-        const staleByMilliseconds: number = Config.modelConstants.verifyInfiniteFlightUserIDTicket.staleByMinutes * millisecondsPerMinute;
+        const staleByMilliseconds: number = Config.modelConstants.verifyInfiniteFlightUserIdTicket.staleByMinutes * millisecondsPerMinute;
         const freshTicketsDateTime: Date = new Date(currentDateTime.getTime() - staleByMilliseconds);
 
         return freshTicketsDateTime;
     }
 
-    public static checkIfFlightPassesAllChecks(flight: FlightEntry, ticket: VerifyInfiniteFlightUserIDTicket): boolean {
+    public static checkIfFlightPassesAllChecks(flight: FlightEntry, ticket: VerifyInfiniteFlightUserIdTicket): boolean {
         const flightPassesAllChecks: boolean = (
             this.checkHeading(flight, ticket)
             && this.checkAircraft(flight, ticket)
@@ -29,7 +29,7 @@ export class VerifyInfiniteFlightUserIDTicketUtils {
      * @param ticket 
      * @returns boolean if the heading delta is within the threshold
      */
-    private static checkHeading(flight: FlightEntry, ticket: VerifyInfiniteFlightUserIDTicket): boolean {
+    private static checkHeading(flight: FlightEntry, ticket: VerifyInfiniteFlightUserIdTicket): boolean {
         const correctHeadingDeltaThreshold = 3.5;
         const headingDelta = Math.abs(flight.heading - ticket.heading);
         const isHeadingCorrect = (headingDelta < correctHeadingDeltaThreshold);
@@ -45,8 +45,8 @@ export class VerifyInfiniteFlightUserIDTicketUtils {
      * @param ticket 
      * @returns if the aircrafts match
      */
-    private static checkAircraft(flight: FlightEntry, ticket: VerifyInfiniteFlightUserIDTicket): boolean {
-        const isAircraftCorrect = (flight.aircraftId == ticket.aircraftID);
+    private static checkAircraft(flight: FlightEntry, ticket: VerifyInfiniteFlightUserIdTicket): boolean {
+        const isAircraftCorrect = (flight.aircraftId == ticket.aircraftId);
         return isAircraftCorrect;
     }
 
@@ -56,8 +56,8 @@ export class VerifyInfiniteFlightUserIDTicketUtils {
      * @param ticket 
      * @returns if the liveries match
      */
-    private static checkLivery(flight: FlightEntry, ticket: VerifyInfiniteFlightUserIDTicket): boolean {
-        const isLiveryCorrect = (flight.liveryId == ticket.liveryID);
+    private static checkLivery(flight: FlightEntry, ticket: VerifyInfiniteFlightUserIdTicket): boolean {
+        const isLiveryCorrect = (flight.liveryId == ticket.liveryId);
         return isLiveryCorrect;
     }
 }

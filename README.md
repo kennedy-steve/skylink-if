@@ -1,80 +1,9 @@
-# Skylink IF
+# [Skylink IF](https://skylink-if.tisuela.com/)
 
-UNDER DEVELOPMENT
+[![CodeFactor](https://www.codefactor.io/repository/github/kennedy-steve/skylink-if/badge)](https://www.codefactor.io/repository/github/kennedy-steve/skylink-if)
 
+Brining Infinite Flight to Discord. Check out our [website](https://skylink-if.tisuela.com/). 
 
-Huge credit to Discord Bot TypeScript Template. More info below
-
-
-## Introduction to Discord Bot TypeScript Template
-
-This template was created to give developers a starting point for new Discord bots, so that much of the initial setup can be avoided and developers can instead focus on meaningful bot features. Developers can simply copy this repo, follow the [setup instructions](#setup) below, and have a working bot with many [boilerplate features](#features) already included!
-
-For help using this template, feel free to [join our support server](https://discord.gg/Vyf6fEWbVr)!
-
-## Features
-
-### Built-In Bot Features:
-
--   Basic command structure.
--   Rate limits for commands.
--   Welcome message when joining a server.
--   Shows server count in bot status.
--   Posts server count to popular bot list websites.
--   Support for multiple languages.
-
-### Developer Friendly:
-
--   Written with TypeScript.
--   Uses the [discord.js](https://discord.js.org/) framework.
--   Built-in debugging setup for VSCode.
--   Support for running with the [PM2](https://pm2.keymetrics.io/) process manger.
--   Support for running with [Docker](https://www.docker.com/).
-
-### Scales as Your Bot Grows:
-
--   Supports [sharding](https://discordjs.guide/sharding/) which is required when your bot is in 2500+ servers.
--   Supports [clustering](https://github.com/KevinNovak/Discord-Bot-TypeScript-Template-Master-Api) which allows you to run your bot on multiple machines.
-
-## Commands
-
-This bot has a few example commands which can be modified as needed.
-
-### Help Command
-
-A `/help` command with a bot description, list of commands, and important links.
-
-![Help Command](https://i.imgur.com/qsxQ0fP.png)
-
-### Test Command
-
-A generic command, `/test`, which can be copied to create additional commands.
-
-![Test Command](https://i.imgur.com/HxzgUO7.png)
-
-### Info Command
-
-An `/info` command, which shows more information and relevant links.
-
-![Info Command](https://i.imgur.com/P4zeAx9.png)
-
-### Dev Command
-
-A `/dev` command, which shows detailed information that may be helpful to developers.
-
-![Dev Command](https://i.imgur.com/KVIIVJ3.png)
-
-### Link Command
-
-A `/link` command, which provides relevant links (`invite`, `support`, `docs`, `vote`).
-
-![Misc Commands](https://i.imgur.com/FOZcKM8.png)
-
-### Welcome Message
-
-A welcome message is sent to the server and owner when the bot is added.
-
-![Welcome Message](https://i.imgur.com/APzT9pp.png)
 
 ## Setup
 
@@ -102,8 +31,6 @@ A welcome message is sent to the server and owner when the bot is added.
 
 ## Start Scripts
 
-You can run the bot in 4 different modes:
-
 1. Normal Mode
     - Type `npm start`.
     - This runs the bot directly with Node and without shards.
@@ -113,24 +40,8 @@ You can run the bot in 4 different modes:
     - This runs the bot with [ts-node-dev](https://www.npmjs.com/package/ts-node-dev).
     - Use this mode for general development.
     - TypeScript files are compiled automatically as they are changed.
-3. Shard Mode
-    - Type `npm run start:shard`.
-    - This runs the bot directly with Node and with sharding enabled.
-    - Use this mode if you need sharding.
-4. PM2 Mode
-    - Run by typing `npm run start:pm2`.
-    - This runs the bot using the process manager [PM2](https://pm2.keymetrics.io/).
-    - Use this mode if you require the bot to always be online.
 
-## Bots Using This Template
+## Huge Shoutout -- Bot Template
 
-A list of Discord bots using this template.
+Shoutout to [Kevin](https://github.com/KevinNovak) for creating [a Typescript Discord Bot Template](https://github.com/KevinNovak/Discord-Bot-TypeScript-Template) which is the foundation of Skylink-IF. Highly encourage y'all to [check out that template](https://github.com/KevinNovak/Discord-Bot-TypeScript-Template)!
 
-| Bot                                                   | Servers                                                       |
-| ----------------------------------------------------- | ------------------------------------------------------------- |
-| [Birthday Bot](https://top.gg/bot/656621136808902656) | ![](https://top.gg/api/widget/servers/656621136808902656.svg) |
-| [Friend Time](https://top.gg/bot/471091072546766849)  | ![](https://top.gg/api/widget/servers/471091072546766849.svg) |
-| [QOTD Bot](https://top.gg/bot/713586207119900693)     | ![](https://top.gg/api/widget/servers/713586207119900693.svg) |
-| [NFT-Info](https://top.gg/bot/902249456072818708)     | ![](https://top.gg/api/widget/servers/902249456072818708.svg) |
-
-Don't see your bot listed? [Contact us](https://discord.gg/Vyf6fEWbVr) to have your bot added!

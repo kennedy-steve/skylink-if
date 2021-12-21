@@ -8,3 +8,6 @@ export { TranslateCommand } from './translate-command';
 export { GetPilotCommand } from './get-pilot-command';
 export { RegisterMeCommand } from './register-me-command';
 export { InfiniteFlightStatusCommand } from './infinite-flight-status-command';
+export { AdminRegisterMeCommand } from './admin-register-me-command';
+export { DisableNotificationsCommand } from './disable-notifications-command';
+export { EnableNotificationsCommand } from './enable-notifications-command';

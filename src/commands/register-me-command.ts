@@ -1,15 +1,14 @@
 import { ApplicationCommandData, CommandInteraction, GuildMember, User as DiscordUser } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 
+import * as infiniteFlightLive from '../lib/infinite-flight-live';
+import { Aircraft, UserStats } from '../lib/infinite-flight-live/types';
 import { EventData } from '../models/internal-models';
 import { Lang, Logger, prismaClient } from '../services';
 import { MessageUtils } from '../utils';
+import { VerifyInfiniteFlightUserIdTicketUtils } from '../utils/verify-infinite-flight-user-id-ticket-utils';
 import { Command } from './command';
-import * as infiniteFlightLive from '../lib/infinite-flight-live';
-import { prisma, Prisma, User, VerifyInfiniteFlightUserIDTicket } from '.prisma/client';
-import { off } from 'process';
-import { Aircraft, UserStats } from '../lib/infinite-flight-live/types';
-import { VerifyInfiniteFlightUserIDTicketUtils } from '../utils/verify-infinite-flight-user-id-ticket-utils';
+import { prisma, Prisma, User, VerifyInfiniteFlightUserIdTicket } from '.prisma/client';
 
 let Config = require('../../config/config.json');
 let InfiniteFlightPlanes = require('../../infinite-flight-data/aircraft-and-liveries-list.json');
@@ -20,8 +19,8 @@ export class RegisterMeCommand implements Command {
         description: 'Register your Infinite Flight Username',
         options: [
             {
-                name: "ifc-username",
-                description: "sup",
+                name: 'ifc-username',
+                description: 'sup',
                 type: ApplicationCommandOptionTypes.STRING
 
             }
@@ -32,8 +31,6 @@ export class RegisterMeCommand implements Command {
     public requirePerms = [];
 
     private ifcUsername;
-    private discordUser;
-    private user;
 
     public async execute(commandInteraction: CommandInteraction, data: EventData): Promise<void> {
         this.ifcUsername = commandInteraction.options.getString('ifc-username');
@@ -52,7 +49,7 @@ export class RegisterMeCommand implements Command {
                     'validationEmbeds.registerMeuserHadFreshVerificationTicket',
                     data.lang(),
                     {
-                        STALE_MINUTES: Config.modelConstants.verifyInfiniteFlightUserIDTicket.staleByMinutes,
+                        STALE_MINUTES: Config.modelConstants.verifyInfiniteFlightUserIdTicket.staleByMinutes,
                     }
                 )
             );
@@ -105,15 +102,15 @@ export class RegisterMeCommand implements Command {
                 else {
                     await prismaClient.user.upsert({
                         where: {
-                            discordUserID: discordUser.id
+                            discordUserId: discordUser.id
                         },
                         update: {},
                         create: {
-                            discordUserID: discordUser.id
+                            discordUserId: discordUser.id
                         },
                     });
 
-                    const newVerifyInfiniteFlightUserIDTicket: VerifyInfiniteFlightUserIDTicket = await this.createVerifyInfiniteFlightUserIDTicket(
+                    const newVerifyInfiniteFlightUserIdTicket: VerifyInfiniteFlightUserIdTicket = await this.createVerifyInfiniteFlightUserIdTicket(
                         userStats.userId,
                         discordUser.id,
                         discordGuild.id,
@@ -126,15 +123,15 @@ export class RegisterMeCommand implements Command {
                             data.lang(),
                             {
                                 IFC_USERNAME: this.ifcUsername,
-                                STALE_MINUTES: Config.modelConstants.verifyInfiniteFlightUserIDTicket.staleByMinutes,
+                                STALE_MINUTES: Config.modelConstants.verifyInfiniteFlightUserIdTicket.staleByMinutes,
 
                                 // We don't randomize these, but maybe in the future.
-                                SERVER: "Casual Server",
-                                AIRPORT_ICAO: "Any airport is fine, though my favorite airport is KSMF. But seriously, any airport will do.",
+                                SERVER: 'Casual Server',
+                                AIRPORT_ICAO: 'Any airport is fine, though my favorite airport is KSMF. But seriously, any airport will do.',
 
-                                AIRCRAFT_NAME: newVerifyInfiniteFlightUserIDTicket.aircraftName,
-                                LIVERY_NAME: newVerifyInfiniteFlightUserIDTicket.liveryName,
-                                TRUE_HEADING: newVerifyInfiniteFlightUserIDTicket.heading.toString(),
+                                AIRCRAFT_NAME: newVerifyInfiniteFlightUserIdTicket.aircraftName,
+                                LIVERY_NAME: newVerifyInfiniteFlightUserIdTicket.liveryName,
+                                TRUE_HEADING: newVerifyInfiniteFlightUserIdTicket.heading.toString(),
                             }
                         )
                     )
@@ -155,22 +152,22 @@ export class RegisterMeCommand implements Command {
         }
     }
 
-    private async createVerifyInfiniteFlightUserIDTicket(infiniteFlightUserID: string, discordUserId: string, discordGuildID: string): Promise<VerifyInfiniteFlightUserIDTicket> {
+    private async createVerifyInfiniteFlightUserIdTicket(infiniteFlightUserId: string, discordUserId: string, discordGuildId: string): Promise<VerifyInfiniteFlightUserIdTicket> {
         const randomHeading: number = this.getRandomHeading();
         const randomAircraft: Aircraft = this.getRandomAircraft();
-        const verifyInfiniteFlightUserIDTicket: VerifyInfiniteFlightUserIDTicket = await prismaClient.verifyInfiniteFlightUserIDTicket.create({
+        const verifyInfiniteFlightUserIdTicket: VerifyInfiniteFlightUserIdTicket = await prismaClient.verifyInfiniteFlightUserIdTicket.create({
             data: {
-                infiniteFlightUserID: infiniteFlightUserID,
-                discordUserID: discordUserId,
-                discordGuildID: discordGuildID,
-                aircraftID: randomAircraft.aircraftID,
+                infiniteFlightUserId,
+                discordUserId,
+                discordGuildId,
+                aircraftId: randomAircraft.aircraftId,
                 aircraftName: randomAircraft.aircraftName,
-                liveryID: randomAircraft.liveryID,
+                liveryId: randomAircraft.liveryId,
                 liveryName: randomAircraft.liveryName,
                 heading: randomHeading,
             }
         })
-        return verifyInfiniteFlightUserIDTicket;
+        return verifyInfiniteFlightUserIdTicket;
     }
 
     private getRandomHeading(): number {
@@ -183,12 +180,12 @@ export class RegisterMeCommand implements Command {
         return randomAircraft;
     }
 
-    private async checkIfUserStillHasFreshVerificationTicket(discordUserID: string): Promise<boolean> {
-        const freshTicketsCutoffDateTime: Date = VerifyInfiniteFlightUserIDTicketUtils.getFreshTicketsCutoffDateTime();
+    private async checkIfUserStillHasFreshVerificationTicket(discordUserId: string): Promise<boolean> {
+        const freshTicketsCutoffDateTime: Date = VerifyInfiniteFlightUserIdTicketUtils.getFreshTicketsCutoffDateTime();
 
-        const verificationTicket: VerifyInfiniteFlightUserIDTicket = await prismaClient.verifyInfiniteFlightUserIDTicket.findFirst({
+        const verificationTicket: VerifyInfiniteFlightUserIdTicket = await prismaClient.verifyInfiniteFlightUserIdTicket.findFirst({
             where: {
-                discordUserID: discordUserID,
+                discordUserId,
                 created: {
                     gt: freshTicketsCutoffDateTime
                 }
@@ -198,14 +195,14 @@ export class RegisterMeCommand implements Command {
     }
 
     /**
-     * 
-     * @param infiniteFlightUserID 
+     *
+     * @param infiniteFlightUserId
      * @returns if Infinite Flight user is already registered
      */
-    private async checkIfInfiniteFlightUserAlreadyRegistered(infiniteFlightUserID: string): Promise<boolean> {
+    private async checkIfInfiniteFlightUserAlreadyRegistered(infiniteFlightUserId: string): Promise<boolean> {
         const user: User = await prismaClient.user.findUnique({
             where: {
-                infiniteFlightUserID: infiniteFlightUserID
+                infiniteFlightUserId
             }
         });
 
