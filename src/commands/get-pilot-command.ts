@@ -6,7 +6,6 @@ import { Lang } from '../services';
 import { MessageUtils } from '../utils';
 import { Command } from './command';
 import * as infiniteFlightLive from '../lib/infinite-flight-live';
-import { AircraftUtils } from '../utils/aircraft-utils';
 
 export class GetPilotCommand implements Command {
     public data: ApplicationCommandData = {
