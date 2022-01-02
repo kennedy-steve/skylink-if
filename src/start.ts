@@ -34,6 +34,7 @@ let Config = require('../config/config.json');
 let Logs = require('../lang/logs.json');
 
 async function start(): Promise<void> {
+    require('dotenv').config();
     let client = new CustomClient({
         intents: Config.client.intents,
         partials: Config.client.partials,

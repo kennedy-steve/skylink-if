@@ -2,7 +2,8 @@ import { ApplicationCommandData, CommandInteraction } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 
 import { EventData } from '../models/internal-models';
-import { Lang, Logger, prismaClient } from '../services';
+import { Lang, Logger, } from '../services';
+import { prismaClient } from '../services/prisma';
 import { MessageUtils } from '../utils';
 import { Command } from './command';
 import * as infiniteFlightLive from '../lib/infinite-flight-live';
@@ -56,6 +57,7 @@ export class AdminRegisterMeCommand implements Command {
         const infiniteFlightUserId = userStats.userId;
         const ifcUsername = userStats.discourseUsername;
         try {
+            Logger.info(`Creating new user - IFC username: ${ifcUsername}`);
             const newUser = await prismaClient.user.create({
                 data: {
                     discordUserId: discordUserId,
@@ -66,6 +68,8 @@ export class AdminRegisterMeCommand implements Command {
 
             await MessageUtils.sendIntr(commandInteraction, `${ifcUsername} is now associated with your Discord <@${discordUserId}>!`);
         } catch (error) {
+
+            Logger.info(`Error creating new user - IFC username: ${ifcUsername}`);
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
                 const prismaErrorCode = error.code;
 
