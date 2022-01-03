@@ -9,8 +9,8 @@ import { MessageUtils } from '../utils';
 import { VerifyInfiniteFlightUserIdTicketUtils } from '../utils/verify-infinite-flight-user-id-ticket-utils';
 import { Command } from './command';
 import { prisma, Prisma, User, VerifyInfiniteFlightUserIdTicket } from '.prisma/client';
+import { Config } from '../config';
 
-let Config = require('../../config/config.json');
 let InfiniteFlightPlanes = require('../../infinite-flight-data/aircraft-and-liveries-list.json');
 
 export class RegisterMeCommand implements Command {
@@ -49,7 +49,7 @@ export class RegisterMeCommand implements Command {
                     'validationEmbeds.registerMeuserHadFreshVerificationTicket',
                     data.lang(),
                     {
-                        STALE_MINUTES: Config.modelConstants.verifyInfiniteFlightUserIdTicket.staleByMinutes,
+                        STALE_MINUTES: Config.modelConstants.verifyInfiniteFlightUserIdTicket.STALE_BY_MINUTES.toString(),
                     }
                 )
             );
@@ -123,7 +123,7 @@ export class RegisterMeCommand implements Command {
                             data.lang(),
                             {
                                 IFC_USERNAME: this.ifcUsername,
-                                STALE_MINUTES: Config.modelConstants.verifyInfiniteFlightUserIdTicket.staleByMinutes,
+                                STALE_MINUTES: Config.modelConstants.verifyInfiniteFlightUserIdTicket.STALE_BY_MINUTES.toString(),
 
                                 // We don't randomize these, but maybe in the future.
                                 SERVER: 'Casual Server',

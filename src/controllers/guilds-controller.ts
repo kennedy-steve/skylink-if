@@ -4,15 +4,14 @@ import router from 'express-promise-router';
 
 import { GetGuildsResponse } from '../models/cluster-api';
 import { Controller } from './controller';
-
-let Config = require('../../config/config.json');
+import { Config } from '../config';
 
 export class GuildsController implements Controller {
     public path = '/guilds';
     public router: Router = router();
-    public authToken: string = Config.api.secret;
+    public authToken: string = Config.api.SECRET;
 
-    constructor(private shardManager: ShardingManager) {}
+    constructor(private shardManager: ShardingManager) { }
 
     public register(): void {
         this.router.get('/', (req, res) => this.getGuilds(req, res));

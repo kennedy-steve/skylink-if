@@ -29,20 +29,19 @@ import {
 import { CustomClient } from './extensions';
 import { NotifyActiveInfiniteFlightUsersJob } from './jobs';
 import { JobService, Logger } from './services';
+import { Config } from './config';
 
-let Config = require('../config/config.json');
 let Logs = require('../lang/logs.json');
 
 async function start(): Promise<void> {
-    require('dotenv').config();
     let client = new CustomClient({
-        intents: Config.client.intents,
-        partials: Config.client.partials,
+        intents: Config.client.INTENTS,
+        partials: Config.client.PARTIALS,
         makeCache: Options.cacheWithLimits({
             // Keep default caching behavior
             ...Options.defaultMakeCacheSettings,
             // Override specific options from config
-            ...Config.client.caches,
+            ...Config.client.CACHES,
         }),
     });
 
@@ -74,7 +73,7 @@ async function start(): Promise<void> {
     ]);
 
     let bot = new Bot(
-        Config.client.token,
+        Config.client.TOKEN,
         client,
         guildJoinHandler,
         guildLeaveHandler,
@@ -104,10 +103,10 @@ async function registerCommands(commands: Command[]): Promise<void> {
     );
 
     try {
-        let rest = new REST({ version: '9' }).setToken(Config.client.token);
+        let rest = new REST({ version: '9' }).setToken(Config.client.TOKEN);
         //await rest.put(Routes.applicationCommands(Config.client.id), { body: [] });
         //await rest.put(Routes.applicationCommands(Config.client.id), { body: cmdDatas });
-        await rest.put(Routes.applicationGuildCommands(Config.client.id, "910003714885042207"), { body: cmdDatas })
+        await rest.put(Routes.applicationGuildCommands(Config.client.ID, "910003714885042207"), { body: cmdDatas })
     } catch (error) {
         Logger.error(Logs.error.commandsRegistering, error);
         return;

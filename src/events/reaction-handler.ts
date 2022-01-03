@@ -4,16 +4,15 @@ import { RateLimiter } from 'discord.js-rate-limiter';
 import { EventHandler } from '.';
 import { EventData } from '../models/internal-models';
 import { Reaction } from '../reactions';
-
-let Config = require('../../config/config.json');
+import { Config } from '../config';
 
 export class ReactionHandler implements EventHandler {
     private rateLimiter = new RateLimiter(
-        Config.rateLimiting.reactions.amount,
-        Config.rateLimiting.reactions.interval * 1000
+        Config.rateLimiting.reactions.AMOUNT,
+        Config.rateLimiting.reactions.INTERVAL * 1000
     );
 
-    constructor(private reactions: Reaction[]) {}
+    constructor(private reactions: Reaction[]) { }
 
     public async process(msgReaction: MessageReaction, reactor: User): Promise<void> {
         let msg = msgReaction.message;

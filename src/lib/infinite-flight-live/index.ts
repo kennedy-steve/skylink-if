@@ -13,12 +13,11 @@ import {
     InfiniteFlightSession,
     InfiniteFlightStatus,
 } from './types';
-
-let Config = require('../../../config/config.json');
+import { Config } from '../../config';
 
 const test = 2;
 
-const IF_API_KEY = Config.infiniteFlight.apiKey;
+const IF_API_KEY = Config.infiniteFlight.API_KEY;
 const URLBASE = 'https://api.infiniteflight.com/public/v2';
 
 export async function getSessionInfos(): Promise<SessionInfo[]> {

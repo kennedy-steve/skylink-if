@@ -5,15 +5,16 @@ import { BotSite } from '../models/config-models';
 import { HttpService, Lang, Logger } from '../services';
 import { ShardUtils } from '../utils';
 import { Job } from './job';
+import { Config } from '../config';
 
-let Config = require('../../config/config.json');
-let BotSites: BotSite[] = require('../../config/bot-sites.json');
+let BotSites: BotSite[] = Config.BOT_SITES;
+
 let Logs = require('../../lang/logs.json');
 
 export class UpdateServerCountJob implements Job {
     public name = 'Update Server Count';
-    public schedule: string = Config.jobs.updateServerCount.schedule;
-    public log: boolean = Config.jobs.updateServerCount.log;
+    public schedule: string = Config.jobs.updateServerCount.SCHEDULE;
+    public log: boolean = Config.jobs.updateServerCount.LOG;
 
     private botSites: BotSite[];
 

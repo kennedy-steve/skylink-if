@@ -1,82 +1,8 @@
-import { Constants, PartialTypes } from "discord.js";
+import { Constants, PartialTypes, ShardingManager, ShardingManagerMode } from "discord.js";
 
-interface BaseConfig {
-    client: {
-        ID: string;
-        TOKEN: string;
-        INTENTS: any[];
-        PARTIALS: PartialTypes[];
-        CACHES: {
-            [key: string]: number
-        }
-    }
+import { BaseConfig } from "./models/config-models";
 
-    DEVELOPERS: string[];
-
-    infiniteFlight: {
-        API_KEY: string;
-    }
-
-    api: {
-        PORT: number;
-        SECRET: string;
-    }
-
-    sharding: {
-        SPAWN_DELAY: number;
-        SPAWN_TIMEOUT: number;
-        SERVERS_PER_SHARD: number;
-    }
-
-    clustering: {
-        ENABLED: boolean;
-        SHARD_COUNT: number;
-        CALLBACK_URL: string;
-        masterApi: {
-            URL: string;
-            TOKEN: string;
-        }
-    }
-
-    jobs: {
-        updateServerCount: {
-            SCHEDULE: string;
-            LOG: boolean;
-        }
-        notifyActiveInfiniteFlightUsers: {
-            SCHEDULE: string;
-            LOG: boolean;
-        }
-    }
-
-    rateLimiting: {
-        commands: {
-            amount: number;
-            interval: number;
-        }
-        triggers: {
-            amount: number;
-            interval: number;
-        }
-        reactions: {
-            amount: number;
-            interval: number;
-        }
-    }
-
-    logging: {
-        PRETTY: boolean;
-        rateLimit: {
-            MIN_TIMEOUT: number;
-        }
-    }
-
-    modelConstants: {
-        verifyInfiniteFlightUserIdTicket: {
-            STALE_BY_MINUTES: number;
-        }
-    }
-}
+require('dotenv').config();
 
 export const Config: BaseConfig = {
     client: {
@@ -108,9 +34,7 @@ export const Config: BaseConfig = {
         },
     },
 
-    DEVELOPERS: [
-        process.env.OWNER_DISCORD_ID,
-    ],
+    DEVELOPERS: process.env.DEVELOPERS ? process.env.DEVELOPERS.split(",") : [],
 
     infiniteFlight: {
         API_KEY: process.env.INFINITE_FLIGHT_API_KEY,
@@ -128,6 +52,8 @@ export const Config: BaseConfig = {
     },
 
     clustering: {
+
+        // False by default
         ENABLED: process.env.CLUSTERING_ENABLED === "true",
         SHARD_COUNT: parseInt(process.env.SHARD_COUNT) || 16,
         CALLBACK_URL: process.env.CALLBACK_URL || "http://localhost:8080/",
@@ -139,32 +65,39 @@ export const Config: BaseConfig = {
 
     jobs: {
         updateServerCount: {
+            // Every 10 minutes by default
             SCHEDULE: process.env.UPDATE_SERVER_COUNT_SCHEDULE || "0 */10 * * * *",
-            LOG: process.env.UPDATE_SERVER_COUNT_LOG === "true",
+
+            // True by default -- we want to log the job
+            LOG: (process.env.UPDATE_SERVER_COUNT_LOG || "true") === "true",
         },
         notifyActiveInfiniteFlightUsers: {
+            // Every minute by default
             SCHEDULE: process.env.NOTIFY_ACTIVE_INFINITE_FLIGHT_USERS_SCHEDULE || "0 */1 * * * *",
-            LOG: process.env.NOTIFY_ACTIVE_INFINITE_FLIGHT_USERS_LOG === "true",
+
+            // True by default -- we want to log this job
+            LOG: (process.env.NOTIFY_ACTIVE_INFINITE_FLIGHT_USERS_LOG || "true") === "true",
         },
     },
 
     rateLimiting: {
         commands: {
-            amount: parseInt(process.env.COMMANDS_AMOUNT) || 10,
-            interval: parseInt(process.env.COMMANDS_INTERVAL) || 30,
+            AMOUNT: parseInt(process.env.COMMANDS_AMOUNT) || 10,
+            INTERVAL: parseInt(process.env.COMMANDS_INTERVAL) || 30,
         },
         triggers: {
-            amount: parseInt(process.env.TRIGGERS_AMOUNT) || 10,
-            interval: parseInt(process.env.TRIGGERS_INTERVAL) || 30,
+            AMOUNT: parseInt(process.env.TRIGGERS_AMOUNT) || 10,
+            INTERVAL: parseInt(process.env.TRIGGERS_INTERVAL) || 30,
         },
         reactions: {
-            amount: parseInt(process.env.REACTIONS_AMOUNT) || 10,
-            interval: parseInt(process.env.REACTIONS_INTERVAL) || 30,
+            AMOUNT: parseInt(process.env.REACTIONS_AMOUNT) || 10,
+            INTERVAL: parseInt(process.env.REACTIONS_INTERVAL) || 30,
         },
     },
 
     logging: {
-        PRETTY: process.env.LOGGING_PRETTY === "true",
+        // True by default -- pretty is good for debugging
+        PRETTY: (process.env.LOGGING_PRETTY || "true") === "true",
         rateLimit: {
             MIN_TIMEOUT: parseInt(process.env.LOGGING_RATELIMIT_MIN_TIMEOUT) || 30,
         },
@@ -175,4 +108,34 @@ export const Config: BaseConfig = {
             STALE_BY_MINUTES: parseInt(process.env.VERIFY_INFINITE_FLIGHT_USER_ID_TICKET_STALE_BY_MINUTES) || 15,
         },
     },
+
+    development: {
+        dummyMode: {
+            // False by default
+            ENABLED: process.env.DUMMY_MODE_ENABLED === "true",
+            WHITE_LIST: process.env.DUMMY_MODE_WHITE_LIST ? process.env.DUMMY_MODE_WHITE_LIST.split(",") : [],
+        },
+
+        // True by default -- it's good to make sure check permissions is working
+        CHECK_PERMS: (process.env.CHECK_PERMS || "true") === "true",
+
+        shardMode: {
+            // False by default
+            ENABLED: process.env.SHARD_MODE_ENABLED === "true",
+
+            // Process by default
+            VALUE: (process.env.SHARD_MODE_VALUE || "process") as ShardingManagerMode,
+        }
+
+    },
+
+    BOT_SITES: [
+        {
+            name: "top.gg",
+            enabled: process.env.TOPGG_ENABLED === "true",
+            url: `https://top.gg/bot/${process.env.CLIENT_ID}`,
+            authorization: process.env.TOPGG_TOKEN,
+            body: "{\"server_count\":{{SERVER_COUNT}}}"
+        }
+    ]
 };
