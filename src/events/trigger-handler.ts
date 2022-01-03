@@ -1,18 +1,17 @@
 import { Message } from 'discord.js';
 import { RateLimiter } from 'discord.js-rate-limiter';
 
+import { Config } from '../config';
 import { EventData } from '../models/internal-models';
 import { Trigger } from '../triggers';
 
-let Config = require('../../config/config.json');
-
 export class TriggerHandler {
     private rateLimiter = new RateLimiter(
-        Config.rateLimiting.triggers.amount,
-        Config.rateLimiting.triggers.interval * 1000
+        Config.rateLimiting.triggers.AMOUNT,
+        Config.rateLimiting.triggers.INTERVAL * 1000
     );
 
-    constructor(private triggers: Trigger[]) {}
+    constructor(private triggers: Trigger[]) { }
 
     public async process(msg: Message): Promise<void> {
         // Find triggers caused by this message

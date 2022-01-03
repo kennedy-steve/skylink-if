@@ -22,7 +22,8 @@
         "start:pm2": "npm run build && npm run pm2:start",
         "pm2:start": "pm2 start process.json",
         "pm2:stop": "pm2 stop process.json",
-        "pm2:delete": "pm2 delete process.json"
+        "pm2:delete": "pm2 delete process.json",
+        "update:infinite-flight-data": "ts-node ./src/scripts/update-infinite-flight-data.ts"
     },
     "dependencies": {
         "@discordjs/rest": "0.1.0-canary.0",
@@ -32,6 +33,7 @@
         "discord-api-types": "0.24.0",
         "discord.js": "13.3.1",
         "discord.js-rate-limiter": "1.2.3",
+        "dotenv": "^10.0.0",
         "express": "4.17.1",
         "express-promise-router": "4.1.0",
         "filesize": "8.0.6",

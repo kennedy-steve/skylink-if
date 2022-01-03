@@ -9,6 +9,7 @@ import {
     User,
 } from 'discord.js';
 
+import { Config } from './config';
 import {
     CommandHandler,
     GuildJoinHandler,
@@ -19,8 +20,6 @@ import {
 import { JobService, Logger } from './services';
 import { PartialUtils } from './utils';
 
-let Config = require('../config/config.json');
-let Debug = require('../config/debug.json');
 let Logs = require('../lang/logs.json');
 
 export class Bot {
@@ -35,7 +34,7 @@ export class Bot {
         private commandHandler: CommandHandler,
         private reactionHandler: ReactionHandler,
         private jobService: JobService
-    ) {}
+    ) { }
 
     public async start(): Promise<void> {
         this.registerListeners();
@@ -75,7 +74,7 @@ export class Bot {
         let userTag = this.client.user.tag;
         Logger.info(Logs.info.clientLogin.replaceAll('{USER_TAG}', userTag));
 
-        if (!Debug.dummyMode.enabled) {
+        if (!Config.development.dummyMode.ENABLED) {
             this.jobService.start();
         }
 
@@ -88,7 +87,7 @@ export class Bot {
     }
 
     private async onGuildJoin(guild: Guild): Promise<void> {
-        if (!this.ready || Debug.dummyMode.enabled) {
+        if (!this.ready || Config.development.dummyMode.ENABLED) {
             return;
         }
 
@@ -100,7 +99,7 @@ export class Bot {
     }
 
     private async onGuildLeave(guild: Guild): Promise<void> {
-        if (!this.ready || Debug.dummyMode.enabled) {
+        if (!this.ready || Config.development.dummyMode.ENABLED) {
             return;
         }
 
@@ -114,7 +113,7 @@ export class Bot {
     private async onMessage(msg: Message): Promise<void> {
         if (
             !this.ready ||
-            (Debug.dummyMode.enabled && !Debug.dummyMode.whitelist.includes(msg.author.id))
+            (Config.development.dummyMode.ENABLED && !Config.development.dummyMode.WHITE_LIST.includes(msg.author.id))
         ) {
             return;
         }
@@ -135,7 +134,7 @@ export class Bot {
         if (
             !intr.isCommand() ||
             !this.ready ||
-            (Debug.dummyMode.enabled && !Debug.dummyMode.whitelist.includes(intr.user.id))
+            (Config.development.dummyMode.ENABLED && !Config.development.dummyMode.WHITE_LIST.includes(intr.user.id))
         ) {
             return;
         }
@@ -150,7 +149,7 @@ export class Bot {
     private async onReaction(msgReaction: MessageReaction, reactor: User): Promise<void> {
         if (
             !this.ready ||
-            (Debug.dummyMode.enabled && !Debug.dummyMode.whitelist.includes(reactor.id))
+            (Config.development.dummyMode.ENABLED && !Config.development.dummyMode.WHITE_LIST.includes(reactor.id))
         ) {
             return;
         }
@@ -168,7 +167,7 @@ export class Bot {
     }
 
     private async onRateLimit(rateLimitData: RateLimitData): Promise<void> {
-        if (rateLimitData.timeout >= Config.logging.rateLimit.minTimeout * 1000) {
+        if (rateLimitData.timeout >= Config.logging.rateLimit.MIN_TIMEOUT * 1000) {
             Logger.error(Logs.error.apiRateLimit, rateLimitData);
         }
     }

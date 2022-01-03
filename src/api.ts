@@ -1,11 +1,11 @@
 import express, { Express } from 'express';
 import util from 'util';
 
+import { Config } from './config';
 import { Controller } from './controllers';
 import { checkAuth, handleError } from './middleware';
 import { Logger } from './services';
 
-let Config = require('../config/config.json');
 let Logs = require('../lang/logs.json');
 
 export class Api {
@@ -20,8 +20,8 @@ export class Api {
 
     public async start(): Promise<void> {
         let listen = util.promisify(this.app.listen.bind(this.app));
-        await listen(Config.api.port);
-        Logger.info(Logs.info.apiStarted.replaceAll('{PORT}', Config.api.port));
+        await listen(Config.api.PORT);
+        Logger.info(Logs.info.apiStarted.replaceAll('{PORT}', Config.api.PORT));
     }
 
     private setupControllers(): void {

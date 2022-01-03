@@ -3,6 +3,7 @@ import { ActivePilotNotificationsChannel, Prisma, User, VerifyInfiniteFlightUser
 
 import { ActiveControllerNotificationsChannel } from '@prisma/client';
 import { validateSync } from 'class-validator';
+import { Config } from '../config';
 import { CustomClient } from '../extensions';
 import * as infiniteFlightLive from '../lib/infinite-flight-live';
 import { AtcEntry, FlightEntry, FrequencyType, InfiniteFlightSession, InfiniteFlightStatus } from '../lib/infinite-flight-live/types';
@@ -14,14 +15,13 @@ import { ClientUtils, MessageUtils, ShardUtils } from '../utils';
 import { VerifyInfiniteFlightUserIdTicketUtils } from '../utils/verify-infinite-flight-user-id-ticket-utils';
 import { Job } from './job';
 
-let Config = require('../../config/config.json');
 let AircraftNames = require('../../infinite-flight-data/aircraft-names.json');
 let LiveryNames = require('../../infinite-flight-data/livery-names.json');
 
 export class NotifyActiveInfiniteFlightUsersJob implements Job {
     public name = 'Notify Active Infinite Flight Users';
-    public schedule: string = Config.jobs.notifyActiveInfiniteFlightUsers.schedule
-    public log: boolean = Config.jobs.notifyActiveInfiniteFlightUsers.log;
+    public schedule: string = Config.jobs.notifyActiveInfiniteFlightUsers.SCHEDULE
+    public log: boolean = Config.jobs.notifyActiveInfiniteFlightUsers.LOG;
 
     private infiniteFlightStatus: InfiniteFlightStatus;
     private client: Client;
@@ -422,7 +422,7 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
                             'registerMeEmbeds.unsuccessfullVerification',
                             LangCode.EN_US,
                             {
-                                STALE_MINUTES: Config.modelConstants.verifyInfiniteFlightUserIdTicket.staleByMinutes,
+                                STALE_MINUTES: Config.modelConstants.verifyInfiniteFlightUserIdTicket.STALE_BY_MINUTES.toString(),
                             }
                         )
                     )

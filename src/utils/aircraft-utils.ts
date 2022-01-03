@@ -1,4 +1,3 @@
-import { Aircraft } from "../lib/infinite-flight-live/types";
 import { Logger } from "../services";
 
 let InfiniteFlightPlanes = require('../../infinite-flight-data/aircraft-and-liveries-list.json');
