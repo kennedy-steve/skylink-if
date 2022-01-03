@@ -10,10 +10,10 @@ import { RateLimiter } from 'discord.js-rate-limiter';
 
 import { EventHandler } from '.';
 import { Command } from '../commands';
+import { Config } from '../config';
 import { EventData } from '../models/internal-models';
 import { Lang, Logger } from '../services';
 import { MessageUtils, PermissionUtils } from '../utils';
-import { Config } from '../config';
 
 let Logs = require('../../lang/logs.json');
 

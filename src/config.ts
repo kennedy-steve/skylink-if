@@ -1,6 +1,6 @@
-import { Constants, PartialTypes, ShardingManager, ShardingManagerMode } from "discord.js";
+import { Constants, PartialTypes, ShardingManager, ShardingManagerMode } from 'discord.js';
 
-import { BaseConfig } from "./models/config-models";
+import { BaseConfig } from './models/config-models';
 
 require('dotenv').config();
 
@@ -9,11 +9,11 @@ export const Config: BaseConfig = {
         ID: process.env.CLIENT_ID,
         TOKEN: process.env.CLIENT_TOKEN,
         INTENTS: [
-            "GUILDS",
-            "GUILD_MESSAGES",
-            "GUILD_MESSAGE_REACTIONS",
-            "DIRECT_MESSAGES",
-            "DIRECT_MESSAGE_REACTIONS"
+            'GUILDS',
+            'GUILD_MESSAGES',
+            'GUILD_MESSAGE_REACTIONS',
+            'DIRECT_MESSAGES',
+            'DIRECT_MESSAGE_REACTIONS'
         ],
         PARTIALS: [
             Constants.PartialTypes.MESSAGE,
@@ -21,20 +21,20 @@ export const Config: BaseConfig = {
             Constants.PartialTypes.REACTION,
         ],
         CACHES: {
-            "BaseGuildEmojiManager": 0,
-            "GuildBanManager": 0,
-            "GuildInviteManager": 0,
-            "GuildStickerManager": 0,
-            "MessageManager": 0,
-            "PresenceManager": 0,
-            "StageInstanceManager": 0,
-            "ThreadManager": 0,
-            "ThreadMemberManager": 0,
-            "VoiceStateManager": 0,
+            'BaseGuildEmojiManager': 0,
+            'GuildBanManager': 0,
+            'GuildInviteManager': 0,
+            'GuildStickerManager': 0,
+            'MessageManager': 0,
+            'PresenceManager': 0,
+            'StageInstanceManager': 0,
+            'ThreadManager': 0,
+            'ThreadMemberManager': 0,
+            'VoiceStateManager': 0,
         },
     },
 
-    DEVELOPERS: process.env.DEVELOPERS ? process.env.DEVELOPERS.split(",") : [],
+    DEVELOPERS: process.env.DEVELOPERS ? process.env.DEVELOPERS.split(',') : [],
 
     infiniteFlight: {
         API_KEY: process.env.INFINITE_FLIGHT_API_KEY,
@@ -42,7 +42,7 @@ export const Config: BaseConfig = {
 
     api: {
         PORT: parseInt(process.env.API_PORT) || 8080,
-        SECRET: process.env.API_SECRET || "00000000-0000-0000-0000-000000000000",
+        SECRET: process.env.API_SECRET || '00000000-0000-0000-0000-000000000000',
     },
 
     sharding: {
@@ -54,29 +54,29 @@ export const Config: BaseConfig = {
     clustering: {
 
         // False by default
-        ENABLED: process.env.CLUSTERING_ENABLED === "true",
+        ENABLED: process.env.CLUSTERING_ENABLED === 'true',
         SHARD_COUNT: parseInt(process.env.SHARD_COUNT) || 16,
-        CALLBACK_URL: process.env.CALLBACK_URL || "http://localhost:8080/",
+        CALLBACK_URL: process.env.CALLBACK_URL || 'http://localhost:8080/',
         masterApi: {
-            URL: process.env.MASTER_API_URL || "http://localhost:5000/",
-            TOKEN: process.env.MASTER_API_TOKEN || "00000000-0000-0000-0000-000000000000",
+            URL: process.env.MASTER_API_URL || 'http://localhost:5000/',
+            TOKEN: process.env.MASTER_API_TOKEN || '00000000-0000-0000-0000-000000000000',
         },
     },
 
     jobs: {
         updateServerCount: {
             // Every 10 minutes by default
-            SCHEDULE: process.env.UPDATE_SERVER_COUNT_SCHEDULE || "0 */10 * * * *",
+            SCHEDULE: process.env.UPDATE_SERVER_COUNT_SCHEDULE || '0 */10 * * * *',
 
             // True by default -- we want to log the job
-            LOG: (process.env.UPDATE_SERVER_COUNT_LOG || "true") === "true",
+            LOG: (process.env.UPDATE_SERVER_COUNT_LOG || 'true') === 'true',
         },
         notifyActiveInfiniteFlightUsers: {
             // Every minute by default
-            SCHEDULE: process.env.NOTIFY_ACTIVE_INFINITE_FLIGHT_USERS_SCHEDULE || "0 */1 * * * *",
+            SCHEDULE: process.env.NOTIFY_ACTIVE_INFINITE_FLIGHT_USERS_SCHEDULE || '0 */1 * * * *',
 
             // True by default -- we want to log this job
-            LOG: (process.env.NOTIFY_ACTIVE_INFINITE_FLIGHT_USERS_LOG || "true") === "true",
+            LOG: (process.env.NOTIFY_ACTIVE_INFINITE_FLIGHT_USERS_LOG || 'true') === 'true',
         },
     },
 
@@ -97,7 +97,7 @@ export const Config: BaseConfig = {
 
     logging: {
         // True by default -- pretty is good for debugging
-        PRETTY: (process.env.LOGGING_PRETTY || "true") === "true",
+        PRETTY: (process.env.LOGGING_PRETTY || 'true') === 'true',
         rateLimit: {
             MIN_TIMEOUT: parseInt(process.env.LOGGING_RATELIMIT_MIN_TIMEOUT) || 30,
         },
@@ -112,30 +112,30 @@ export const Config: BaseConfig = {
     development: {
         dummyMode: {
             // False by default
-            ENABLED: process.env.DUMMY_MODE_ENABLED === "true",
-            WHITE_LIST: process.env.DUMMY_MODE_WHITE_LIST ? process.env.DUMMY_MODE_WHITE_LIST.split(",") : [],
+            ENABLED: process.env.DUMMY_MODE_ENABLED === 'true',
+            WHITE_LIST: process.env.DUMMY_MODE_WHITE_LIST ? process.env.DUMMY_MODE_WHITE_LIST.split(',') : [],
         },
 
         // True by default -- it's good to make sure check permissions is working
-        CHECK_PERMS: (process.env.CHECK_PERMS || "true") === "true",
+        CHECK_PERMS: (process.env.CHECK_PERMS || 'true') === 'true',
 
         shardMode: {
             // False by default
-            ENABLED: process.env.SHARD_MODE_ENABLED === "true",
+            ENABLED: process.env.SHARD_MODE_ENABLED === 'true',
 
             // Process by default
-            VALUE: (process.env.SHARD_MODE_VALUE || "process") as ShardingManagerMode,
+            VALUE: (process.env.SHARD_MODE_VALUE || 'process') as ShardingManagerMode,
         }
 
     },
 
     BOT_SITES: [
         {
-            name: "top.gg",
-            enabled: process.env.TOPGG_ENABLED === "true",
+            name: 'top.gg',
+            enabled: process.env.TOPGG_ENABLED === 'true',
             url: `https://top.gg/bot/${process.env.CLIENT_ID}`,
             authorization: process.env.TOPGG_TOKEN,
-            body: "{\"server_count\":{{SERVER_COUNT}}}"
+            body: '{"server_count":{{SERVER_COUNT}}}'
         }
     ]
 };

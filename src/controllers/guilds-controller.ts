@@ -2,9 +2,9 @@ import { ShardingManager } from 'discord.js';
 import { Request, Response, Router } from 'express';
 import router from 'express-promise-router';
 
+import { Config } from '../config';
 import { GetGuildsResponse } from '../models/cluster-api';
 import { Controller } from './controller';
-import { Config } from '../config';
 
 export class GuildsController implements Controller {
     public path = '/guilds';

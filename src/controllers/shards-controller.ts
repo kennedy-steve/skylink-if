@@ -2,6 +2,7 @@ import { ShardingManager } from 'discord.js';
 import { Request, Response, Router } from 'express';
 import router from 'express-promise-router';
 
+import { Config } from '../config';
 import { CustomClient } from '../extensions';
 import { mapClass } from '../middleware';
 import {
@@ -12,7 +13,6 @@ import {
 } from '../models/cluster-api';
 import { Logger } from '../services';
 import { Controller } from './controller';
-import { Config } from '../config';
 
 let Logs = require('../../lang/logs.json');
 

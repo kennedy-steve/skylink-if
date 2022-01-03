@@ -2,12 +2,12 @@ import { ShardingManager } from 'discord.js';
 import 'reflect-metadata';
 
 import { Api } from './api';
+import { Config } from './config';
 import { GuildsController, RootController, ShardsController } from './controllers';
 import { UpdateServerCountJob } from './jobs';
 import { Manager } from './manager';
 import { HttpService, JobService, Logger, MasterApiService } from './services';
 import { MathUtils, ShardUtils } from './utils';
-import { Config } from './config';
 
 let Logs = require('../lang/logs.json');
 

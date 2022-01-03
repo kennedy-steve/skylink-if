@@ -4,20 +4,21 @@ import { Options } from 'discord.js';
 
 import { Bot } from './bot';
 import {
+    AdminRegisterMeCommand,
     Command,
     DevCommand,
-    HelpCommand,
-    InfoCommand,
-    LinkCommand,
-    TestCommand,
-    TranslateCommand,
-    GetPilotCommand,
-    RegisterMeCommand,
-    InfiniteFlightStatusCommand,
-    AdminRegisterMeCommand,
     DisableNotificationsCommand,
     EnableNotificationsCommand,
+    GetPilotCommand,
+    HelpCommand,
+    InfiniteFlightStatusCommand,
+    InfoCommand,
+    LinkCommand,
+    RegisterMeCommand,
+    TestCommand,
+    TranslateCommand,
 } from './commands';
+import { Config } from './config';
 import {
     CommandHandler,
     GuildJoinHandler,
@@ -29,7 +30,6 @@ import {
 import { CustomClient } from './extensions';
 import { NotifyActiveInfiniteFlightUsersJob } from './jobs';
 import { JobService, Logger } from './services';
-import { Config } from './config';
 
 let Logs = require('../lang/logs.json');
 
@@ -104,9 +104,9 @@ async function registerCommands(commands: Command[]): Promise<void> {
 
     try {
         let rest = new REST({ version: '9' }).setToken(Config.client.TOKEN);
-        //await rest.put(Routes.applicationCommands(Config.client.id), { body: [] });
-        //await rest.put(Routes.applicationCommands(Config.client.id), { body: cmdDatas });
-        await rest.put(Routes.applicationGuildCommands(Config.client.ID, "910003714885042207"), { body: cmdDatas })
+        // await rest.put(Routes.applicationCommands(Config.client.id), { body: [] });
+        // await rest.put(Routes.applicationCommands(Config.client.id), { body: cmdDatas });
+        await rest.put(Routes.applicationGuildCommands(Config.client.ID, '910003714885042207'), { body: cmdDatas })
     } catch (error) {
         Logger.error(Logs.error.commandsRegistering, error);
         return;

@@ -2,9 +2,9 @@ import { MessageReaction, User } from 'discord.js';
 import { RateLimiter } from 'discord.js-rate-limiter';
 
 import { EventHandler } from '.';
+import { Config } from '../config';
 import { EventData } from '../models/internal-models';
 import { Reaction } from '../reactions';
-import { Config } from '../config';
 
 export class ReactionHandler implements EventHandler {
     private rateLimiter = new RateLimiter(

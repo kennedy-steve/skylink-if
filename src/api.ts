@@ -1,10 +1,10 @@
 import express, { Express } from 'express';
 import util from 'util';
 
+import { Config } from './config';
 import { Controller } from './controllers';
 import { checkAuth, handleError } from './middleware';
 import { Logger } from './services';
-import { Config } from './config';
 
 let Logs = require('../lang/logs.json');
 

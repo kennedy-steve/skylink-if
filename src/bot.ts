@@ -9,6 +9,7 @@ import {
     User,
 } from 'discord.js';
 
+import { Config } from './config';
 import {
     CommandHandler,
     GuildJoinHandler,
@@ -18,7 +19,6 @@ import {
 } from './events';
 import { JobService, Logger } from './services';
 import { PartialUtils } from './utils';
-import { Config } from './config';
 
 let Logs = require('../lang/logs.json');
 

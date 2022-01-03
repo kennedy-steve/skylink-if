@@ -1,4 +1,4 @@
-import { PartialTypes, ShardingManagerMode } from "discord.js";
+import { PartialTypes, ShardingManagerMode } from 'discord.js';
 
 export interface BotSite {
     name: string;

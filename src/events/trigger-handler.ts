@@ -1,9 +1,9 @@
 import { Message } from 'discord.js';
 import { RateLimiter } from 'discord.js-rate-limiter';
 
+import { Config } from '../config';
 import { EventData } from '../models/internal-models';
 import { Trigger } from '../triggers';
-import { Config } from '../config';
 
 export class TriggerHandler {
     private rateLimiter = new RateLimiter(

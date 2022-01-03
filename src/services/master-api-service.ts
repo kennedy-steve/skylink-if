@@ -1,12 +1,12 @@
 import { URL } from 'url';
 
 import { HttpService } from '.';
+import { Config } from '../config';
 import {
     LoginClusterResponse,
     RegisterClusterRequest,
     RegisterClusterResponse,
 } from '../models/master-api';
-import { Config } from '../config';
 
 export class MasterApiService {
     private clusterId: string;

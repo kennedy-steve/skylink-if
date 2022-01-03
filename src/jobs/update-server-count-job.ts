@@ -1,11 +1,11 @@
 import { ActivityType, ShardingManager } from 'discord.js';
 
+import { Config } from '../config';
 import { CustomClient } from '../extensions';
 import { BotSite } from '../models/config-models';
 import { HttpService, Lang, Logger } from '../services';
 import { ShardUtils } from '../utils';
 import { Job } from './job';
-import { Config } from '../config';
 
 let BotSites: BotSite[] = Config.BOT_SITES;
 

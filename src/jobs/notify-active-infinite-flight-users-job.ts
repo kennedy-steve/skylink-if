@@ -3,6 +3,7 @@ import { ActivePilotNotificationsChannel, Prisma, User, VerifyInfiniteFlightUser
 
 import { ActiveControllerNotificationsChannel } from '@prisma/client';
 import { validateSync } from 'class-validator';
+import { Config } from '../config';
 import { CustomClient } from '../extensions';
 import * as infiniteFlightLive from '../lib/infinite-flight-live';
 import { AtcEntry, FlightEntry, FrequencyType, InfiniteFlightSession, InfiniteFlightStatus } from '../lib/infinite-flight-live/types';
@@ -13,7 +14,6 @@ import { HttpService, Lang, Logger, prismaClient } from '../services';
 import { ClientUtils, MessageUtils, ShardUtils } from '../utils';
 import { VerifyInfiniteFlightUserIdTicketUtils } from '../utils/verify-infinite-flight-user-id-ticket-utils';
 import { Job } from './job';
-import { Config } from '../config';
 
 let AircraftNames = require('../../infinite-flight-data/aircraft-names.json');
 let LiveryNames = require('../../infinite-flight-data/livery-names.json');
