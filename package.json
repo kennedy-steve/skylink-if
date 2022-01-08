@@ -14,9 +14,8 @@
         "lint:fix": "tslint --fix --project .",
         "format": "prettier --check .",
         "format:fix": "prettier --write .",
-        "build": "tsc --project tsconfig.json",
+        "build": "prisma generate && tsc --project tsconfig.json",
         "register": "npm run build && node --enable-source-maps dist/start.js --register",
-        "prestart": "prisma generate",
         "start": "npm run build && node --enable-source-maps dist/start.js",
         "start:dev": "ts-node-dev --watch src/**/*.ts,config/**/*.json,lang/**/*.json src/start.ts",
         "start:shard": "npm run build && node --enable-source-maps dist/app.js",
@@ -24,7 +23,13 @@
         "pm2:start": "pm2 start process.json",
         "pm2:stop": "pm2 stop process.json",
         "pm2:delete": "pm2 delete process.json",
-        "update:infinite-flight-data": "ts-node ./src/scripts/update-infinite-flight-data.ts"
+        "update:infinite-flight-data": "ts-node ./src/scripts/update-infinite-flight-data.ts",
+        "db:push": "prisma db push --preview-feature",
+        "migrate:reset": "prisma migrate reset",
+        "migrate:create": "prisma migrate dev --create-only",
+        "migrate:dev": "prisma migrate dev",
+        "migrate:deploy": "prisma migrate deploy",
+        "prisma:generate": "prisma generate"
     },
     "dependencies": {
         "@discordjs/rest": "0.1.0-canary.0",

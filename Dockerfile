@@ -13,9 +13,6 @@ RUN npm install
 COPY . .
 
 # Build the project
-RUN npm run prestart
-
-# Build the project
 RUN npm run build
 
 # Expose ports
