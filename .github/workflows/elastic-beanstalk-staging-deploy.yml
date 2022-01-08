@@ -26,5 +26,5 @@ jobs:
         application_name: ${{ secrets.ELASTIC_BEANSTALK_APPLICATION_NAME }}
         environment_name: ${{ secrets.ELASTIC_BEANSTALK_ENVIRONMENT_NAME }}
         version_label: 12345
-        region: us-west-2
+        region: us-east-1
         deployment_package: deploy.zip
