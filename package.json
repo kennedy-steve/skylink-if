@@ -1,8 +1,8 @@
 {
-    "name": "my-bot",
+    "name": "skylink-if",
     "version": "1.0.0",
-    "author": "Kevin Novak",
-    "description": "A discord.js bot template written with TypeScript",
+    "author": "Nathaniel Louis Tisuela",
+    "description": "Bringing Infinite Flight to Discord",
     "license": "MIT",
     "private": true,
     "engines": {
