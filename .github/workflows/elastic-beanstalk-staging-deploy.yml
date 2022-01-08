@@ -18,10 +18,10 @@ jobs:
       run: zip -r deploy.zip . -x '*.git*'
 
     - name: Setup npm
-    - run: npm ci
-    - uses: actions/setup-node@v1
+      uses: actions/setup-node@v1
       with:
         node-version: '16.x'
+      run: npm ci
 
     - name: Run production migration
       run: npm run migrate:deploy
