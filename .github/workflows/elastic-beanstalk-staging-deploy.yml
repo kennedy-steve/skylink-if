@@ -1,0 +1,74 @@
+name: Deploy to Elastic Beanstalk Staging Environment
+on:
+  push:
+    branches:
+    - development
+    - elastic-beanstalk-config
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps TCP port 5432 on service container to the host
+          - 5432:5432
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/skylink-if
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+      - run: npm ci
+      # run the migration in the test database
+      - run: npm run db:push
+
+  deployment:
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+
+    - name: Checkout source code
+      uses: actions/checkout@v2
+
+    - name: Generate deployment package
+      run: zip -r deploy.zip . -x '*.git*'
+
+    - name: Setup npm
+      uses: actions/setup-node@v1
+      with:
+        node-version: '16.x'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run production migration
+      run: npm run migrate:deploy
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+
+    - name: Deploy to Elastic Beanstalk
+      uses: einaregilsson/beanstalk-deploy@v20
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        application_name: ${{ secrets.ELASTIC_BEANSTALK_APPLICATION_NAME }}
+        environment_name: ${{ secrets.ELASTIC_BEANSTALK_ENVIRONMENT_NAME }}
+        version_label: skylink-if-${{ github.run_number }}
+        region: us-east-1
+        deployment_package: deploy.zip
