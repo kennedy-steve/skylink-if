@@ -16,7 +16,18 @@ jobs:
 
     - name: Generate deployment package
       run: zip -r deploy.zip . -x '*.git*'
-  
+
+    - name: Setup npm
+    - run: npm ci
+    - uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+
+    - name: Run production migration
+      run: npm run migrate:deploy
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
 
     - name: Deploy to Elastic Beanstalk
       uses: einaregilsson/beanstalk-deploy@v20
@@ -25,6 +36,6 @@ jobs:
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         application_name: ${{ secrets.ELASTIC_BEANSTALK_APPLICATION_NAME }}
         environment_name: ${{ secrets.ELASTIC_BEANSTALK_ENVIRONMENT_NAME }}
-        version_label: ${{ github.run_number }}
+        version_label: skylink-if-${{ github.run_number }}
         region: us-east-1
         deployment_package: deploy.zip
