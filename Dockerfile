@@ -1,4 +1,4 @@
-FROM node:15
+FROM node:16
 
 # Create app directory
 WORKDIR /app
@@ -11,6 +11,9 @@ RUN npm install
 
 # Copy the app code
 COPY . .
+
+# Build the project
+RUN npm run prestart
 
 # Build the project
 RUN npm run build
