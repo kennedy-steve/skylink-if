@@ -21,6 +21,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: '16.x'
+
+    - name: Use npm ci
       run: npm ci
 
     - name: Run production migration
