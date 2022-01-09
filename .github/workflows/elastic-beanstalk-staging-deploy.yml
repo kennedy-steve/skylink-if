@@ -40,6 +40,7 @@ jobs:
   deployment:
     runs-on: ubuntu-latest
     environment: staging
+    depends-on: test
     steps:
 
     - name: Checkout source code
@@ -57,7 +58,7 @@ jobs:
       run: npm ci
 
     - name: Register commands
-      run: npm run register && sleep 10
+      run: npm run register && sleep 30
 
     - name: Run staging migration
       run: npm run migrate:deploy
