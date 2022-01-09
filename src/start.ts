@@ -52,7 +52,6 @@ async function start(): Promise<void> {
         new InfoCommand(),
         new LinkCommand(),
         new TestCommand(),
-        new TranslateCommand(),
         new GetPilotCommand(),
         new RegisterMeCommand(),
         new InfiniteFlightStatusCommand(),
@@ -104,9 +103,9 @@ async function registerCommands(commands: Command[]): Promise<void> {
 
     try {
         let rest = new REST({ version: '9' }).setToken(Config.client.TOKEN);
-        // await rest.put(Routes.applicationCommands(Config.client.id), { body: [] });
-        // await rest.put(Routes.applicationCommands(Config.client.id), { body: cmdDatas });
-        await rest.put(Routes.applicationGuildCommands(Config.client.ID, '910003714885042207'), { body: cmdDatas })
+        await rest.put(Routes.applicationCommands(Config.client.ID), { body: [] });
+        await rest.put(Routes.applicationCommands(Config.client.ID), { body: cmdDatas });
+        //await rest.put(Routes.applicationGuildCommands(Config.client.ID, '910003714885042207'), { body: cmdDatas })
     } catch (error) {
         Logger.error(Logs.error.commandsRegistering, error);
         return;

@@ -9,8 +9,11 @@
         "info": "info",
         "link": "link",
         "test": "test",
-        "get-pilot": "get-pilot",
-        "translate": "translate"
+        "getPilot": "get-pilot",
+        "translate": "translate",
+        "registerMe": "register-me",
+        "enableNotifications": "enable-notifications",
+        "disableNotifications": "disable-notifications"
     },
     "arguments": {
         "link": "link"
@@ -22,12 +25,14 @@
     },
     "links": {
         "invite": "https://discord.com/",
-        "docs": "https://top.gg/",
+        "docs": "https://skylink-if.tisuela.com/",
         "vote": "https://top.gg/",
-        "support": "https://support.discord.com/",
+        "support": "https://dsc.gg/skylink",
         "stream": "https://skylink-if.tisuela.com/",
-        "author": "https://github.com/",
-        "source": "https://github.com/",
-        "template": "https://github.com/KevinNovak/Discord-Bot-TypeScript-Template"
+        "author": "https://github.com/tisuela",
+        "source": "https://github.com/kennedy-steve/skylink-if",
+        "template": "https://github.com/KevinNovak/Discord-Bot-TypeScript-Template",
+        "github": "https://github.com/kennedy-steve/skylink-if",
+        "website": "https://skylink-if.tisuela.com/"
     }
 }
