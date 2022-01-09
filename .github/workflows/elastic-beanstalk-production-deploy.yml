@@ -1,9 +1,8 @@
-name: Deploy to Elastic Beanstalk Staging Environment
+name: Deploy to Elastic Beanstalk Production Environment
 on:
   push:
     branches:
-    - development
-    - elastic-beanstalk-config
+    - production
 
 jobs:
   test:
@@ -39,7 +38,7 @@ jobs:
 
   deployment:
     runs-on: ubuntu-latest
-    environment: staging
+    environment: production
     steps:
 
     - name: Checkout source code
@@ -56,19 +55,19 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
-    - name: Run staging migration
+    - name: Run production migration
       run: npm run migrate:deploy
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
 
-    - name: Deploy to Elastic Beanstalk Staging Environment
+    - name: Deploy to Elastic Beanstalk Production Environment
       uses: einaregilsson/beanstalk-deploy@v20
       with:
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         application_name: ${{ secrets.ELASTIC_BEANSTALK_APPLICATION_NAME }}
         environment_name: ${{ secrets.ELASTIC_BEANSTALK_ENVIRONMENT_NAME }}
-        version_label: skylink-if-staging-${{ github.run_number }}
+        version_label: skylink-if-production-${{ github.run_number }}
         region: us-east-1
         deployment_package: deploy.zip
