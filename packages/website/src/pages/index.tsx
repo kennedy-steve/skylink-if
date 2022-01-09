@@ -18,7 +18,7 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className='button button--primary button--lg'
-            to='https://forms.gle/NM17sCK82Wn75K337'>
+            to='https://discord.com/api/oauth2/authorize?client_id=929527099922993162&permissions=534723951680&scope=bot%20applications.commands'>
             Add to Discord
           </Link>
         </div>
