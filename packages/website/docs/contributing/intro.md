@@ -4,23 +4,13 @@ sidebar_position: 1
 
 # Introduction
 
-Hi I'm Nate, and I'll be introducing you to Skylink-IF. Skylink-IF development is not yet in full throttle. We still need to create and document a roadmap for the future of Skylink-IF before we lay down the code. 
+Hi I'm Nate, and I'll be introducing you to Skylink-IF. First of all, I want to give credit to [velocity23](https://github.com/velocity23) for his [Infinite Flight API Typescript library](https://github.com/velocity23/if-discord-bot/tree/master/src/lib/iflive) and [Kevin Novak](https://github.com/KevinNovak) for providing the [Discord Bot Typescript Template](https://github.com/KevinNovak/Discord-Bot-TypeScript-Template).
 
 :::tip Join Us
 
 To join our initial development team or have say in the decision process, [join our discord](https://dsc.gg/skylink). 
 
 :::
-
-## So when will development start?
-
-We want to have the following before we can start development as a team:
-
-    ✅ A Website
-    ✅ Proof-of-Concept Bot
-    🔄 Documentation for development
-    🔄 Suggested features from interested users
-    ⬜ Roadmap developed by core developers and stakeholders
 
 
 ## What do I need to install?

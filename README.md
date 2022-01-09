@@ -2,7 +2,7 @@
 
 [![CodeFactor](https://www.codefactor.io/repository/github/kennedy-steve/skylink-if/badge)](https://www.codefactor.io/repository/github/kennedy-steve/skylink-if)
 
-Brining Infinite Flight to Discord. Check out our [website](https://skylink-if.tisuela.com/). 
+Brining Infinite Flight to Discord. Check out our [website](https://skylink-if.tisuela.com/). Also, I want to give credit to [velocity23](https://github.com/velocity23) for his [Infinite Flight API Typescript library](https://github.com/velocity23/if-discord-bot/tree/master/src/lib/iflive) and [Kevin Novak](https://github.com/KevinNovak) for providing the [Discord Bot Typescript Template](https://github.com/KevinNovak/Discord-Bot-TypeScript-Template).
 
 
 ## Setup
