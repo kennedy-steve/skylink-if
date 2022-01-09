@@ -41,7 +41,4 @@ Brining Infinite Flight to Discord. Check out our [website](https://skylink-if.t
     - Use this mode for general development.
     - TypeScript files are compiled automatically as they are changed.
 
-## Huge Shoutout -- Bot Template
-
-Shoutout to [Kevin](https://github.com/KevinNovak) for creating [a Typescript Discord Bot Template](https://github.com/KevinNovak/Discord-Bot-TypeScript-Template) which is the foundation of Skylink-IF. Highly encourage y'all to [check out that template](https://github.com/KevinNovak/Discord-Bot-TypeScript-Template)!
 
