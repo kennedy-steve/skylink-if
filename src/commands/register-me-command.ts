@@ -127,7 +127,7 @@ export class RegisterMeCommand implements Command {
 
                                 // We don't randomize these, but maybe in the future.
                                 SERVER: 'Casual Server',
-                                AIRPORT_ICAO: 'Any airport is fine, though my favorite airport is KSMF. But seriously, any airport will do.',
+                                AIRPORT_ICAO: 'Any airport is fine 😉',
 
                                 AIRCRAFT_NAME: newVerifyInfiniteFlightUserIdTicket.aircraftName,
                                 LIVERY_NAME: newVerifyInfiniteFlightUserIdTicket.liveryName,
