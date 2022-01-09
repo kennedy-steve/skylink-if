@@ -2,13 +2,13 @@ import { VerifyInfiniteFlightUserIdTicket } from "@prisma/client";
 import { FlightEntry } from "../lib/infinite-flight-live/types";
 import { Logger } from "../services";
 
-let Config = require('../../config/config.json');
+import { Config } from '../config';
 
 export class VerifyInfiniteFlightUserIdTicketUtils {
     public static getFreshTicketsCutoffDateTime(): Date {
         const currentDateTime: Date = new Date();
         const millisecondsPerMinute: number = 60000
-        const staleByMilliseconds: number = Config.modelConstants.verifyInfiniteFlightUserIdTicket.staleByMinutes * millisecondsPerMinute;
+        const staleByMilliseconds: number = Config.modelConstants.verifyInfiniteFlightUserIdTicket.STALE_BY_MINUTES * millisecondsPerMinute;
         const freshTicketsDateTime: Date = new Date(currentDateTime.getTime() - staleByMilliseconds);
 
         return freshTicketsDateTime;

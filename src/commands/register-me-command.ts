@@ -1,6 +1,7 @@
 import { ApplicationCommandData, CommandInteraction, GuildMember, User as DiscordUser } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 
+import { Config } from '../config';
 import * as infiniteFlightLive from '../lib/infinite-flight-live';
 import { Aircraft, UserStats } from '../lib/infinite-flight-live/types';
 import { EventData } from '../models/internal-models';
@@ -10,7 +11,6 @@ import { VerifyInfiniteFlightUserIdTicketUtils } from '../utils/verify-infinite-
 import { Command } from './command';
 import { prisma, Prisma, User, VerifyInfiniteFlightUserIdTicket } from '.prisma/client';
 
-let Config = require('../../config/config.json');
 let InfiniteFlightPlanes = require('../../infinite-flight-data/aircraft-and-liveries-list.json');
 
 export class RegisterMeCommand implements Command {
@@ -49,7 +49,7 @@ export class RegisterMeCommand implements Command {
                     'validationEmbeds.registerMeuserHadFreshVerificationTicket',
                     data.lang(),
                     {
-                        STALE_MINUTES: Config.modelConstants.verifyInfiniteFlightUserIdTicket.staleByMinutes,
+                        STALE_MINUTES: Config.modelConstants.verifyInfiniteFlightUserIdTicket.STALE_BY_MINUTES.toString(),
                     }
                 )
             );
@@ -123,7 +123,7 @@ export class RegisterMeCommand implements Command {
                             data.lang(),
                             {
                                 IFC_USERNAME: this.ifcUsername,
-                                STALE_MINUTES: Config.modelConstants.verifyInfiniteFlightUserIdTicket.staleByMinutes,
+                                STALE_MINUTES: Config.modelConstants.verifyInfiniteFlightUserIdTicket.STALE_BY_MINUTES.toString(),
 
                                 // We don't randomize these, but maybe in the future.
                                 SERVER: 'Casual Server',

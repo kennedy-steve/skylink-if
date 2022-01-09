@@ -2,6 +2,7 @@ import { ShardingManager } from 'discord.js';
 import { Request, Response, Router } from 'express';
 import router from 'express-promise-router';
 
+import { Config } from '../config';
 import { CustomClient } from '../extensions';
 import { mapClass } from '../middleware';
 import {
@@ -13,15 +14,14 @@ import {
 import { Logger } from '../services';
 import { Controller } from './controller';
 
-let Config = require('../../config/config.json');
 let Logs = require('../../lang/logs.json');
 
 export class ShardsController implements Controller {
     public path = '/shards';
     public router: Router = router();
-    public authToken: string = Config.api.secret;
+    public authToken: string = Config.api.SECRET;
 
-    constructor(private shardManager: ShardingManager) {}
+    constructor(private shardManager: ShardingManager) { }
 
     public register(): void {
         this.router.get('/', (req, res) => this.getShards(req, res));

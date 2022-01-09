@@ -2,7 +2,7 @@ import { DiscordAPIError } from 'discord.js';
 import { Response } from 'node-fetch';
 import pino from 'pino';
 
-let Config = require('../../config/config.json');
+import { Config } from '../config';
 
 let logger = pino(
     {
@@ -12,15 +12,15 @@ let logger = pino(
             },
         },
     },
-    Config.logging.pretty
+    Config.logging.PRETTY
         ? pino.transport({
-              target: 'pino-pretty',
-              options: {
-                  colorize: true,
-                  ignore: 'pid,hostname',
-                  translateTime: 'yyyy-mm-dd HH:MM:ss.l',
-              },
-          })
+            target: 'pino-pretty',
+            options: {
+                colorize: true,
+                ignore: 'pid,hostname',
+                translateTime: 'yyyy-mm-dd HH:MM:ss.l',
+            },
+        })
         : undefined
 );
 

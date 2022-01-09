@@ -15,25 +15,25 @@
         "aircraftId": "982dd974-5be7-4369-90c6-bd92863632ba",
         "aircraftName": "Airbus A318",
         "liveryId": "20bcdb6b-854f-44ee-addc-b30fb5acfe05",
-        "liveryName": "ACJ Livery 1"
+        "liveryName": "ACJ livery 1"
     },
     {
         "aircraftId": "982dd974-5be7-4369-90c6-bd92863632ba",
         "aircraftName": "Airbus A318",
         "liveryId": "3390fa9c-61f7-4c10-97c4-d0f25a526dfd",
-        "liveryName": "ACJ Livery 2"
+        "liveryName": "ACJ livery 2"
     },
     {
         "aircraftId": "982dd974-5be7-4369-90c6-bd92863632ba",
         "aircraftName": "Airbus A318",
         "liveryId": "b6481163-3cbf-4212-9616-0bf99b6ac3c3",
-        "liveryName": "ACJ Livery 3"
+        "liveryName": "ACJ livery 3"
     },
     {
         "aircraftId": "982dd974-5be7-4369-90c6-bd92863632ba",
         "aircraftName": "Airbus A318",
         "liveryId": "268bcb25-0236-45e7-bc24-f5dd596381a7",
-        "liveryName": "ACJ Livery 4"
+        "liveryName": "ACJ livery 4"
     },
     {
         "aircraftId": "982dd974-5be7-4369-90c6-bd92863632ba",
@@ -93,7 +93,7 @@
         "aircraftId": "982dd974-5be7-4369-90c6-bd92863632ba",
         "aircraftName": "Airbus A318",
         "liveryId": "2ad3f632-b9ca-4510-b12f-3047be8383ef",
-        "liveryName": "ACJ Livery 5"
+        "liveryName": "ACJ livery 5"
     },
     {
         "aircraftId": "2c2f162e-a7d9-4ebd-baf4-859aed36165a",
@@ -957,7 +957,7 @@
         "aircraftId": "6af2c9f8-abd8-4872-a9bc-4e79fd84fe77",
         "aircraftName": "Airbus A330-300",
         "liveryId": "88cd6503-d375-493e-87e3-32fa4395b93b",
-        "liveryName": "Egypt Air"
+        "liveryName": "EgyptAir"
     },
     {
         "aircraftId": "6af2c9f8-abd8-4872-a9bc-4e79fd84fe77",
@@ -2229,7 +2229,7 @@
         "aircraftId": "e258f6d4-4503-4dde-b25c-1fb9067061e2",
         "aircraftName": "Boeing 777-300ER",
         "liveryId": "1d7f7721-6932-46a7-abdc-b74816da4ab0",
-        "liveryName": "Egypt Air"
+        "liveryName": "EgyptAir"
     },
     {
         "aircraftId": "e258f6d4-4503-4dde-b25c-1fb9067061e2",
@@ -2703,7 +2703,7 @@
         "aircraftId": "f60a537d-5f83-4b68-8f66-b5f76d1e1775",
         "aircraftName": "Boeing 737-800",
         "liveryId": "a1a53d68-462a-4a4a-afe2-02361297f048",
-        "liveryName": "Aerol∩┐╜neas Argentinas"
+        "liveryName": "Aerol�neas Argentinas"
     },
     {
         "aircraftId": "f60a537d-5f83-4b68-8f66-b5f76d1e1775",
@@ -2727,7 +2727,7 @@
         "aircraftId": "f60a537d-5f83-4b68-8f66-b5f76d1e1775",
         "aircraftName": "Boeing 737-800",
         "liveryId": "46d3f77b-b8f9-4aa1-83e2-344d3ad55a34",
-        "liveryName": "Egyptair"
+        "liveryName": "EgyptAir"
     },
     {
         "aircraftId": "f60a537d-5f83-4b68-8f66-b5f76d1e1775",
@@ -4888,5 +4888,131 @@
         "aircraftName": "Airbus A330-900",
         "liveryId": "75b5f368-67ce-4727-ab3a-309a38fe073c",
         "liveryName": "Air Belgium"
+    },
+    {
+        "aircraftId": "710c84ae-6fdc-4c4a-ac3b-4031c3036e98",
+        "aircraftName": "Airbus A220-300",
+        "liveryId": "701c826b-a160-4b1a-a89f-08d0afb4af1b",
+        "liveryName": "Air Baltic"
+    },
+    {
+        "aircraftId": "710c84ae-6fdc-4c4a-ac3b-4031c3036e98",
+        "aircraftName": "Airbus A220-300",
+        "liveryId": "23cfd4c6-683e-4f85-8596-6afd98d8c26d",
+        "liveryName": "Air Baltic (Special)"
+    },
+    {
+        "aircraftId": "710c84ae-6fdc-4c4a-ac3b-4031c3036e98",
+        "aircraftName": "Airbus A220-300",
+        "liveryId": "e300cabf-165d-48ea-8b5f-937f292ba7cf",
+        "liveryName": "Air Canada"
+    },
+    {
+        "aircraftId": "710c84ae-6fdc-4c4a-ac3b-4031c3036e98",
+        "aircraftName": "Airbus A220-300",
+        "liveryId": "1108c06f-4161-46e4-999e-6829debe0465",
+        "liveryName": "Air Austral"
+    },
+    {
+        "aircraftId": "710c84ae-6fdc-4c4a-ac3b-4031c3036e98",
+        "aircraftName": "Airbus A220-300",
+        "liveryId": "4654cca9-6eed-4252-8878-77b44374ffdd",
+        "liveryName": "Air Tanzania"
+    },
+    {
+        "aircraftId": "710c84ae-6fdc-4c4a-ac3b-4031c3036e98",
+        "aircraftName": "Airbus A220-300",
+        "liveryId": "81032922-203c-4667-afe3-f5ca7daf1ff6",
+        "liveryName": "EgyptAir Express"
+    },
+    {
+        "aircraftId": "710c84ae-6fdc-4c4a-ac3b-4031c3036e98",
+        "aircraftName": "Airbus A220-300",
+        "liveryId": "8b7518b9-34d6-4ec4-ba9a-5903e828df1b",
+        "liveryName": "EgyptAir"
+    },
+    {
+        "aircraftId": "710c84ae-6fdc-4c4a-ac3b-4031c3036e98",
+        "aircraftName": "Airbus A220-300",
+        "liveryId": "6f485346-3a7d-4f3d-80db-170a992476da",
+        "liveryName": "Breeze"
+    },
+    {
+        "aircraftId": "710c84ae-6fdc-4c4a-ac3b-4031c3036e98",
+        "aircraftName": "Airbus A220-300",
+        "liveryId": "ace463fa-5bea-4978-a847-3324efadf44b",
+        "liveryName": "Ibom Air"
+    },
+    {
+        "aircraftId": "710c84ae-6fdc-4c4a-ac3b-4031c3036e98",
+        "aircraftName": "Airbus A220-300",
+        "liveryId": "a55c7826-70f1-4917-b1a6-c247f85540a0",
+        "liveryName": "Air Canada Retro"
+    },
+    {
+        "aircraftId": "710c84ae-6fdc-4c4a-ac3b-4031c3036e98",
+        "aircraftName": "Airbus A220-300",
+        "liveryId": "cd8085a5-015b-433f-a623-6a59de2523ba",
+        "liveryName": "Air France"
+    },
+    {
+        "aircraftId": "710c84ae-6fdc-4c4a-ac3b-4031c3036e98",
+        "aircraftName": "Airbus A220-300",
+        "liveryId": "1acf552a-b9ee-4fbc-b27b-ff846f1ac367",
+        "liveryName": "Air Manas"
+    },
+    {
+        "aircraftId": "710c84ae-6fdc-4c4a-ac3b-4031c3036e98",
+        "aircraftName": "Airbus A220-300",
+        "liveryId": "49937d10-4723-4517-b6c3-e00b7809f191",
+        "liveryName": "Delta Air Lines"
+    },
+    {
+        "aircraftId": "710c84ae-6fdc-4c4a-ac3b-4031c3036e98",
+        "aircraftName": "Airbus A220-300",
+        "liveryId": "c04aef45-800a-4e54-91c7-84be3077891d",
+        "liveryName": "JetBlue"
+    },
+    {
+        "aircraftId": "710c84ae-6fdc-4c4a-ac3b-4031c3036e98",
+        "aircraftName": "Airbus A220-300",
+        "liveryId": "23ae25ef-0b05-459a-8934-f766edb5c5b2",
+        "liveryName": "Swiss"
+    },
+    {
+        "aircraftId": "710c84ae-6fdc-4c4a-ac3b-4031c3036e98",
+        "aircraftName": "Airbus A220-300",
+        "liveryId": "7048a556-ffb9-41b0-9016-d895d9733a29",
+        "liveryName": "Korean Air"
+    },
+    {
+        "aircraftId": "710c84ae-6fdc-4c4a-ac3b-4031c3036e98",
+        "aircraftName": "Airbus A220-300",
+        "liveryId": "1cfd2c9a-8671-4903-b76f-dd2b517ecdfe",
+        "liveryName": "Airbus"
+    },
+    {
+        "aircraftId": "710c84ae-6fdc-4c4a-ac3b-4031c3036e98",
+        "aircraftName": "Airbus A220-300",
+        "liveryId": "a602c22e-36b0-43db-912f-f7e3ea755938",
+        "liveryName": "Air Vanuatu"
+    },
+    {
+        "aircraftId": "710c84ae-6fdc-4c4a-ac3b-4031c3036e98",
+        "aircraftName": "Airbus A220-300",
+        "liveryId": "e30a7b45-4ed7-4768-b575-c8dabe1c1c2d",
+        "liveryName": "Bombardier"
+    },
+    {
+        "aircraftId": "710c84ae-6fdc-4c4a-ac3b-4031c3036e98",
+        "aircraftName": "Airbus A220-300",
+        "liveryId": "74a10c62-6e92-402b-a361-236cecc66201",
+        "liveryName": "Iraqi Airways"
+    },
+    {
+        "aircraftId": "710c84ae-6fdc-4c4a-ac3b-4031c3036e98",
+        "aircraftName": "Airbus A220-300",
+        "liveryId": "a821bc78-965c-4121-81d0-2d82bd6ebcd5",
+        "liveryName": "Generic"
     }
 ]

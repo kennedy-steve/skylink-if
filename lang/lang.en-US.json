@@ -10,7 +10,10 @@
                     {
                         "name": "Important {{REF:fields.commands}}",
                         "value": [
-                            "**/{{COM:commands.help}}** - {{REF:commandDescs.help}}"
+                            "**/{{COM:commands.help}}** - {{REF:commandDescs.help}}",
+                            "**/{{COM:commands.registerMe}}** - {{REF:commandDescs.registerMe}}",
+                            "**/{{COM:commands.enableNotifications}}** - {{REF:commandDescs.enableNotifications}}",
+                            "**/{{COM:commands.getPilot}}** - {{REF:commandDescs.getPilot}}"
                         ]
                     },
                     {
@@ -30,8 +33,11 @@
                     {
                         "name": "{{REF:fields.commands}}",
                         "value": [
-                            "**/{{COM:commands.test}}** - {{REF:commandDescs.test}}",
-                            "**/{{COM:commands.info}}** - {{REF:commandDescs.info}}"
+                            "**/{{COM:commands.help}}** - {{REF:commandDescs.help}}",
+                            "**/{{COM:commands.registerMe}}** - {{REF:commandDescs.registerMe}}",
+                            "**/{{COM:commands.enableNotifications}}** - {{REF:commandDescs.enableNotifications}}",
+                            "**/{{COM:commands.disableNotifications}}** - {{REF:commandDescs.disableNotifications}}",
+                            "**/{{COM:commands.getPilot}}** - {{REF:commandDescs.getPilot}}"
                         ]
                     },
                     {
@@ -66,7 +72,7 @@
                     {
                         "name": "Created With",
                         "value": [
-                            "{{REF:links.templateEmbed}}"
+                            "{{REF:links.websiteEmbed}}"
                         ]
                     }
                 ]
@@ -399,16 +405,18 @@
             "translators": "[TranslatorName#1234](https://github.com/)"
         },
         "bot": {
-            "description": "{{REF:links.templateEmbed}} helps give developers a starting point for new Discord bots, so that much of the initial setup can be avoided and developers can instead focus on meaningful bot features."
+            "description": "[Skylink-IF]({{COM:links.website}}) brings Infinite Flight to discord. See your friend's stats and get notifications when server members are online! Encourage your friends to use **/register-me** to get the most value out of Skylink-IF."
         },
         "commandDescs": {
             "dev": "View developer info.",
+            "test": "Test command.",
             "help": "View help menu and list of commands.",
+            "registerMe": "Register your Infinite Flight account! This is very important to make Infinite Flight more integrated for you and your server.",
             "info": "View bot info.",
             "link": "Get links to invite, support, etc.",
-            "test": "Run the test command.",
-            "translate": "View translation info.",
-            "get-pilot": "Get Infinite Flight User"
+            "getPilot": "Get Infinite Flight Pilot Statistics.",
+            "enableNotifications": "Enable ATC or Pilot notifications a channel.",
+            "disableNotifications": "Disable notifications for a channel."
         },
         "lists": {
             "languageItem": "**{{LANGUAGE_NAME}}** (`{{LANGUAGE_KEYWORD}}`)"
@@ -432,7 +440,7 @@
             "supportEmbed": "[Join Support Server]({{COM:links.support}})",
             "authorEmbed": "[{{COM:bot.author}}]({{COM:links.author}})",
             "sourceEmbed": "[View Source Code]({{COM:links.source}})",
-            "templateEmbed": "[Discord Bot TypeScript Template]({{COM:links.template}})"
+            "websiteEmbed": "[Discord Bot TypeScript Template]({{COM:links.template}})"
         },
         "messages": {
             "missingEmbedPerms": [

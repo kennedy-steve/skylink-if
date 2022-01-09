@@ -1,24 +1,23 @@
 import fetch from 'node-fetch';
 
+import { Config } from '../../config';
 import {
-    UserGradeInfo,
-    SessionInfo,
-    FlightEntry,
-    AtcEntry,
-    UserStats,
-    ApiResponse,
-    ErrorCode,
     AirportStatus,
-    OceanicTrack,
+    ApiResponse,
+    AtcEntry,
+    ErrorCode,
+    FlightEntry,
     InfiniteFlightSession,
     InfiniteFlightStatus,
+    OceanicTrack,
+    SessionInfo,
+    UserGradeInfo,
+    UserStats,
 } from './types';
-
-let Config = require('../../../config/config.json');
 
 const test = 2;
 
-const IF_API_KEY = Config.infiniteFlight.apiKey;
+const IF_API_KEY = Config.infiniteFlight.API_KEY;
 const URLBASE = 'https://api.infiniteflight.com/public/v2';
 
 export async function getSessionInfos(): Promise<SessionInfo[]> {
@@ -246,16 +245,16 @@ async function getInfiniteFlightSession(
     const flights = await getFlights(sessionId);
     const atcFacilities = [];
 
-    for (var airportStatus of airports) {
-        for (var atcEntry of airportStatus.atcFacilities) {
+    for (let airportStatus of airports) {
+        for (let atcEntry of airportStatus.atcFacilities) {
             atcFacilities.push(atcEntry);
         }
     }
     const infiniteFlightSession: InfiniteFlightSession = {
         sessionInfo: null,
-        flights: flights,
+        flights,
         airportStatuses: airports,
-        atcFacilities: atcFacilities,
+        atcFacilities,
     }
     return infiniteFlightSession;
 }
@@ -264,9 +263,9 @@ export async function getInfiniteFlightStatus(): Promise<InfiniteFlightStatus> {
     const sessionInfos = await getSessionInfos();
     const infiniteFlightSessions = [];
 
-    for (var sessionInfo of sessionInfos) {
-        var sessionId = sessionInfo.id;
-        var infiniteFlightSession = await getInfiniteFlightSession(sessionId);
+    for (let sessionInfo of sessionInfos) {
+        let sessionId = sessionInfo.id;
+        let infiniteFlightSession = await getInfiniteFlightSession(sessionId);
         infiniteFlightSession.sessionInfo = sessionInfo;
         infiniteFlightSessions.push(infiniteFlightSession);
     }

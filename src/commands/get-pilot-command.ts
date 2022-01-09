@@ -6,16 +6,15 @@ import { Lang } from '../services';
 import { MessageUtils } from '../utils';
 import { Command } from './command';
 import * as infiniteFlightLive from '../lib/infinite-flight-live';
-import { AircraftUtils } from '../utils/aircraft-utils';
 
 export class GetPilotCommand implements Command {
     public data: ApplicationCommandData = {
-        name: Lang.getCom('commands.get-pilot'),
-        description: Lang.getRef('commandDescs.get-pilot', Lang.Default),
+        name: Lang.getCom('commands.getPilot'),
+        description: Lang.getRef('commandDescs.getPilot', Lang.Default),
         options: [
             {
                 name: "ifc-username",
-                description: "sup",
+                description: "The Pilot's username on Infinite Flight Community",
                 type: ApplicationCommandOptionTypes.STRING
 
             }
