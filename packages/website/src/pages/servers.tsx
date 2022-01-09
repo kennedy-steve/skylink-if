@@ -18,7 +18,7 @@ function ServersHero() {
               </p>
                 <Link
                 className='button button--primary button--lg'
-                to='https://forms.gle/NM17sCK82Wn75K337'>
+                to='https://dsc.gg/skylink'>
                 Join Skylink
               </Link>
             </div>
