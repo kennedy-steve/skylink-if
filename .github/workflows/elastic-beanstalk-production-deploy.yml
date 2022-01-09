@@ -60,6 +60,8 @@ jobs:
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
+    - name: Register commands
+      run: npm run register
 
     - name: Deploy to Elastic Beanstalk Production Environment
       uses: einaregilsson/beanstalk-deploy@v20
