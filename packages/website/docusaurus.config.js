@@ -38,7 +38,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'Skylink-IF Beta',
+        title: 'Skylink-IF Alpha',
         logo: {
           alt: 'Skylink IF Logo',
           src: 'img/logo.svg',
