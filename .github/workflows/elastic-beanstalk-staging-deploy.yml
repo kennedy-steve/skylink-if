@@ -40,7 +40,7 @@ jobs:
   deployment:
     runs-on: ubuntu-latest
     environment: staging
-    depends-on: test
+    needs: test
     steps:
 
     - name: Checkout source code
