@@ -56,13 +56,13 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
-    - name: Run production migration
+    - name: Run staging migration
       run: npm run migrate:deploy
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
 
-    - name: Deploy to Elastic Beanstalk
+    - name: Deploy to Elastic Beanstalk Staging Environment
       uses: einaregilsson/beanstalk-deploy@v20
       with:
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}

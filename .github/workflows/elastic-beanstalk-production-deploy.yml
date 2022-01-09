@@ -61,7 +61,7 @@ jobs:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
 
-    - name: Deploy to Elastic Beanstalk
+    - name: Deploy to Elastic Beanstalk Production Environment
       uses: einaregilsson/beanstalk-deploy@v20
       with:
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
