@@ -24,7 +24,7 @@
         "error": "#ff4a4a"
     },
     "links": {
-        "invite": "https://discord.com/",
+        "invite": "https://discord.com/api/oauth2/authorize?client_id=929527099922993162&permissions=534723951680&scope=bot%20applications.commands",
         "docs": "https://skylink-if.tisuela.com/docs/help/intro",
         "vote": "https://top.gg/",
         "support": "https://dsc.gg/skylink",
