@@ -4,6 +4,8 @@
 
 Brining Infinite Flight to Discord. Check out our [website](https://skylink-if.tisuela.com/). Also, I want to give credit to [velocity23](https://github.com/velocity23) for his [Infinite Flight API Typescript library](https://github.com/velocity23/if-discord-bot/tree/master/src/lib/iflive) and [Kevin Novak](https://github.com/KevinNovak) for providing the [Discord Bot Typescript Template](https://github.com/KevinNovak/Discord-Bot-TypeScript-Template).
 
+Skylink-IF is an Infinite Flight Discord Bot that is actively being developed. How can we make Infinite Flight more fun for you? Put your ideas here: https://forms.gle/NM17sCK82Wn75K337
+
 
 ## Setup
 
