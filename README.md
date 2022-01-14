@@ -1,6 +1,6 @@
 # [Skylink IF](https://skylink-if.tisuela.com/)
 
-[![CodeFactor](https://www.codefactor.io/repository/github/kennedy-steve/skylink-if/badge)](https://www.codefactor.io/repository/github/kennedy-steve/skylink-if)
+[![CodeFactor](https://www.codefactor.io/repository/github/kennedy-steve/skylink-if/badge)](https://www.codefactor.io/repository/github/kennedy-steve/skylink-if) ![production](https://github.com/kennedy-steve/skylink-if/actions/workflows/elastic-beanstalk-production-deploy.yml/badge.svg?branch=production) ![staging](https://github.com/kennedy-steve/skylink-if/actions/workflows/elastic-beanstalk-staging-deploy.yml/badge.svg?branch=development) ![tests](https://github.com/kennedy-steve/skylink-if/actions/workflows/test.yml/badge.svg?branch=development) ![documentation](https://github.com/kennedy-steve/skylink-if/actions/workflows/documentation.yml/badge.svg?branch=production)
 
 Brining Infinite Flight to Discord. Check out our [website](https://skylink-if.tisuela.com/). Also, I want to give credit to [velocity23](https://github.com/velocity23) for his [Infinite Flight API Typescript library](https://github.com/velocity23/if-discord-bot/tree/master/src/lib/iflive) and [Kevin Novak](https://github.com/KevinNovak) for providing the [Discord Bot Typescript Template](https://github.com/KevinNovak/Discord-Bot-TypeScript-Template).
 
