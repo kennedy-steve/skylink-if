@@ -1,11 +1,11 @@
-import { ApplicationCommandData, CommandInteraction } from 'discord.js';
+import { ApplicationCommandData, CommandInteraction, PermissionString } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 
 import { EventData } from '../models/internal-models';
 import { Lang, Logger, } from '../services';
 import { prismaClient } from '../services/prisma';
 import { MessageUtils } from '../utils';
-import { Command } from './command';
+import { Command, CommandDeferType } from './command';
 import * as infiniteFlightLive from '../lib/infinite-flight-live';
 import { Prisma } from '.prisma/client';
 import { off } from 'process';
@@ -14,7 +14,7 @@ import { UserStats } from '../lib/infinite-flight-live/types';
 
 
 export class AdminRegisterMeCommand implements Command {
-    public data: ApplicationCommandData = {
+    public metadata: ApplicationCommandData = {
         name: 'admin-register-me',
         description: '(Admin use only) Register your Infinite Flight Username',
         options: [
@@ -26,9 +26,12 @@ export class AdminRegisterMeCommand implements Command {
             }
         ]
     };
-    public requireDev = false;
+    public requireDev = true;
     public requireGuild = false;
     public requirePerms = [];
+    public deferType: CommandDeferType.PUBLIC;
+    public requireClientPerms: PermissionString[];
+    public requireUserPerms: PermissionString[];
 
     public async execute(commandInteraction: CommandInteraction, data: EventData): Promise<void> {
         const ifcUsername = commandInteraction.options.getString('ifc-username');

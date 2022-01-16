@@ -1,24 +1,26 @@
 import { Prisma } from '@prisma/client';
 import { ApplicationCommandOptionType } from 'discord-api-types';
-import { ApplicationCommandData, CacheType, CommandInteraction, GuildChannel, PermissionResolvable, Permissions, TextBasedChannels, TextChannel } from 'discord.js';
+import { ApplicationCommandData, CacheType, CommandInteraction, GuildChannel, PermissionResolvable, Permissions, PermissionString, TextBasedChannels, TextChannel } from 'discord.js';
 import { ApplicationCommandOptionTypes, ChannelTypes } from 'discord.js/typings/enums';
 import { NotificationType } from '../models/enums';
 import { EventData } from '../models/internal-models';
 import { Lang, Logger, prismaClient } from '../services';
 import { ClientUtils, MessageUtils } from '../utils';
-import { Command } from './command';
+import { Command, CommandDeferType } from './command';
 
 // Abstract class for commands to set notifications for Guild Channels
 export class EnableNotificationsCommand implements Command {
 
     public requireDev: false;
     public requireGuild: true;
-    public requirePerms: PermissionResolvable[] = [
-        Permissions.FLAGS.MANAGE_CHANNELS,
+    public deferType = CommandDeferType.PUBLIC;
+    public requireClientPerms: PermissionString[];
+    public requireUserPerms: PermissionString[] = [
+        "MANAGE_CHANNELS",
     ];
     public commandEmbedName: string = 'enableNotificationsEmbeds';
 
-    public data: ApplicationCommandData = {
+    public metadata: ApplicationCommandData = {
         name: 'enable-notifications',
         description: 'Enable notifications in a channel',
         options: [

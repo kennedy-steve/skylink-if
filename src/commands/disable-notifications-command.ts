@@ -1,10 +1,10 @@
 import { ApplicationCommandOptionType } from 'discord-api-types';
-import { ApplicationCommandData, ApplicationCommandOptionChoice, CacheType, CommandInteraction, GuildChannel, PermissionResolvable, Permissions } from 'discord.js';
+import { ApplicationCommandData, ApplicationCommandOptionChoice, CacheType, CommandInteraction, GuildChannel, PermissionResolvable, Permissions, PermissionString } from 'discord.js';
 import { ApplicationCommandOptionTypes, ChannelTypes } from 'discord.js/typings/enums';
 import { EventData } from '../models/internal-models';
 import { Lang, prismaClient } from '../services';
 import { MessageUtils } from '../utils';
-import { Command } from './command';
+import { Command, CommandDeferType } from './command';
 import { ActiveControllerNotificationsChannel, ActivePilotNotificationsChannel, Prisma, prisma } from '.prisma/client';
 
 
@@ -12,12 +12,14 @@ import { ActiveControllerNotificationsChannel, ActivePilotNotificationsChannel, 
 export class DisableNotificationsCommand implements Command {
     public requireDev: false;
     public requireGuild: true;
-    public requirePerms: PermissionResolvable[] = [
-        Permissions.FLAGS.MANAGE_CHANNELS,
+    public deferType = CommandDeferType.PUBLIC;
+    public requireClientPerms: PermissionString[];
+    public requireUserPerms: PermissionString[] = [
+        "MANAGE_CHANNELS",
     ];
     public commandEmbedName: string = 'disableNotificationsEmbeds';
 
-    public data: ApplicationCommandData = {
+    public metadata: ApplicationCommandData = {
         name: 'disable-notifications',
         description: 'Disable notifications to a channel',
         options: [

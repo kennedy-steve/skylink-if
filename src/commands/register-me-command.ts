@@ -1,4 +1,4 @@
-import { ApplicationCommandData, CommandInteraction, GuildMember, User as DiscordUser } from 'discord.js';
+import { ApplicationCommandData, CommandInteraction, GuildMember, PermissionString, User as DiscordUser } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 
 import { Config } from '../config';
@@ -8,13 +8,13 @@ import { EventData } from '../models/internal-models';
 import { Lang, Logger, prismaClient } from '../services';
 import { MessageUtils } from '../utils';
 import { VerifyInfiniteFlightUserIdTicketUtils } from '../utils/verify-infinite-flight-user-id-ticket-utils';
-import { Command } from './command';
+import { Command, CommandDeferType } from './command';
 import { prisma, Prisma, User, VerifyInfiniteFlightUserIdTicket } from '.prisma/client';
 
 let InfiniteFlightPlanes = require('../../infinite-flight-data/aircraft-and-liveries-list.json');
 
 export class RegisterMeCommand implements Command {
-    public data: ApplicationCommandData = {
+    public metadata: ApplicationCommandData = {
         name: 'register-me',
         description: 'Register your Infinite Flight Username',
         options: [
@@ -28,7 +28,9 @@ export class RegisterMeCommand implements Command {
     };
     public requireDev = false;
     public requireGuild = false;
-    public requirePerms = [];
+    public deferType: CommandDeferType.PUBLIC;
+    public requireClientPerms: PermissionString[];
+    public requireUserPerms: PermissionString[];
 
     private ifcUsername;
 
