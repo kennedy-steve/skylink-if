@@ -1,4 +1,4 @@
-import { MessageReaction, User } from 'discord.js';
+import { Message, MessageReaction, User } from 'discord.js';
 import { RateLimiter } from 'discord.js-rate-limiter';
 
 import { EventHandler } from '.';
@@ -14,11 +14,15 @@ export class ReactionHandler implements EventHandler {
 
     constructor(private reactions: Reaction[]) { }
 
-    public async process(msgReaction: MessageReaction, reactor: User): Promise<void> {
-        let msg = msgReaction.message;
-
+    public async process(msgReaction: MessageReaction, msg: Message, reactor: User): Promise<void> {
         // Don't respond to self, or other bots
-        if (reactor.id === msgReaction.client.user.id || reactor.bot) {
+        if (reactor.id === msgReaction.client.user?.id || reactor.bot) {
+            return;
+        }
+
+        // Check if user is rate limited
+        let limited = this.rateLimiter.take(msg.author.id);
+        if (limited) {
             return;
         }
 
@@ -32,9 +36,12 @@ export class ReactionHandler implements EventHandler {
             return;
         }
 
-        // Check if user is rate limited
-        let limited = this.rateLimiter.take(msg.author.id);
-        if (limited) {
+        if (reaction.requireSentByClient && msg.author.id !== msg.client.user?.id) {
+            return;
+        }
+
+        // Check if the embeds author equals the reactors tag
+        if (reaction.requireEmbedAuthorTag && msg.embeds[0]?.author?.name !== reactor.tag) {
             return;
         }
 
@@ -42,7 +49,7 @@ export class ReactionHandler implements EventHandler {
         let data = new EventData();
 
         // Execute the reaction
-        await reaction.execute(msgReaction, reactor, data);
+        await reaction.execute(msgReaction, msg, reactor, data);
     }
 
     private findReaction(emoji: string): Reaction {

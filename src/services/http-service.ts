@@ -3,7 +3,7 @@ import { URL } from 'url';
 
 export class HttpService {
     public async get(url: string | URL, authorization: string): Promise<Response> {
-        return fetch(url, {
+        return await fetch(url, {
             method: 'get',
             headers: {
                 Authorization: authorization,
@@ -13,26 +13,26 @@ export class HttpService {
     }
 
     public async post(url: string | URL, authorization: string, body?: object): Promise<Response> {
-        return fetch(url, {
+        return await fetch(url, {
             method: 'post',
             headers: {
                 Authorization: authorization,
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
             },
-            body: body ? JSON.stringify(body) : null,
+            body: body ? JSON.stringify(body) : undefined,
         });
     }
 
     public async put(url: string | URL, authorization: string, body?: object): Promise<Response> {
-        return fetch(url, {
+        return await fetch(url, {
             method: 'put',
             headers: {
                 Authorization: authorization,
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
             },
-            body: body ? JSON.stringify(body) : null,
+            body: body ? JSON.stringify(body) : undefined,
         });
     }
 
@@ -41,14 +41,14 @@ export class HttpService {
         authorization: string,
         body?: object
     ): Promise<Response> {
-        return fetch(url, {
+        return await fetch(url, {
             method: 'delete',
             headers: {
                 Authorization: authorization,
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
             },
-            body: body ? JSON.stringify(body) : null,
+            body: body ? JSON.stringify(body) : undefined,
         });
     }
 }

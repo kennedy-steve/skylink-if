@@ -1,46 +1,10 @@
-import {
-    DMChannel,
-    NewsChannel,
-    Permissions,
-    TextBasedChannels,
-    TextChannel,
-    ThreadChannel,
-} from 'discord.js';
+import { AnyChannel, DMChannel, GuildChannel, Permissions } from 'discord.js';
 
 export class PermissionUtils {
-    public static canSend(channel: TextBasedChannels): boolean {
+    public static canSend(channel: AnyChannel, embedLinks: boolean = false): boolean {
         if (channel instanceof DMChannel) {
             return true;
-        } else if (
-            channel instanceof TextChannel ||
-            channel instanceof NewsChannel ||
-            channel instanceof ThreadChannel
-        ) {
-            let channelPerms = channel.permissionsFor(channel.client.user);
-            if (!channelPerms) {
-                // This can happen if the guild disconnected while a collector is running
-                return false;
-            }
-
-            // VIEW_CHANNEL - Needed to view the channel
-            // SEND_MESSAGES - Needed to send messages
-            return channelPerms.has([
-                Permissions.FLAGS.VIEW_CHANNEL,
-                Permissions.FLAGS.SEND_MESSAGES,
-            ]);
-        } else {
-            return false;
-        }
-    }
-
-    public static canSendEmbed(channel: TextBasedChannels): boolean {
-        if (channel instanceof DMChannel) {
-            return true;
-        } else if (
-            channel instanceof TextChannel ||
-            channel instanceof NewsChannel ||
-            channel instanceof ThreadChannel
-        ) {
+        } else if (channel instanceof GuildChannel) {
             let channelPerms = channel.permissionsFor(channel.client.user);
             if (!channelPerms) {
                 // This can happen if the guild disconnected while a collector is running
@@ -53,21 +17,17 @@ export class PermissionUtils {
             return channelPerms.has([
                 Permissions.FLAGS.VIEW_CHANNEL,
                 Permissions.FLAGS.SEND_MESSAGES,
-                Permissions.FLAGS.EMBED_LINKS,
+                ...(embedLinks ? [Permissions.FLAGS.EMBED_LINKS] : []),
             ]);
         } else {
             return false;
         }
     }
 
-    public static canMention(channel: TextBasedChannels): boolean {
+    public static canMention(channel: AnyChannel): boolean {
         if (channel instanceof DMChannel) {
             return true;
-        } else if (
-            channel instanceof TextChannel ||
-            channel instanceof NewsChannel ||
-            channel instanceof ThreadChannel
-        ) {
+        } else if (channel instanceof GuildChannel) {
             let channelPerms = channel.permissionsFor(channel.client.user);
             if (!channelPerms) {
                 // This can happen if the guild disconnected while a collector is running
@@ -85,14 +45,10 @@ export class PermissionUtils {
         }
     }
 
-    public static canReact(channel: TextBasedChannels, removeOthers: boolean = false): boolean {
+    public static canReact(channel: AnyChannel, removeOthers: boolean = false): boolean {
         if (channel instanceof DMChannel) {
             return true;
-        } else if (
-            channel instanceof TextChannel ||
-            channel instanceof NewsChannel ||
-            channel instanceof ThreadChannel
-        ) {
+        } else if (channel instanceof GuildChannel) {
             let channelPerms = channel.permissionsFor(channel.client.user);
             if (!channelPerms) {
                 // This can happen if the guild disconnected while a collector is running
@@ -115,14 +71,10 @@ export class PermissionUtils {
         }
     }
 
-    public static canPin(channel: TextBasedChannels, unpinOld: boolean = false): boolean {
+    public static canPin(channel: AnyChannel, unpinOld: boolean = false): boolean {
         if (channel instanceof DMChannel) {
             return true;
-        } else if (
-            channel instanceof TextChannel ||
-            channel instanceof NewsChannel ||
-            channel instanceof ThreadChannel
-        ) {
+        } else if (channel instanceof GuildChannel) {
             let channelPerms = channel.permissionsFor(channel.client.user);
             if (!channelPerms) {
                 // This can happen if the guild disconnected while a collector is running

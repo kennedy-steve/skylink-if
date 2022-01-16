@@ -4,7 +4,7 @@ import 'reflect-metadata';
 import { Api } from './api';
 import { Config } from './config';
 import { GuildsController, RootController, ShardsController } from './controllers';
-import { UpdateServerCountJob } from './jobs';
+import { Job, UpdateServerCountJob } from './jobs';
 import { Manager } from './manager';
 import { HttpService, JobService, Logger, MasterApiService } from './services';
 import { MathUtils, ShardUtils } from './utils';
@@ -57,12 +57,12 @@ async function start(): Promise<void> {
     });
 
     // Jobs
-    let jobs = [
+    let jobs: Job[] = [
         Config.clustering.ENABLED ? undefined : new UpdateServerCountJob(shardManager, httpService),
+        // TODO: Add new jobs here
     ].filter(Boolean);
-    let jobService = new JobService(jobs);
 
-    let manager = new Manager(shardManager, jobService);
+    let manager = new Manager(shardManager, new JobService(jobs));
 
     // API
     let guildsController = new GuildsController(shardManager);
@@ -78,7 +78,7 @@ async function start(): Promise<void> {
     }
 }
 
-process.on('unhandledRejection', (reason, promise) => {
+process.on('unhandledRejection', (reason, _promise) => {
     Logger.error(Logs.error.unhandledRejection, reason);
 });
 
