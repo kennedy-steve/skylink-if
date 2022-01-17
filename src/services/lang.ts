@@ -2,7 +2,6 @@ import { MessageEmbed } from 'discord.js';
 import { Linguini, TypeMapper, TypeMappers, Utils } from 'linguini';
 import path, { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-
 import { LangCode } from '../models/enums/index.js';
 
 export class Lang {

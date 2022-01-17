@@ -1,6 +1,5 @@
 import { ApplicationCommandData, CommandInteraction, PermissionString } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
-
 import { EventData } from '../models/internal-models.js';
 import { Lang } from '../services/index.js';
 import { MessageUtils } from '../utils/index.js';

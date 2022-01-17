@@ -1,5 +1,4 @@
 import { Message } from 'discord.js';
-
 import { EventHandler, TriggerHandler } from './index.js';
 
 export class MessageHandler implements EventHandler {
@@ -13,7 +12,7 @@ export class MessageHandler implements EventHandler {
 
         if (msg.mentions.has(msg.client.user.id)) {
 
-        };
+        }
 
         // Process trigger
         await this.triggerHandler.process(msg);

@@ -3,7 +3,6 @@ import fileSize from 'filesize';
 import { createRequire } from 'node:module';
 import os from 'node:os';
 import typescript from 'typescript';
-
 import { EventData } from '../models/internal-models.js';
 import { Lang } from '../services/index.js';
 import { MessageUtils, ShardUtils } from '../utils/index.js';

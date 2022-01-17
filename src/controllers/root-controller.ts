@@ -1,6 +1,5 @@
 import { Request, Response, Router } from 'express';
 import router from 'express-promise-router';
-
 import { Controller } from './index.js';
 
 export class RootController implements Controller {

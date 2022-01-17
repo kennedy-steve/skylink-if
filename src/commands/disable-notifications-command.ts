@@ -17,7 +17,7 @@ export class DisableNotificationsCommand implements Command {
     public requireUserPerms: PermissionString[] = [
         "MANAGE_CHANNELS",
     ];
-    public commandEmbedName: string = 'disableNotificationsEmbeds';
+    public commandEmbedName = 'disableNotificationsEmbeds';
 
     public metadata: ApplicationCommandData = {
         name: 'disable-notifications',

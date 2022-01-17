@@ -1,7 +1,6 @@
 import { createRequire } from 'node:module';
 import { URL } from 'node:url';
 import { Config } from '../config.js';
-
 import {
     LoginClusterResponse,
     RegisterClusterRequest,

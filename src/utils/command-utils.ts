@@ -1,5 +1,4 @@
 import { CommandInteraction, GuildChannel, GuildMember, Permissions } from 'discord.js';
-
 import { Command } from '../commands/index.js';
 import { Config } from '../config.js';
 import { Permission } from '../models/enums/index.js';

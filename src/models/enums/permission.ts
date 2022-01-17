@@ -1,5 +1,4 @@
 import { PermissionString } from 'discord.js';
-
 import { Lang } from '../../services/index.js';
 import { LangCode } from './index.js';
 

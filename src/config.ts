@@ -1,6 +1,5 @@
 import { Constants, PartialTypes, ShardingManager, ShardingManagerMode } from 'discord.js';
 import dotenv from 'dotenv';
-
 import { BaseConfig } from './models/config-models.js';
 
 dotenv.config();

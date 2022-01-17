@@ -1,6 +1,5 @@
 import { ButtonInteraction, Message } from 'discord.js';
 import { RateLimiter } from 'discord.js-rate-limiter';
-
 import { Button, ButtonDeferType } from '../buttons/index.js';
 import { Config } from '../config.js';
 import { EventData } from '../models/internal-models.js';
