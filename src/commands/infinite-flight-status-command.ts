@@ -6,8 +6,6 @@ import { MessageUtils } from '../utils/index.js';
 import { Command, CommandDeferType } from './command.js';
 import * as infiniteFlightLive from '../lib/infinite-flight-live/index.js';
 
-
-
 export class InfiniteFlightStatusCommand implements Command {
     public metadata: ApplicationCommandData = {
         name: 'infinite-flight-status',
@@ -31,5 +29,4 @@ export class InfiniteFlightStatusCommand implements Command {
         Logger.info(pilots.toString());
         await MessageUtils.sendIntr(commandInteraction, `${pilots.slice(0, 100).toString()}`);
     }
-
 }

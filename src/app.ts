@@ -35,7 +35,7 @@ async function start(): Promise<void> {
         } else {
             let recommendedShards = await ShardUtils.recommendedShardCount(
                 Config.client.TOKEN,
-                Config.sharding.SERVERS_PER_SHARD,
+                Config.sharding.SERVERS_PER_SHARD
             );
             shardList = MathUtils.range(0, recommendedShards);
             totalShards = recommendedShards;

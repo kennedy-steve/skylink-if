@@ -6,7 +6,6 @@ import { EventData } from '../models/internal-models.js';
 import { Lang } from '../services/index.js';
 import { FormatUtils, MessageUtils } from './index.js';
 
-
 export class CommandUtils {
     public static async runChecks(
         command: Command,

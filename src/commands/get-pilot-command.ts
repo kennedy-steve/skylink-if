@@ -12,12 +12,11 @@ export class GetPilotCommand implements Command {
         description: Lang.getRef('commandDescs.getPilot', Lang.Default),
         options: [
             {
-                name: "ifc-username",
+                name: 'ifc-username',
                 description: "The Pilot's username on Infinite Flight Community",
-                type: ApplicationCommandOptionTypes.STRING
-
-            }
-        ]
+                type: ApplicationCommandOptionTypes.STRING,
+            },
+        ],
     };
     public deferType = CommandDeferType.PUBLIC;
     public requireDev = false;
@@ -28,21 +27,27 @@ export class GetPilotCommand implements Command {
     public async execute(intr: CommandInteraction, data: EventData): Promise<void> {
         const ifcUsername = intr.options.getString('ifc-username');
 
-        if (ifcUsername == null) {
-            await MessageUtils.sendIntr(intr, `Please specify ifc-username (infinite flight username)`);
-            return
-        }
-        else {
+        if (ifcUsername === null) {
+            await MessageUtils.sendIntr(
+                intr,
+                `Please specify ifc-username (infinite flight username)`
+            );
+            return;
+        } else {
             const userHits = await infiniteFlightLive.userStats([], [], [ifcUsername]);
 
             if (userHits.length == 0) {
-                await MessageUtils.sendIntr(intr, `Sorry, I couldn't find anyone named ${ifcUsername} on Infinite Flight`);
-            }
-            else {
+                await MessageUtils.sendIntr(
+                    intr,
+                    `Sorry, I couldn't find anyone named ${ifcUsername} on Infinite Flight`
+                );
+            } else {
                 const userStats = userHits[0];
-                await MessageUtils.sendIntr(intr, `${ifcUsername} has landed ${userStats.landingCount} times and also has ${userStats.violations} violations 💩`);
+                await MessageUtils.sendIntr(
+                    intr,
+                    `${ifcUsername} has landed ${userStats.landingCount} times and also has ${userStats.violations} violations 💩`
+                );
             }
         }
-
     }
 }

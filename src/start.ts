@@ -63,7 +63,7 @@ async function start(): Promise<void> {
         new InfiniteFlightStatusCommand(),
         new AdminRegisterMeCommand(),
         new DisableNotificationsCommand(),
-        new EnableNotificationsCommand,
+        new EnableNotificationsCommand(),
     ].sort((a, b) => (a.metadata.name > b.metadata.name ? 1 : -1));
 
     // Buttons
@@ -81,9 +81,7 @@ async function start(): Promise<void> {
         // TODO: Add new triggers here
     ];
 
-    let jobs: Job[] = [
-        new NotifyActiveInfiniteFlightUsersJob(client),
-    ]
+    let jobs: Job[] = [new NotifyActiveInfiniteFlightUsersJob(client)];
 
     // Event handlers
     let guildJoinHandler = new GuildJoinHandler();
@@ -93,9 +91,7 @@ async function start(): Promise<void> {
     let triggerHandler = new TriggerHandler(triggers);
     let messageHandler = new MessageHandler(triggerHandler);
     let reactionHandler = new ReactionHandler(reactions);
-    let jobService = new JobService([
-        new NotifyActiveInfiniteFlightUsersJob(client),
-    ]);
+    let jobService = new JobService([new NotifyActiveInfiniteFlightUsersJob(client)]);
 
     // Bot
     let bot = new Bot(

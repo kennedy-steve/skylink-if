@@ -1,13 +1,12 @@
-import { Logger } from "../services";
+import { Logger } from '../services';
 
 let InfiniteFlightPlanes = require('../../infinite-flight-data/aircraft-and-liveries-list.json');
 
 let fs = require('fs');
 
 export class AircraftUtils {
-
     public static generateAircraftNamesJson(): void {
-        const aircraft = {}
+        const aircraft = {};
 
         for (let i in InfiniteFlightPlanes) {
             let plane = InfiniteFlightPlanes[i];
@@ -24,7 +23,7 @@ export class AircraftUtils {
     }
 
     public static generateLiveryNamesJson(): void {
-        const liveries = {}
+        const liveries = {};
 
         for (let i in InfiniteFlightPlanes) {
             let plane = InfiniteFlightPlanes[i];
@@ -39,5 +38,4 @@ export class AircraftUtils {
             if (err) throw err;
         });
     }
-
 }

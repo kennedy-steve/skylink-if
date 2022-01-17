@@ -9,20 +9,17 @@ import { Prisma } from '.prisma/client/index.js';
 import { off } from 'node:process';
 import { UserStats } from '../lib/infinite-flight-live/types.js';
 
-
-
 export class AdminRegisterMeCommand implements Command {
     public metadata: ApplicationCommandData = {
         name: 'admin-register-me',
         description: '(Admin use only) Register your Infinite Flight Username',
         options: [
             {
-                name: "ifc-username",
-                description: "sup",
-                type: ApplicationCommandOptionTypes.STRING
-
-            }
-        ]
+                name: 'ifc-username',
+                description: 'sup',
+                type: ApplicationCommandOptionTypes.STRING,
+            },
+        ],
     };
     public requireDev = true;
     public requireGuild = false;
@@ -34,20 +31,23 @@ export class AdminRegisterMeCommand implements Command {
     public async execute(commandInteraction: CommandInteraction, data: EventData): Promise<void> {
         const ifcUsername = commandInteraction.options.getString('ifc-username');
 
-        if (ifcUsername == null) {
-            await MessageUtils.sendIntr(commandInteraction, `Please specify ifc-username (infinite flight username)`);
-            return
-        }
-        else {
+        if (ifcUsername === null) {
+            await MessageUtils.sendIntr(
+                commandInteraction,
+                `Please specify ifc-username (infinite flight username)`
+            );
+            return;
+        } else {
             const userHits = await infiniteFlightLive.userStats([], [], [ifcUsername]);
 
             if (userHits.length == 0) {
-                await MessageUtils.sendIntr(commandInteraction, `Sorry, I couldn't find anyone named ${ifcUsername} on Infinite Flight`);
-            }
-            else {
-
+                await MessageUtils.sendIntr(
+                    commandInteraction,
+                    `Sorry, I couldn't find anyone named ${ifcUsername} on Infinite Flight`
+                );
+            } else {
                 // Get their infinite flight user stats
-                const userStats = userHits[0]
+                const userStats = userHits[0];
                 this.createNewUser(commandInteraction, userStats);
             }
         }
@@ -63,33 +63,37 @@ export class AdminRegisterMeCommand implements Command {
                 data: {
                     discordUserId: discordUserId,
                     infiniteFlightUserId: infiniteFlightUserId,
-                }
+                },
             });
             Logger.info(`Registered user - IFC username: ${ifcUsername}`);
 
-            await MessageUtils.sendIntr(commandInteraction, `${ifcUsername} is now associated with your Discord <@${discordUserId}>!`);
+            await MessageUtils.sendIntr(
+                commandInteraction,
+                `${ifcUsername} is now associated with your Discord <@${discordUserId}>!`
+            );
         } catch (error) {
-
             Logger.info(`Error creating new user - IFC username: ${ifcUsername}`);
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
                 const prismaErrorCode = error.code;
 
                 // Handle when unique constant is violated
                 if (prismaErrorCode === 'P2002') {
-                    const offendingFields = error.meta["target"];
-                    if (offendingFields.includes("infiniteFlightUserId")) {
-                        await MessageUtils.sendIntr(commandInteraction, `${ifcUsername} is already registered, either by you or another Discord user`);
+                    const offendingFields = error.meta['target'];
+                    if (offendingFields.includes('infiniteFlightUserId')) {
+                        await MessageUtils.sendIntr(
+                            commandInteraction,
+                            `${ifcUsername} is already registered, either by you or another Discord user`
+                        );
+                    } else if (offendingFields.includes('discordUserId')) {
+                        await MessageUtils.sendIntr(
+                            commandInteraction,
+                            `We've updated ${ifcUsername} to be your registered infinite flight user  <@${discordUserId}>!`
+                        );
+                    } else {
+                        throw error;
                     }
-                    else if (offendingFields.includes("discordUserId")) {
-
-                        await MessageUtils.sendIntr(commandInteraction, `We've updated ${ifcUsername} to be your registered infinite flight user  <@${discordUserId}>!`);
-                    }
-                    else {
-                        throw (error);
-                    }
-                }
-                else {
-                    throw (error);
+                } else {
+                    throw error;
                 }
             }
         }
@@ -106,7 +110,7 @@ export class AdminRegisterMeCommand implements Command {
             },
             data: {
                 infiniteFlightUserId: infiniteFlightUserId,
-            }
+            },
         });
         Logger.info(`Updated user - IFC username: ${ifcUsername}`);
     }
