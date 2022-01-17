@@ -10,8 +10,6 @@ import { Prisma } from '.prisma/client';
 import { off } from 'process';
 import { UserStats } from '../lib/infinite-flight-live/types';
 
-
-
 export class InfiniteFlightStatusCommand implements Command {
     public data: ApplicationCommandData = {
         name: 'infinite-flight-status',
@@ -33,5 +31,4 @@ export class InfiniteFlightStatusCommand implements Command {
         Logger.info(pilots.toString());
         await MessageUtils.sendIntr(commandInteraction, `${pilots.slice(0, 100).toString()}`);
     }
-
 }

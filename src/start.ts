@@ -57,7 +57,7 @@ async function start(): Promise<void> {
         new InfiniteFlightStatusCommand(),
         new AdminRegisterMeCommand(),
         new DisableNotificationsCommand(),
-        new EnableNotificationsCommand,
+        new EnableNotificationsCommand(),
     ].sort((a, b) => (a.data.name > b.data.name ? 1 : -1));
 
     // Event handlers
@@ -67,9 +67,7 @@ async function start(): Promise<void> {
     let triggerHandler = new TriggerHandler([]);
     let messageHandler = new MessageHandler(triggerHandler);
     let reactionHandler = new ReactionHandler([]);
-    let jobService = new JobService([
-        new NotifyActiveInfiniteFlightUsersJob(client),
-    ]);
+    let jobService = new JobService([new NotifyActiveInfiniteFlightUsersJob(client)]);
 
     let bot = new Bot(
         Config.client.TOKEN,
@@ -79,7 +77,7 @@ async function start(): Promise<void> {
         messageHandler,
         commandHandler,
         reactionHandler,
-        jobService,
+        jobService
     );
 
     if (process.argv[2] === '--register') {

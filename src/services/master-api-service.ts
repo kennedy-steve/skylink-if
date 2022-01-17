@@ -11,7 +11,7 @@ import {
 export class MasterApiService {
     private clusterId: string;
 
-    constructor(private httpService: HttpService) { }
+    constructor(private httpService: HttpService) {}
 
     public async register(): Promise<void> {
         let reqBody: RegisterClusterRequest = {

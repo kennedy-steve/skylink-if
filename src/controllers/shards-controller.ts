@@ -21,7 +21,7 @@ export class ShardsController implements Controller {
     public router: Router = router();
     public authToken: string = Config.api.SECRET;
 
-    constructor(private shardManager: ShardingManager) { }
+    constructor(private shardManager: ShardingManager) {}
 
     public register(): void {
         this.router.get('/', (req, res) => this.getShards(req, res));

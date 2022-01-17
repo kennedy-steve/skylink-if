@@ -2,20 +2,17 @@
     padding: 4rem 0;
     position: relative;
     overflow: hidden;
-  }
-  
-  @media screen and (max-width: 966px) {
+}
+
+@media screen and (max-width: 966px) {
     .heroBanner {
-      padding: 2rem;
+        padding: 2rem;
     }
-  }
-  
+}
 
 .heroSvg {
     height: 25rem;
-  }
-  
-
+}
 
 .heroText {
     text-align: left;

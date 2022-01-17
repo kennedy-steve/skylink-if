@@ -6,7 +6,7 @@ import { JobService, Logger } from './services';
 let Logs = require('../lang/logs.json');
 
 export class Manager {
-    constructor(private shardManager: ShardingManager, private jobService: JobService) { }
+    constructor(private shardManager: ShardingManager, private jobService: JobService) {}
 
     public async start(): Promise<void> {
         this.registerListeners();

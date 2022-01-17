@@ -6,7 +6,6 @@ Brining Infinite Flight to Discord. Check out our [website](https://skylink-if.t
 
 Skylink-IF is an Infinite Flight Discord Bot that is actively being developed. How can we make Infinite Flight more fun for you? Put your ideas here: https://forms.gle/NM17sCK82Wn75K337
 
-
 ## Setup
 
 1. Copy example config files.
@@ -42,5 +41,3 @@ Skylink-IF is an Infinite Flight Discord Bot that is actively being developed. H
     - This runs the bot with [ts-node-dev](https://www.npmjs.com/package/ts-node-dev).
     - Use this mode for general development.
     - TypeScript files are compiled automatically as they are changed.
-
-

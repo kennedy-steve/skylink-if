@@ -12,7 +12,7 @@ export class ReactionHandler implements EventHandler {
         Config.rateLimiting.reactions.INTERVAL * 1000
     );
 
-    constructor(private reactions: Reaction[]) { }
+    constructor(private reactions: Reaction[]) {}
 
     public async process(msgReaction: MessageReaction, reactor: User): Promise<void> {
         let msg = msgReaction.message;

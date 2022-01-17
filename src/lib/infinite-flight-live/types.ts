@@ -272,12 +272,11 @@ export interface OceanicTrack {
     lastSeen: string;
 }
 
-
 /**
  * Robust Types
- * 
+ *
  * These are types that do not mirror the resources that the Infinite Flight Live API returns.
- * As such, some of these types may be require multiple requests to different API endpoints to be instantiated. 
+ * As such, some of these types may be require multiple requests to different API endpoints to be instantiated.
  */
 
 // Name is InfiniteFlightSession since "Session" is more suseptible to naming collisions
@@ -289,5 +288,5 @@ export interface InfiniteFlightSession {
 }
 
 export interface InfiniteFlightStatus {
-    sessions: InfiniteFlightSession[]
+    sessions: InfiniteFlightSession[];
 }

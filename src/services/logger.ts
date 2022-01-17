@@ -14,13 +14,13 @@ let logger = pino(
     },
     Config.logging.PRETTY
         ? pino.transport({
-            target: 'pino-pretty',
-            options: {
-                colorize: true,
-                ignore: 'pid,hostname',
-                translateTime: 'yyyy-mm-dd HH:MM:ss.l',
-            },
-        })
+              target: 'pino-pretty',
+              options: {
+                  colorize: true,
+                  ignore: 'pid,hostname',
+                  translateTime: 'yyyy-mm-dd HH:MM:ss.l',
+              },
+          })
         : undefined
 );
 

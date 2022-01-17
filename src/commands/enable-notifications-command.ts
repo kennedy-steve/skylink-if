@@ -1,6 +1,15 @@
 import { Prisma } from '@prisma/client';
 import { ApplicationCommandOptionType } from 'discord-api-types';
-import { ApplicationCommandData, CacheType, CommandInteraction, GuildChannel, PermissionResolvable, Permissions, TextBasedChannels, TextChannel } from 'discord.js';
+import {
+    ApplicationCommandData,
+    CacheType,
+    CommandInteraction,
+    GuildChannel,
+    PermissionResolvable,
+    Permissions,
+    TextBasedChannels,
+    TextChannel,
+} from 'discord.js';
 import { ApplicationCommandOptionTypes, ChannelTypes } from 'discord.js/typings/enums';
 import { NotificationType } from '../models/enums';
 import { EventData } from '../models/internal-models';
@@ -10,12 +19,9 @@ import { Command } from './command';
 
 // Abstract class for commands to set notifications for Guild Channels
 export class EnableNotificationsCommand implements Command {
-
     public requireDev: false;
     public requireGuild: true;
-    public requirePerms: PermissionResolvable[] = [
-        Permissions.FLAGS.MANAGE_CHANNELS,
-    ];
+    public requirePerms: PermissionResolvable[] = [Permissions.FLAGS.MANAGE_CHANNELS];
     public commandEmbedName: string = 'enableNotificationsEmbeds';
 
     public data: ApplicationCommandData = {
@@ -38,53 +44,46 @@ export class EnableNotificationsCommand implements Command {
                             'notificationTypeDescriptions.ACTIVE_PILOT',
                             Lang.Default
                         ),
-                        value: NotificationType.ACTIVE_PILOT
+                        value: NotificationType.ACTIVE_PILOT,
                     },
                     {
                         name: Lang.getRef(
                             'notificationTypeDescriptions.ACTIVE_CONTROLLER',
                             Lang.Default
                         ),
-                        value: NotificationType.ACTIVE_CONTROLLER
+                        value: NotificationType.ACTIVE_CONTROLLER,
                     },
                     {
-                        name: Lang.getRef(
-                            'notificationTypeDescriptions.ALL',
-                            Lang.Default
-                        ),
-                        value: NotificationType.ALL
+                        name: Lang.getRef('notificationTypeDescriptions.ALL', Lang.Default),
+                        value: NotificationType.ALL,
                     },
-                ]
-            }
-        ]
-    }
+                ],
+            },
+        ],
+    };
 
     private async enableActivePilotNotifications(
         intr: CommandInteraction,
         data: EventData,
-        channel: GuildChannel,
+        channel: GuildChannel
     ): Promise<void> {
         try {
             await prismaClient.activePilotNotificationsChannel.create({
                 data: {
                     discordChannelId: channel.id,
                     discordGuildId: intr.guildId,
-                }
+                },
             });
             await MessageUtils.sendIntr(
                 intr,
-                Lang.getEmbed(
-                    `${this.commandEmbedName}.success`,
-                    data.lang(),
-                    {
-                        CHANNEL_ID: channel.id,
-                        NOTIFICATION_TYPE: Lang.getRef(
-                            `notificationTypeDescriptions.${NotificationType.ACTIVE_PILOT}`,
-                            data.lang()
-                        ),
-                    }
-                )
-            )
+                Lang.getEmbed(`${this.commandEmbedName}.success`, data.lang(), {
+                    CHANNEL_ID: channel.id,
+                    NOTIFICATION_TYPE: Lang.getRef(
+                        `notificationTypeDescriptions.${NotificationType.ACTIVE_PILOT}`,
+                        data.lang()
+                    ),
+                })
+            );
         } catch (error) {
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
                 error = error as Prisma.PrismaClientKnownRequestError;
@@ -95,9 +94,8 @@ export class EnableNotificationsCommand implements Command {
                     error,
                     NotificationType.ACTIVE_PILOT
                 );
-            }
-            else {
-                throw (error);
+            } else {
+                throw error;
             }
         }
     }
@@ -105,29 +103,25 @@ export class EnableNotificationsCommand implements Command {
     private async enableActiveControllerNotifications(
         intr: CommandInteraction,
         data: EventData,
-        channel: GuildChannel,
+        channel: GuildChannel
     ): Promise<void> {
         try {
             await prismaClient.activeControllerNotificationsChannel.create({
                 data: {
                     discordChannelId: channel.id,
                     discordGuildId: intr.guildId,
-                }
+                },
             });
             await MessageUtils.sendIntr(
                 intr,
-                Lang.getEmbed(
-                    `${this.commandEmbedName}.success`,
-                    data.lang(),
-                    {
-                        CHANNEL_ID: channel.id,
-                        NOTIFICATION_TYPE: Lang.getRef(
-                            `notificationTypeDescriptions.${NotificationType.ACTIVE_CONTROLLER}`,
-                            data.lang()
-                        ),
-                    }
-                )
-            )
+                Lang.getEmbed(`${this.commandEmbedName}.success`, data.lang(), {
+                    CHANNEL_ID: channel.id,
+                    NOTIFICATION_TYPE: Lang.getRef(
+                        `notificationTypeDescriptions.${NotificationType.ACTIVE_CONTROLLER}`,
+                        data.lang()
+                    ),
+                })
+            );
         } catch (error) {
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
                 error = error as Prisma.PrismaClientKnownRequestError;
@@ -138,18 +132,16 @@ export class EnableNotificationsCommand implements Command {
                     error,
                     NotificationType.ACTIVE_CONTROLLER
                 );
-            }
-            else {
-                throw (error);
+            } else {
+                throw error;
             }
         }
     }
 
-
     private async enableAllNotifications(
         intr: CommandInteraction,
         data: EventData,
-        channel: GuildChannel,
+        channel: GuildChannel
     ): Promise<void> {
         let activePilotNotificationsEnabled: boolean = false;
         let activeControllerNotificationsEnabled: boolean = false;
@@ -160,7 +152,7 @@ export class EnableNotificationsCommand implements Command {
                 data: {
                     discordChannelId: channel.id,
                     discordGuildId: intr.guildId,
-                }
+                },
             });
             activePilotNotificationsEnabled = true;
         } catch (error) {
@@ -168,13 +160,11 @@ export class EnableNotificationsCommand implements Command {
                 error = error as Prisma.PrismaClientKnownRequestError;
                 if (error.code === 'P2002' && 'discordChannelId' === error.meta.target[0]) {
                     // do nothing
+                } else {
+                    throw error;
                 }
-                else {
-                    throw (error);
-                }
-            }
-            else {
-                throw (error);
+            } else {
+                throw error;
             }
         }
 
@@ -184,20 +174,18 @@ export class EnableNotificationsCommand implements Command {
                 data: {
                     discordChannelId: channel.id,
                     discordGuildId: intr.guildId,
-                }
+                },
             });
             activeControllerNotificationsEnabled = true;
         } catch (error) {
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
                 error = error as Prisma.PrismaClientKnownRequestError;
                 if (error.code === 'P2002' && 'discordChannelId' === error.meta.target[0]) {
+                } else {
+                    throw error;
                 }
-                else {
-                    throw (error);
-                }
-            }
-            else {
-                throw (error);
+            } else {
+                throw error;
             }
         }
 
@@ -212,22 +200,17 @@ export class EnableNotificationsCommand implements Command {
             // This most likely means they all were already enabled
             await MessageUtils.sendIntr(
                 intr,
-                Lang.getEmbed(
-                    `${this.commandEmbedName}.alreadyEnabled`,
-                    data.lang(),
-                    {
-                        CHANNEL_ID: channel.id,
-                        NOTIFICATION_TYPE: Lang.getRef(
-                            `notificationTypeDescriptions.${NotificationType.ALL}`,
-                            data.lang()
-                        ),
-                    }
-                )
+                Lang.getEmbed(`${this.commandEmbedName}.alreadyEnabled`, data.lang(), {
+                    CHANNEL_ID: channel.id,
+                    NOTIFICATION_TYPE: Lang.getRef(
+                        `notificationTypeDescriptions.${NotificationType.ALL}`,
+                        data.lang()
+                    ),
+                })
             );
         }
         // Otherwise, let's tell em wassup
         else {
-
             // we'll append the enabled notifs to this list
             let enabledNotificationsDescriptions: string[] = [];
             if (activePilotNotificationsEnabled) {
@@ -235,32 +218,25 @@ export class EnableNotificationsCommand implements Command {
                     Lang.getRef(
                         `notificationTypeDescriptions.${NotificationType.ACTIVE_PILOT}`,
                         data.lang()
-                    ),
-                )
+                    )
+                );
             }
             if (activeControllerNotificationsEnabled) {
                 enabledNotificationsDescriptions.push(
                     Lang.getRef(
                         `notificationTypeDescriptions.${NotificationType.ACTIVE_CONTROLLER}`,
                         data.lang()
-                    ),
-                )
+                    )
+                );
             }
             await MessageUtils.sendIntr(
                 intr,
-                Lang.getEmbed(
-                    `${this.commandEmbedName}.successAll`,
-                    data.lang(),
-                    {
-                        CHANNEL_ID: channel.id,
-                        NOTIFICATION_TYPES: enabledNotificationsDescriptions.join(' & '),
-                    }
-                )
-            )
-
-
+                Lang.getEmbed(`${this.commandEmbedName}.successAll`, data.lang(), {
+                    CHANNEL_ID: channel.id,
+                    NOTIFICATION_TYPES: enabledNotificationsDescriptions.join(' & '),
+                })
+            );
         }
-
     }
 
     /**
@@ -270,33 +246,25 @@ export class EnableNotificationsCommand implements Command {
      * @param intr
      * @param channel
      */
-    protected async enableNotifications(intr: CommandInteraction, data: EventData, channel: GuildChannel, notificationType: string): Promise<void> {
-
+    protected async enableNotifications(
+        intr: CommandInteraction,
+        data: EventData,
+        channel: GuildChannel,
+        notificationType: string
+    ): Promise<void> {
         // Enable notifications for active pilot
         if (notificationType === NotificationType.ACTIVE_PILOT) {
-            await this.enableActivePilotNotifications(
-                intr,
-                data,
-                channel,
-            )
+            await this.enableActivePilotNotifications(intr, data, channel);
         }
 
         // enable notifications for active controller
         else if (notificationType === NotificationType.ACTIVE_CONTROLLER) {
-            await this.enableActiveControllerNotifications(
-                intr,
-                data,
-                channel,
-            );
+            await this.enableActiveControllerNotifications(intr, data, channel);
         }
 
         // Default is to enable all notifications
         else {
-            await this.enableAllNotifications(
-                intr,
-                data,
-                channel,
-            );
+            await this.enableAllNotifications(intr, data, channel);
         }
     }
 
@@ -313,34 +281,26 @@ export class EnableNotificationsCommand implements Command {
         data: EventData,
         channel: GuildChannel,
         error: Prisma.PrismaClientKnownRequestError,
-        notificationType: string,
+        notificationType: string
     ): Promise<void> {
-
         // handling errors r kinda smellyyyyy
-        let errorMeta: any = error.meta
+        let errorMeta: any = error.meta;
         if (error.code === 'P2002' && 'discordChannelId' === errorMeta.target[0]) {
             await MessageUtils.sendIntr(
                 intr,
-                Lang.getEmbed(
-                    `${this.commandEmbedName}.alreadyEnabled`,
-                    data.lang(),
-                    {
-                        CHANNEL_ID: channel.id,
-                        NOTIFICATION_TYPE: Lang.getRef(
-                            `notificationTypeDescriptions.${notificationType}`,
-                            data.lang()
-                        ),
-                    }
-                )
+                Lang.getEmbed(`${this.commandEmbedName}.alreadyEnabled`, data.lang(), {
+                    CHANNEL_ID: channel.id,
+                    NOTIFICATION_TYPE: Lang.getRef(
+                        `notificationTypeDescriptions.${notificationType}`,
+                        data.lang()
+                    ),
+                })
             );
-        }
-        else {
+        } else {
             // TODO: Have an embed for database (prisma) errors
-            throw (error);
+            throw error;
         }
     }
-
-
 
     /**
      * Executes the command. Saves a notification channel
@@ -354,48 +314,34 @@ export class EnableNotificationsCommand implements Command {
         // Check if channel is specified
         let channelFromOptions: GuildChannel = intr.options.getChannel('channel') as GuildChannel;
         if (channelFromOptions !== null) {
-
             channel = channelFromOptions;
         }
 
         if (!channel.isText()) {
             await MessageUtils.sendIntr(
                 intr,
-                Lang.getEmbed(
-                    `${this.commandEmbedName}.invalidChannel`,
-                    data.lang(),
-                    {
-                        CHANNEL_ID: channel.id,
-                    }
-                )
-            )
-
+                Lang.getEmbed(`${this.commandEmbedName}.invalidChannel`, data.lang(), {
+                    CHANNEL_ID: channel.id,
+                })
+            );
         }
         // Check if bot has permissions to view channel
         else if (!channel.permissionsFor(intr.guild.me).has(Permissions.FLAGS.VIEW_CHANNEL)) {
             await MessageUtils.sendIntr(
                 intr,
-                Lang.getEmbed(
-                    `${this.commandEmbedName}.cannotViewChannel`,
-                    data.lang(),
-                    {
-                        CHANNEL_ID: channel.id,
-                    }
-                )
-            )
+                Lang.getEmbed(`${this.commandEmbedName}.cannotViewChannel`, data.lang(), {
+                    CHANNEL_ID: channel.id,
+                })
+            );
         }
         // Check if bot has permissions to send messages in channel
         else if (!channel.permissionsFor(intr.guild.me).has(Permissions.FLAGS.SEND_MESSAGES)) {
             await MessageUtils.sendIntr(
                 intr,
-                Lang.getEmbed(
-                    `${this.commandEmbedName}.cannotSendMessages`,
-                    data.lang(),
-                    {
-                        CHANNEL_ID: channel.id,
-                    }
-                )
-            )
+                Lang.getEmbed(`${this.commandEmbedName}.cannotSendMessages`, data.lang(), {
+                    CHANNEL_ID: channel.id,
+                })
+            );
         }
         // Now we're good to go!
         else {
@@ -406,17 +352,9 @@ export class EnableNotificationsCommand implements Command {
             }
 
             Logger.info(`notification type = ${notificationType}`);
-            await this.enableNotifications(
-                intr,
-                data,
-                channel,
-                notificationType,
-            )
+            await this.enableNotifications(intr, data, channel, notificationType);
         }
 
         return;
     }
-
-
-
 }
