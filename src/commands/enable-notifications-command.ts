@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { ApplicationCommandOptionType } from 'discord-api-types';
-import { ApplicationCommandData, CacheType, CommandInteraction, GuildChannel, PermissionResolvable, Permissions, PermissionString, TextBasedChannels, TextChannel } from 'discord.js';
+import { ApplicationCommandData, CacheType, CommandInteraction, GuildChannel, Permissions, PermissionString } from 'discord.js';
 import { ApplicationCommandOptionTypes, ChannelTypes } from 'discord.js/typings/enums';
 import { NotificationType } from '../models/enums';
 import { EventData } from '../models/internal-models';
