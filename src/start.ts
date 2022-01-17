@@ -1,9 +1,10 @@
 import { REST } from '@discordjs/rest';
-import { Routes } from 'discord-api-types/rest/v9';
+import { Routes } from 'discord-api-types/v9';
 import { Options } from 'discord.js';
+import { createRequire } from 'node:module';
 
-import { Bot } from './bot';
-import { Button } from './buttons';
+import { Bot } from './bot.js';
+import { Button } from './buttons/index.js';
 import {
     AdminRegisterMeCommand,
     Command,
@@ -18,8 +19,8 @@ import {
     RegisterMeCommand,
     TestCommand,
     TranslateCommand,
-} from './commands';
-import { Config } from './config';
+} from './commands/index.js';
+import { Config } from './config.js';
 import {
     ButtonHandler,
     CommandHandler,
@@ -28,13 +29,14 @@ import {
     MessageHandler,
     ReactionHandler,
     TriggerHandler,
-} from './events';
-import { CustomClient } from './extensions';
-import { NotifyActiveInfiniteFlightUsersJob, Job } from './jobs';
-import { Reaction } from './reactions';
-import { JobService, Logger } from './services';
-import { Trigger } from './triggers';
+} from './events/index.js';
+import { CustomClient } from './extensions/index.js';
+import { NotifyActiveInfiniteFlightUsersJob, Job } from './jobs/index.js';
+import { Reaction } from './reactions/index.js';
+import { JobService, Logger } from './services/index.js';
+import { Trigger } from './triggers/index.js';
 
+const require = createRequire(import.meta.url);
 let Logs = require('../lang/logs.json');
 
 async function start(): Promise<void> {

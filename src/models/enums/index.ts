@@ -1,3 +1,3 @@
-export { LangCode, Language } from './language';
-export { NotificationType } from './notifications';
-export { Permission } from './permission';
+export { LangCode, Language } from './language.js';
+export { Permission } from './permission.js';
+export { NotificationType } from './notifications.js';

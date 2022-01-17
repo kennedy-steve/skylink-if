@@ -12,6 +12,7 @@ import {
     RateLimitData,
     User,
 } from 'discord.js';
+import { createRequire } from 'node:module';
 
 import { Config } from './config';
 import {
@@ -21,10 +22,11 @@ import {
     GuildLeaveHandler,
     MessageHandler,
     ReactionHandler,
-} from './events';
-import { JobService, Logger } from './services';
-import { PartialUtils } from './utils';
+} from './events/index.js';
+import { JobService, Logger } from './services/index.js';
+import { PartialUtils } from './utils/index.js';
 
+const require = createRequire(import.meta.url);
 let Logs = require('../lang/logs.json');
 
 export class Bot {

@@ -1,14 +1,15 @@
 import { ActivityType, ShardingManager } from 'discord.js';
+import { createRequire } from 'node:module';
+import { Config } from '../config.js';
 
-import { Config } from '../config';
-import { CustomClient } from '../extensions';
-import { BotSite } from '../models/config-models';
-import { HttpService, Lang, Logger } from '../services';
-import { ShardUtils } from '../utils';
-import { Job } from './job';
+import { CustomClient } from '../extensions/index.js';
+import { BotSite } from '../models/config-models.js';
+import { HttpService, Lang, Logger } from '../services/index.js';
+import { ShardUtils } from '../utils/index.js';
+import { Job } from './index.js';
 
-let BotSites: BotSite[] = Config.BOT_SITES;
-
+const require = createRequire(import.meta.url);
+let BotSites: BotSite[] = require('../../config/bot-sites.json');
 let Logs = require('../../lang/logs.json');
 
 export class UpdateServerCountJob implements Job {

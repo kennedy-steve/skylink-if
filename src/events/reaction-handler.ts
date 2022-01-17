@@ -1,10 +1,13 @@
 import { Message, MessageReaction, User } from 'discord.js';
 import { RateLimiter } from 'discord.js-rate-limiter';
+import { createRequire } from 'node:module';
+import { Config } from '../config.js';
 
-import { EventHandler } from '.';
-import { Config } from '../config';
-import { EventData } from '../models/internal-models';
-import { Reaction } from '../reactions';
+import { EventData } from '../models/internal-models.js';
+import { Reaction } from '../reactions/index.js';
+import { EventHandler } from './index.js';
+
+const require = createRequire(import.meta.url);
 
 export class ReactionHandler implements EventHandler {
     private rateLimiter = new RateLimiter(
