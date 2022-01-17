@@ -14,7 +14,7 @@ export class EnableNotificationsCommand implements Command {
     public requireDev: false;
     public requireGuild: true;
     public deferType = CommandDeferType.PUBLIC;
-    public requireClientPerms: PermissionString[];
+    public requireClientPerms: PermissionString[] = [];
     public requireUserPerms: PermissionString[] = [
         "MANAGE_CHANNELS",
     ];

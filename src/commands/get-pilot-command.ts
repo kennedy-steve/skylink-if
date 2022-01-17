@@ -23,8 +23,8 @@ export class GetPilotCommand implements Command {
     public deferType = CommandDeferType.PUBLIC;
     public requireDev = false;
     public requireGuild = false;
-    requireClientPerms: PermissionString[];
-    requireUserPerms: PermissionString[];
+    requireClientPerms: PermissionString[] = [];
+    requireUserPerms: PermissionString[] = [];
 
     public async execute(intr: CommandInteraction, data: EventData): Promise<void> {
         const ifcUsername = intr.options.getString('ifc-username');

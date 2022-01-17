@@ -32,8 +32,8 @@ export class RegisterMeCommand implements Command {
     public requireDev = false;
     public requireGuild = false;
     public deferType: CommandDeferType.PUBLIC;
-    public requireClientPerms: PermissionString[];
-    public requireUserPerms: PermissionString[];
+    public requireClientPerms: PermissionString[] = [];
+    public requireUserPerms: PermissionString[] = [];
 
     private ifcUsername;
 

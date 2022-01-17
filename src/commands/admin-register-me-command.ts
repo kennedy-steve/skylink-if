@@ -29,8 +29,8 @@ export class AdminRegisterMeCommand implements Command {
     public requireGuild = false;
     public requirePerms = [];
     public deferType: CommandDeferType.PUBLIC;
-    public requireClientPerms: PermissionString[];
-    public requireUserPerms: PermissionString[];
+    public requireClientPerms: PermissionString[] = [];
+    public requireUserPerms: PermissionString[] = [];
 
     public async execute(commandInteraction: CommandInteraction, data: EventData): Promise<void> {
         const ifcUsername = commandInteraction.options.getString('ifc-username');

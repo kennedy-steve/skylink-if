@@ -17,8 +17,8 @@ export class InfiniteFlightStatusCommand implements Command {
     public requireDev = false;
     public requireGuild = false;
     public deferType: CommandDeferType.PUBLIC;
-    requireClientPerms: PermissionString[];
-    requireUserPerms: PermissionString[];
+    requireClientPerms: PermissionString[] = [];
+    requireUserPerms: PermissionString[] = [];
 
     public async execute(commandInteraction: CommandInteraction, data: EventData): Promise<void> {
         const infiniteFlightStatus = await infiniteFlightLive.getInfiniteFlightStatus();
