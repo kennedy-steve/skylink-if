@@ -1,20 +1,14 @@
-import {
-    CommandInteraction,
-    GuildMember,
-    NewsChannel,
-    Permissions,
-    TextChannel,
-    ThreadChannel,
-} from 'discord.js';
+import { CommandInteraction, NewsChannel, TextChannel, ThreadChannel } from 'discord.js';
 import { RateLimiter } from 'discord.js-rate-limiter';
+import { createRequire } from 'node:module';
+import { Command, CommandDeferType } from '../commands/index.js';
+import { Config } from '../config.js';
+import { EventData } from '../models/internal-models.js';
+import { Lang, Logger } from '../services/index.js';
+import { CommandUtils, MessageUtils } from '../utils/index.js';
+import { EventHandler } from './index.js';
 
-import { EventHandler } from '.';
-import { Command } from '../commands';
-import { Config } from '../config';
-import { EventData } from '../models/internal-models';
-import { Lang, Logger } from '../services';
-import { MessageUtils, PermissionUtils } from '../utils';
-
+const require = createRequire(import.meta.url);
 let Logs = require('../../lang/logs.json');
 
 export class CommandHandler implements EventHandler {
@@ -26,71 +20,51 @@ export class CommandHandler implements EventHandler {
     constructor(public commands: Command[]) { }
 
     public async process(intr: CommandInteraction): Promise<void> {
+        // Don't respond to self, or other bots
+        if (intr.user.id === intr.client.user?.id || intr.user.bot) {
+            return;
+        }
+
         // Check if user is rate limited
         let limited = this.rateLimiter.take(intr.user.id);
         if (limited) {
             return;
         }
 
+        // Try to find the command the user wants
+        let command = this.commands.find(command => command.metadata.name === intr.commandName);
+        if (!command) {
+            Logger.error(
+                Logs.error.commandNotFound
+                    .replaceAll('{INTERACTION_ID}', intr.id)
+                    .replaceAll('{COMMAND_NAME}', intr.commandName)
+            );
+            return;
+        }
+
         // Defer interaction
         // NOTE: Anything after this point we should be responding to the interaction
-        await intr.deferReply();
+        switch (command.deferType) {
+            case CommandDeferType.PUBLIC: {
+                await MessageUtils.deferReply(intr, false);
+                break;
+            }
+            case CommandDeferType.HIDDEN: {
+                await MessageUtils.deferReply(intr, true);
+                break;
+            }
+        }
 
         // TODO: Get data from database
         let data = new EventData();
 
-        // Check if I have permission to send a message
-        if (!PermissionUtils.canSendEmbed(intr.channel)) {
-            // No permission to send message
-            if (PermissionUtils.canSend(intr.channel)) {
-                let message = Lang.getRef('messages.missingEmbedPerms', data.lang());
-                await MessageUtils.sendIntr(intr, message);
-            }
-
-            // TODO: This could be a problem, we need to send a response back but have no permission
-            return;
-        }
-
-        // Try to find the command the user wants
-        let command = this.commands.find(command => command.data.name === intr.commandName);
-        if (!command) {
-            await this.sendError(intr, data);
-            Logger.error(
-                Logs.error.commandNotFound
-                    .replaceAll('{INTERACTION_ID}', intr.id)
-                    .replaceAll('{COMMAND_NAME}', command.data.name)
-            );
-            return;
-        }
-
-        if (command.requireDev && !Config.DEVELOPERS.includes(intr.user.id)) {
-            await MessageUtils.sendIntr(
-                intr,
-                Lang.getEmbed('validationEmbeds.devOnlyCommand', data.lang())
-            );
-            return;
-        }
-
-        if (command.requireGuild && !intr.guild) {
-            await MessageUtils.sendIntr(
-                intr,
-                Lang.getEmbed('validationEmbeds.serverOnlyCommand', data.lang())
-            );
-            return;
-        }
-
-        // TODO: Remove "as GuildMember",  why does discord.js have intr.member as a "APIInteractionGuildMember"?
-        if (intr.member && !this.hasPermission(intr.member as GuildMember, command)) {
-            await MessageUtils.sendIntr(
-                intr,
-                Lang.getEmbed('validationEmbeds.permissionRequired', data.lang())
-            );
-            return;
-        }
-
-        // Execute the command
         try {
-            await command.execute(intr, data);
+            // Check if interaction passes command checks
+            let passesChecks = await CommandUtils.runChecks(command, intr, data);
+            if (passesChecks) {
+                // Execute the command
+                await command.execute(intr, data);
+            }
         } catch (error) {
             await this.sendError(intr, data);
 
@@ -101,44 +75,21 @@ export class CommandHandler implements EventHandler {
                     intr.channel instanceof ThreadChannel
                     ? Logs.error.commandGuild
                         .replaceAll('{INTERACTION_ID}', intr.id)
-                        .replaceAll('{COMMAND_NAME}', command.data.name)
+                        .replaceAll('{COMMAND_NAME}', command.metadata.name)
                         .replaceAll('{USER_TAG}', intr.user.tag)
                         .replaceAll('{USER_ID}', intr.user.id)
                         .replaceAll('{CHANNEL_NAME}', intr.channel.name)
                         .replaceAll('{CHANNEL_ID}', intr.channel.id)
-                        .replaceAll('{GUILD_NAME}', intr.guild.name)
-                        .replaceAll('{GUILD_ID}', intr.guild.id)
+                        .replaceAll('{GUILD_NAME}', intr.guild?.name)
+                        .replaceAll('{GUILD_ID}', intr.guild?.id)
                     : Logs.error.commandOther
                         .replaceAll('{INTERACTION_ID}', intr.id)
-                        .replaceAll('{COMMAND_NAME}', command.data.name)
+                        .replaceAll('{COMMAND_NAME}', command.metadata.name)
                         .replaceAll('{USER_TAG}', intr.user.tag)
                         .replaceAll('{USER_ID}', intr.user.id),
                 error
             );
         }
-    }
-
-    private hasPermission(member: GuildMember, command: Command): boolean {
-        // Debug option to bypass permission checks
-        if (!Config.development.CHECK_PERMS) {
-            return true;
-        }
-
-        // Developers, server owners, and members with "Manage Server" have permission for all commands
-        if (
-            member.guild.ownerId === member.id ||
-            member.permissions.has(Permissions.FLAGS.MANAGE_GUILD) ||
-            Config.DEVELOPERS.includes(member.id)
-        ) {
-            return true;
-        }
-
-        // Check if member has required permissions for command
-        if (!member.permissions.has(command.requirePerms)) {
-            return false;
-        }
-
-        return true;
     }
 
     private async sendError(intr: CommandInteraction, data: EventData): Promise<void> {

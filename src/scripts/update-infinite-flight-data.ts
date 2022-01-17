@@ -1,4 +1,4 @@
-import { AircraftUtils } from '../utils/aircraft-utils';
+import { AircraftUtils } from '../utils/aircraft-utils.js';
 
 
 function main() {

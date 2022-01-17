@@ -1,10 +1,11 @@
 import { Constants, PartialTypes, ShardingManager, ShardingManagerMode } from 'discord.js';
+import dotenv from 'dotenv';
+import { BaseConfig } from './models/config-models.js';
 
-import { BaseConfig } from './models/config-models';
+dotenv.config();
 
-require('dotenv').config();
 
-export const Config: BaseConfig = {
+const Config: BaseConfig = {
     client: {
         ID: process.env.CLIENT_ID,
         TOKEN: process.env.CLIENT_TOKEN,
@@ -93,6 +94,10 @@ export const Config: BaseConfig = {
             AMOUNT: parseInt(process.env.REACTIONS_AMOUNT) || 10,
             INTERVAL: parseInt(process.env.REACTIONS_INTERVAL) || 30,
         },
+        buttons: {
+            AMOUNT: parseInt(process.env.BUTTONS_AMOUNT) || 10,
+            INTERVAL: parseInt(process.env.BUTTONS_INTERVAL) || 30,
+        },
     },
 
     logging: {
@@ -139,3 +144,8 @@ export const Config: BaseConfig = {
         }
     ]
 };
+
+
+export {
+    Config,
+}

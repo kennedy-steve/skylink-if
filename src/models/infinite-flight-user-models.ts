@@ -1,5 +1,5 @@
-import { Airport, AtcEntry, FlightEntry } from '../lib/infinite-flight-live/types';
-import { User } from '.prisma/client';
+import { Airport, AtcEntry, FlightEntry } from '../lib/infinite-flight-live/types.js';
+import { User } from '.prisma/client/index.js';
 
 export interface ActiveInfiniteFlightUser {
     user: User;

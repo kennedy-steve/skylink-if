@@ -1,14 +1,13 @@
-import { ApplicationCommandData, CommandInteraction } from 'discord.js';
+import { ApplicationCommandData, CommandInteraction, PermissionString } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
-
-import { EventData } from '../models/internal-models';
-import { Lang } from '../services';
-import { MessageUtils } from '../utils';
-import { Command } from './command';
-import * as infiniteFlightLive from '../lib/infinite-flight-live';
+import { EventData } from '../models/internal-models.js';
+import { Lang } from '../services/index.js';
+import { MessageUtils } from '../utils/index.js';
+import { Command, CommandDeferType } from './command.js';
+import * as infiniteFlightLive from '../lib/infinite-flight-live/index.js';
 
 export class GetPilotCommand implements Command {
-    public data: ApplicationCommandData = {
+    public metadata: ApplicationCommandData = {
         name: Lang.getCom('commands.getPilot'),
         description: Lang.getRef('commandDescs.getPilot', Lang.Default),
         options: [
@@ -20,9 +19,11 @@ export class GetPilotCommand implements Command {
             }
         ]
     };
+    public deferType = CommandDeferType.PUBLIC;
     public requireDev = false;
     public requireGuild = false;
-    public requirePerms = [];
+    requireClientPerms: PermissionString[] = [];
+    requireUserPerms: PermissionString[] = [];
 
     public async execute(intr: CommandInteraction, data: EventData): Promise<void> {
         const ifcUsername = intr.options.getString('ifc-username');

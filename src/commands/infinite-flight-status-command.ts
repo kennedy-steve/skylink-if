@@ -1,32 +1,30 @@
-import { ApplicationCommandData, CommandInteraction } from 'discord.js';
+import { ApplicationCommandData, CommandInteraction, PermissionString } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
-
-import { EventData } from '../models/internal-models';
-import { Lang, Logger, prismaClient } from '../services';
-import { MessageUtils } from '../utils';
-import { Command } from './command';
-import * as infiniteFlightLive from '../lib/infinite-flight-live';
-import { Prisma } from '.prisma/client';
-import { off } from 'process';
-import { UserStats } from '../lib/infinite-flight-live/types';
+import { EventData } from '../models/internal-models.js';
+import { Logger } from '../services/index.js';
+import { MessageUtils } from '../utils/index.js';
+import { Command, CommandDeferType } from './command.js';
+import * as infiniteFlightLive from '../lib/infinite-flight-live/index.js';
 
 
 
 export class InfiniteFlightStatusCommand implements Command {
-    public data: ApplicationCommandData = {
+    public metadata: ApplicationCommandData = {
         name: 'infinite-flight-status',
         description: 'Pretty self explanatory ;)',
     };
     public requireDev = false;
     public requireGuild = false;
-    public requirePerms = [];
+    public deferType: CommandDeferType.PUBLIC;
+    requireClientPerms: PermissionString[] = [];
+    requireUserPerms: PermissionString[] = [];
 
     public async execute(commandInteraction: CommandInteraction, data: EventData): Promise<void> {
         const infiniteFlightStatus = await infiniteFlightLive.getInfiniteFlightStatus();
         const pilots = [];
 
-        for (var infiniteFlightSession of infiniteFlightStatus.sessions) {
-            for (var flight of infiniteFlightSession.flights) {
+        for (let infiniteFlightSession of infiniteFlightStatus.sessions) {
+            for (let flight of infiniteFlightSession.flights) {
                 pilots.push(flight.username);
             }
         }

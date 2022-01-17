@@ -1,7 +1,8 @@
-import { PrismaClient } from '@prisma/client'
-import { Logger } from '.';
+import { PrismaClient } from '.prisma/client/index.js';
+import dotenv from 'dotenv';
+import { Logger } from './index.js';
 
-require('dotenv').config();
+dotenv.config();
 declare global {
     var prismaClient: PrismaClient | undefined;
 }
@@ -13,8 +14,12 @@ else {
     Logger.info(`Reusing existing PrismaClient`);
 }
 
-export const prismaClient = global.prismaClient || new PrismaClient({
+const prismaClient = global.prismaClient || new PrismaClient({
     log: ['error', 'info', 'warn'],
 });
 
 global.prismaClient = prismaClient;
+
+export {
+    prismaClient,
+}

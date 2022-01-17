@@ -1,24 +1,26 @@
-import { Prisma } from '@prisma/client';
+import { Prisma } from '.prisma/client/index.js';
 import { ApplicationCommandOptionType } from 'discord-api-types';
-import { ApplicationCommandData, CacheType, CommandInteraction, GuildChannel, PermissionResolvable, Permissions, TextBasedChannels, TextChannel } from 'discord.js';
-import { ApplicationCommandOptionTypes, ChannelTypes } from 'discord.js/typings/enums';
-import { NotificationType } from '../models/enums';
+import { ApplicationCommandData, CacheType, CommandInteraction, GuildChannel, Permissions, PermissionString } from 'discord.js';
+import { ApplicationCommandOptionTypes, ChannelTypes } from 'discord.js/typings/enums.js';
+import { NotificationType } from '../models/enums/index.js';
 import { EventData } from '../models/internal-models';
-import { Lang, Logger, prismaClient } from '../services';
-import { ClientUtils, MessageUtils } from '../utils';
-import { Command } from './command';
+import { Lang, Logger, prismaClient } from '../services/index.js';
+import { MessageUtils } from '../utils/index.js';
+import { Command, CommandDeferType } from './command.js';
 
 // Abstract class for commands to set notifications for Guild Channels
 export class EnableNotificationsCommand implements Command {
 
     public requireDev: false;
     public requireGuild: true;
-    public requirePerms: PermissionResolvable[] = [
-        Permissions.FLAGS.MANAGE_CHANNELS,
+    public deferType = CommandDeferType.PUBLIC;
+    public requireClientPerms: PermissionString[] = [];
+    public requireUserPerms: PermissionString[] = [
+        "MANAGE_CHANNELS",
     ];
-    public commandEmbedName: string = 'enableNotificationsEmbeds';
+    public commandEmbedName = 'enableNotificationsEmbeds';
 
-    public data: ApplicationCommandData = {
+    public metadata: ApplicationCommandData = {
         name: 'enable-notifications',
         description: 'Enable notifications in a channel',
         options: [
@@ -151,8 +153,8 @@ export class EnableNotificationsCommand implements Command {
         data: EventData,
         channel: GuildChannel,
     ): Promise<void> {
-        let activePilotNotificationsEnabled: boolean = false;
-        let activeControllerNotificationsEnabled: boolean = false;
+        let activePilotNotificationsEnabled = false;
+        let activeControllerNotificationsEnabled = false;
 
         // Attempt to enable active pilot notifications
         try {

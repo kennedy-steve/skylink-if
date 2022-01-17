@@ -1,9 +1,10 @@
 import { Guild } from 'discord.js';
+import { createRequire } from 'node:module';
+import { Lang, Logger } from '../services/index.js';
+import { ClientUtils, MessageUtils } from '../utils/index.js';
+import { EventHandler } from './index.js';
 
-import { Lang, Logger } from '../services';
-import { ClientUtils, MessageUtils } from '../utils';
-import { EventHandler } from './event-handler';
-
+const require = createRequire(import.meta.url);
 let Logs = require('../../lang/logs.json');
 
 export class GuildJoinHandler implements EventHandler {
@@ -24,10 +25,10 @@ export class GuildJoinHandler implements EventHandler {
         if (notifyChannel) {
             await MessageUtils.send(
                 notifyChannel,
-                Lang.getEmbed('displayEmbeds.welcome', guildLang).setAuthor(
-                    guild.name,
-                    guild.iconURL()
-                )
+                Lang.getEmbed('displayEmbeds.welcome', guildLang).setAuthor({
+                    name: guild.name,
+                    iconURL: guild.iconURL(),
+                })
             );
         }
 
@@ -38,10 +39,10 @@ export class GuildJoinHandler implements EventHandler {
         if (owner) {
             await MessageUtils.send(
                 owner.user,
-                Lang.getEmbed('displayEmbeds.welcome', ownerLang).setAuthor(
-                    guild.name,
-                    guild.iconURL()
-                )
+                Lang.getEmbed('displayEmbeds.welcome', ownerLang).setAuthor({
+                    name: guild.name,
+                    iconURL: guild.iconURL(),
+                })
             );
         }
     }
