@@ -1,6 +1,5 @@
 import { Client, Guild, GuildMember, Permissions, TextChannel, User as DiscordUser } from 'discord.js';
 import { createRequire } from 'node:module';
-
 import { ActiveControllerNotificationsChannel, ActivePilotNotificationsChannel, Prisma, User, VerifyInfiniteFlightUserIdTicket } from '.prisma/client/index.js';
 import { Config } from '../config.js';
 import * as infiniteFlightLive from '../lib/infinite-flight-live/index.js';
@@ -14,6 +13,7 @@ import { Job } from './job.js';
 const require = createRequire(import.meta.url);
 
 let AircraftNames = require('../../infinite-flight-data/aircraft-names.json');
+
 let LiveryNames = require('../../infinite-flight-data/livery-names.json');
 
 export class NotifyActiveInfiniteFlightUsersJob implements Job {
@@ -266,7 +266,7 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
 
         Logger.info(`Found ${users.length} new active pilots and ${inactiveUsersBatch.count} new inactive pilots.`);
 
-        const activePilotUsers: ActivePilotUser[] = new Array();
+        const activePilotUsers: ActivePilotUser[] = [];
         for (let user of users) {
             const flight = activePilotInfiniteFlightMap.get(user.infiniteFlightUserId);
             const activePilotUser: ActivePilotUser = {
@@ -312,7 +312,7 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
 
         Logger.info(`Found ${users.length} new active controllers and ${inactiveUsersBatch.count} new inactive controllers.`);
 
-        const activeControllerUsers: ActiveControllerUser[] = new Array();
+        const activeControllerUsers: ActiveControllerUser[] = [];
         for (let user of users) {
             const flight = activeControllerInfiniteFlightMap.get(user.infiniteFlightUserId);
             const activeControllerUser: ActiveControllerUser = {

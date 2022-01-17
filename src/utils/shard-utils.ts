@@ -1,5 +1,4 @@
 import { ShardClientUtil, ShardingManager, Util } from 'discord.js';
-
 import { MathUtils } from './index.js';
 
 const MAX_SERVERS_PER_SHARD = 2500;

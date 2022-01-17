@@ -13,7 +13,6 @@ import {
     User,
 } from 'discord.js';
 import { createRequire } from 'node:module';
-
 import { Config } from './config.js';
 import {
     ButtonHandler,

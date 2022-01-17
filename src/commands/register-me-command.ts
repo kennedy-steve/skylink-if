@@ -1,6 +1,5 @@
 import { ApplicationCommandData, CommandInteraction, GuildMember, PermissionString, User as DiscordUser } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
-
 import { Config } from '../config.js';
 import * as infiniteFlightLive from '../lib/infinite-flight-live/index.js';
 import { Aircraft, UserStats } from '../lib/infinite-flight-live/types.js';

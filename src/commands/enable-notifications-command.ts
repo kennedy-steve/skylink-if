@@ -18,7 +18,7 @@ export class EnableNotificationsCommand implements Command {
     public requireUserPerms: PermissionString[] = [
         "MANAGE_CHANNELS",
     ];
-    public commandEmbedName: string = 'enableNotificationsEmbeds';
+    public commandEmbedName = 'enableNotificationsEmbeds';
 
     public metadata: ApplicationCommandData = {
         name: 'enable-notifications',
@@ -153,8 +153,8 @@ export class EnableNotificationsCommand implements Command {
         data: EventData,
         channel: GuildChannel,
     ): Promise<void> {
-        let activePilotNotificationsEnabled: boolean = false;
-        let activeControllerNotificationsEnabled: boolean = false;
+        let activePilotNotificationsEnabled = false;
+        let activeControllerNotificationsEnabled = false;
 
         // Attempt to enable active pilot notifications
         try {

@@ -1,5 +1,4 @@
 import { ApplicationCommandData, CommandInteraction, PermissionString } from 'discord.js';
-
 import { LangCode, Language } from '../models/enums/index.js';
 import { EventData } from '../models/internal-models.js';
 import { Lang } from '../services/index.js';

@@ -1,6 +1,5 @@
 import { Guild } from 'discord.js';
 import { createRequire } from 'node:module';
-
 import { Logger } from '../services/index.js';
 import { EventHandler } from './index.js';
 

@@ -1,6 +1,5 @@
 import { ApplicationCommandData, CommandInteraction, PermissionString } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
-
 import { EventData } from '../models/internal-models.js';
 import { Logger } from '../services/index.js';
 import { MessageUtils } from '../utils/index.js';
@@ -24,8 +23,8 @@ export class InfiniteFlightStatusCommand implements Command {
         const infiniteFlightStatus = await infiniteFlightLive.getInfiniteFlightStatus();
         const pilots = [];
 
-        for (var infiniteFlightSession of infiniteFlightStatus.sessions) {
-            for (var flight of infiniteFlightSession.flights) {
+        for (let infiniteFlightSession of infiniteFlightStatus.sessions) {
+            for (let flight of infiniteFlightSession.flights) {
                 pilots.push(flight.username);
             }
         }

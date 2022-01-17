@@ -1,5 +1,4 @@
 import fetch from 'node-fetch';
-
 import { Config } from '../../config.js';
 import {
     AirportStatus,

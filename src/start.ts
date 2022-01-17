@@ -2,7 +2,6 @@ import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import { Options } from 'discord.js';
 import { createRequire } from 'node:module';
-
 import { Bot } from './bot.js';
 import { Button } from './buttons/index.js';
 import {

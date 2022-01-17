@@ -1,6 +1,5 @@
 import { ErrorRequestHandler } from 'express';
 import { createRequire } from 'node:module';
-
 import { Logger } from '../services/index.js';
 
 const require = createRequire(import.meta.url);

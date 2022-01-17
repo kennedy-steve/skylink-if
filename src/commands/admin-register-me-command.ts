@@ -1,13 +1,12 @@
 import { ApplicationCommandData, CommandInteraction, PermissionString } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
-
 import { EventData } from '../models/internal-models.js';
 import { Lang, Logger, prismaClient } from '../services/index.js';
 import { MessageUtils } from '../utils/index.js';
 import { Command, CommandDeferType } from './command.js';
 import * as infiniteFlightLive from '../lib/infinite-flight-live/index.js';
 import { Prisma } from '.prisma/client/index.js';
-import { off } from 'process';
+import { off } from 'node:process';
 import { UserStats } from '../lib/infinite-flight-live/types.js';
 
 
