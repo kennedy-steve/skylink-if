@@ -1,19 +1,17 @@
-import { ActivityType, Channel, Client, Guild, GuildMember, Permissions, ShardingManager, TextChannel, User as DiscordUser } from 'discord.js';
-import { ActivePilotNotificationsChannel, Prisma, User, VerifyInfiniteFlightUserIdTicket } from '.prisma/client';
+import { Client, Guild, GuildMember, Permissions, TextChannel, User as DiscordUser } from 'discord.js';
+import { createRequire } from 'node:module';
 
-import { ActiveControllerNotificationsChannel } from '@prisma/client';
-import { validateSync } from 'class-validator';
-import { Config } from '../config';
-import { CustomClient } from '../extensions';
-import * as infiniteFlightLive from '../lib/infinite-flight-live';
-import { AtcEntry, FlightEntry, FrequencyType, InfiniteFlightSession, InfiniteFlightStatus } from '../lib/infinite-flight-live/types';
-import { BotSite } from '../models/config-models';
-import { LangCode } from '../models/enums';
-import { ActiveControllerUser, ActivePilotUser } from '../models/infinite-flight-user-models';
-import { HttpService, Lang, Logger, prismaClient } from '../services';
-import { ClientUtils, MessageUtils, ShardUtils } from '../utils';
-import { VerifyInfiniteFlightUserIdTicketUtils } from '../utils/verify-infinite-flight-user-id-ticket-utils';
-import { Job } from './job';
+import { ActiveControllerNotificationsChannel, ActivePilotNotificationsChannel, Prisma, User, VerifyInfiniteFlightUserIdTicket } from '.prisma/client/index.js';
+import { Config } from '../config.js';
+import * as infiniteFlightLive from '../lib/infinite-flight-live/index.js';
+import { AtcEntry, FlightEntry, FrequencyType, InfiniteFlightStatus } from '../lib/infinite-flight-live/types.js';
+import { LangCode } from '../models/enums/index.js';
+import { ActiveControllerUser, ActivePilotUser } from '../models/infinite-flight-user-models.js';
+import { Lang, Logger, prismaClient } from '../services/index.js';
+import { ClientUtils, MessageUtils, VerifyInfiniteFlightUserIdTicketUtils } from '../utils/index.js';
+import { Job } from './job.js';
+
+const require = createRequire(import.meta.url);
 
 let AircraftNames = require('../../infinite-flight-data/aircraft-names.json');
 let LiveryNames = require('../../infinite-flight-data/livery-names.json');

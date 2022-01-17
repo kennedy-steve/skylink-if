@@ -2,8 +2,6 @@ import { Message } from 'discord.js';
 
 import { EventHandler, TriggerHandler } from './index.js';
 
-import * as infiniteFlightLive from '../lib/infinite-flight-live';
-
 export class MessageHandler implements EventHandler {
     constructor(private triggerHandler: TriggerHandler) { }
 
@@ -14,15 +12,7 @@ export class MessageHandler implements EventHandler {
         }
 
         if (msg.mentions.has(msg.client.user.id)) {
-            const userHits = await infiniteFlightLive.userStats([], [], ['N8te']);
 
-            if (userHits.length == 0) {
-                await msg.channel.send("htrgbskerjgaelrklejkgejklarb")
-            }
-            else {
-                const userStats = userHits[0];
-                await msg.channel.send(`Nate has landed ${userStats.landingCount} times and also has ${userStats.violations} violations 💩`);
-            }
         };
 
         // Process trigger

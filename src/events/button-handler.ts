@@ -1,22 +1,19 @@
 import { ButtonInteraction, Message } from 'discord.js';
 import { RateLimiter } from 'discord.js-rate-limiter';
-import { createRequire } from 'node:module';
 
 import { Button, ButtonDeferType } from '../buttons/index.js';
+import { Config } from '../config.js';
 import { EventData } from '../models/internal-models.js';
 import { MessageUtils } from '../utils/index.js';
 import { EventHandler } from './index.js';
 
-const require = createRequire(import.meta.url);
-let Config = require('../../config/config.json');
-
 export class ButtonHandler implements EventHandler {
     private rateLimiter = new RateLimiter(
-        Config.rateLimiting.buttons.amount,
-        Config.rateLimiting.buttons.interval * 1000
+        Config.rateLimiting.buttons.AMOUNT,
+        Config.rateLimiting.buttons.INTERVAL * 1000
     );
 
-    constructor(private buttons: Button[]) {}
+    constructor(private buttons: Button[]) { }
 
     public async process(intr: ButtonInteraction, msg: Message): Promise<void> {
         // Don't respond to self, or other bots

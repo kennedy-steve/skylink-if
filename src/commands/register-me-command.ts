@@ -1,15 +1,18 @@
 import { ApplicationCommandData, CommandInteraction, GuildMember, PermissionString, User as DiscordUser } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 
-import { Config } from '../config';
-import * as infiniteFlightLive from '../lib/infinite-flight-live';
-import { Aircraft, UserStats } from '../lib/infinite-flight-live/types';
-import { EventData } from '../models/internal-models';
-import { Lang, Logger, prismaClient } from '../services';
-import { MessageUtils } from '../utils';
-import { VerifyInfiniteFlightUserIdTicketUtils } from '../utils/verify-infinite-flight-user-id-ticket-utils';
-import { Command, CommandDeferType } from './command';
-import { prisma, Prisma, User, VerifyInfiniteFlightUserIdTicket } from '.prisma/client';
+import { Config } from '../config.js';
+import * as infiniteFlightLive from '../lib/infinite-flight-live/index.js';
+import { Aircraft, UserStats } from '../lib/infinite-flight-live/types.js';
+import { EventData } from '../models/internal-models.js';
+import { Lang, Logger, prismaClient } from '../services/index.js';
+import { MessageUtils } from '../utils/index.js';
+import { VerifyInfiniteFlightUserIdTicketUtils } from '../utils/verify-infinite-flight-user-id-ticket-utils.js';
+import { Command, CommandDeferType } from './command.js';
+import { prisma, Prisma, User, VerifyInfiniteFlightUserIdTicket } from '.prisma/client/index.js';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
 
 let InfiniteFlightPlanes = require('../../infinite-flight-data/aircraft-and-liveries-list.json');
 

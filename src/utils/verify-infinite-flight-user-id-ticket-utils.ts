@@ -1,8 +1,8 @@
-import { VerifyInfiniteFlightUserIdTicket } from "@prisma/client";
-import { FlightEntry } from "../lib/infinite-flight-live/types";
-import { Logger } from "../services";
+import { VerifyInfiniteFlightUserIdTicket } from ".prisma/client/index.js";
+import { FlightEntry } from "../lib/infinite-flight-live/types.js";
+import { Logger } from "../services/index.js";
 
-import { Config } from '../config';
+import { Config } from '../config.js';
 
 export class VerifyInfiniteFlightUserIdTicketUtils {
     public static getFreshTicketsCutoffDateTime(): Date {

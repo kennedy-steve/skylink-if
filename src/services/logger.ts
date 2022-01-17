@@ -2,7 +2,7 @@ import { DiscordAPIError } from 'discord.js';
 import { Response } from 'node-fetch';
 import { createRequire } from 'node:module';
 import pino from 'pino';
-import { Config } from '../config';
+import { Config } from '../config.js';
 
 const require = createRequire(import.meta.url);
 

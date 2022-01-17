@@ -1,11 +1,11 @@
 import { ApplicationCommandOptionType } from 'discord-api-types';
 import { ApplicationCommandData, ApplicationCommandOptionChoice, CacheType, CommandInteraction, GuildChannel, PermissionResolvable, Permissions, PermissionString } from 'discord.js';
 import { ApplicationCommandOptionTypes, ChannelTypes } from 'discord.js/typings/enums';
-import { EventData } from '../models/internal-models';
-import { Lang, prismaClient } from '../services';
-import { MessageUtils } from '../utils';
-import { Command, CommandDeferType } from './command';
-import { ActiveControllerNotificationsChannel, ActivePilotNotificationsChannel, Prisma, prisma } from '.prisma/client';
+import { EventData } from '../models/internal-models.js';
+import { Lang, prismaClient } from '../services/index.js';
+import { MessageUtils } from '../utils/index.js';
+import { Command, CommandDeferType } from './command.js';
+import { ActiveControllerNotificationsChannel, ActivePilotNotificationsChannel, Prisma } from '.prisma/client/index.js';
 
 
 // Disable notifications to channel

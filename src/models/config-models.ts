@@ -69,7 +69,11 @@ export interface BaseConfig {
         reactions: {
             AMOUNT: number;
             INTERVAL: number;
-        }
+        },
+        buttons: {
+            AMOUNT: number;
+            INTERVAL: number;
+        },
     }
 
     logging: {

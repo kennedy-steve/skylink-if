@@ -1,11 +1,11 @@
 import { ApplicationCommandData, CommandInteraction, PermissionString } from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 
-import { EventData } from '../models/internal-models';
-import { Lang } from '../services';
-import { MessageUtils } from '../utils';
-import { Command, CommandDeferType } from './command';
-import * as infiniteFlightLive from '../lib/infinite-flight-live';
+import { EventData } from '../models/internal-models.js';
+import { Lang } from '../services/index.js';
+import { MessageUtils } from '../utils/index.js';
+import { Command, CommandDeferType } from './command.js';
+import * as infiniteFlightLive from '../lib/infinite-flight-live/index.js';
 
 export class GetPilotCommand implements Command {
     public metadata: ApplicationCommandData = {

@@ -1,12 +1,12 @@
-import { Prisma } from '@prisma/client';
+import { Prisma } from '.prisma/client/index.js';
 import { ApplicationCommandOptionType } from 'discord-api-types';
 import { ApplicationCommandData, CacheType, CommandInteraction, GuildChannel, Permissions, PermissionString } from 'discord.js';
-import { ApplicationCommandOptionTypes, ChannelTypes } from 'discord.js/typings/enums';
-import { NotificationType } from '../models/enums';
+import { ApplicationCommandOptionTypes, ChannelTypes } from 'discord.js/typings/enums.js';
+import { NotificationType } from '../models/enums/index.js';
 import { EventData } from '../models/internal-models';
-import { Lang, Logger, prismaClient } from '../services';
-import { ClientUtils, MessageUtils } from '../utils';
-import { Command, CommandDeferType } from './command';
+import { Lang, Logger, prismaClient } from '../services/index.js';
+import { MessageUtils } from '../utils/index.js';
+import { Command, CommandDeferType } from './command.js';
 
 // Abstract class for commands to set notifications for Guild Channels
 export class EnableNotificationsCommand implements Command {

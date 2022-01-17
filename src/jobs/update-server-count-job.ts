@@ -9,7 +9,6 @@ import { ShardUtils } from '../utils/index.js';
 import { Job } from './index.js';
 
 const require = createRequire(import.meta.url);
-let BotSites: BotSite[] = require('../../config/bot-sites.json');
 let Logs = require('../../lang/logs.json');
 
 export class UpdateServerCountJob implements Job {
@@ -20,7 +19,7 @@ export class UpdateServerCountJob implements Job {
     private botSites: BotSite[];
 
     constructor(private shardManager: ShardingManager, private httpService: HttpService) {
-        this.botSites = BotSites.filter(botSite => botSite.enabled);
+        this.botSites = Config.BOT_SITES.filter(botSite => botSite.enabled);
     }
 
     public async run(): Promise<void> {
