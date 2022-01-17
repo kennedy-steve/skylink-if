@@ -14,7 +14,7 @@ export class ReactionHandler implements EventHandler {
         Config.rateLimiting.reactions.INTERVAL * 1000
     );
 
-    constructor(private reactions: Reaction[]) {}
+    constructor(reactions: Reaction[]) {}
 
     public async process(msgReaction: MessageReaction, msg: Message, reactor: User): Promise<void> {
         // Don't respond to self, or other bots

@@ -50,7 +50,7 @@ export class NotifyActiveInfiniteFlightUsersJob implements Job {
      * TODO: check smelly code...
      * @param theClient
      */
-    constructor(private theClient: Client) {
+    constructor(theClient: Client) {
         this.client = theClient;
     }
 

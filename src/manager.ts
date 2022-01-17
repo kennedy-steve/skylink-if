@@ -7,7 +7,7 @@ const require = createRequire(import.meta.url);
 let Logs = require('../lang/logs.json');
 
 export class Manager {
-    constructor(private shardManager: ShardingManager, private jobService: JobService) {}
+    constructor(shardManager: ShardingManager, jobService: JobService) {}
 
     public async start(): Promise<void> {
         this.registerListeners();
