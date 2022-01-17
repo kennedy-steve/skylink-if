@@ -41,7 +41,7 @@ export class Bot {
         private buttonHandler: ButtonHandler,
         private reactionHandler: ReactionHandler,
         private jobService: JobService
-    ) { }
+    ) {}
 
     public async start(): Promise<void> {
         this.registerListeners();
@@ -123,7 +123,8 @@ export class Bot {
     private async onMessage(msg: Message): Promise<void> {
         if (
             !this.ready ||
-            (Config.development.dummyMode.ENABLED && !Config.development.dummyMode.WHITE_LIST.includes(msg.author.id))
+            (Config.development.dummyMode.ENABLED &&
+                !Config.development.dummyMode.WHITE_LIST.includes(msg.author.id))
         ) {
             return;
         }
@@ -143,7 +144,8 @@ export class Bot {
     private async onInteraction(intr: Interaction): Promise<void> {
         if (
             !this.ready ||
-            (Config.development.dummyMode.ENABLED && !Config.development.dummyMode.WHITE_LIST.includes(intr.user.id))
+            (Config.development.dummyMode.ENABLED &&
+                !Config.development.dummyMode.WHITE_LIST.includes(intr.user.id))
         ) {
             return;
         }
@@ -169,7 +171,8 @@ export class Bot {
     ): Promise<void> {
         if (
             !this.ready ||
-            (Config.development.dummyMode.ENABLED && !Config.development.dummyMode.WHITE_LIST.includes(reactor.id))
+            (Config.development.dummyMode.ENABLED &&
+                !Config.development.dummyMode.WHITE_LIST.includes(reactor.id))
         ) {
             return;
         }

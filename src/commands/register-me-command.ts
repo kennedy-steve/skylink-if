@@ -1,4 +1,10 @@
-import { ApplicationCommandData, CommandInteraction, GuildMember, PermissionString, User as DiscordUser } from 'discord.js';
+import {
+    ApplicationCommandData,
+    CommandInteraction,
+    GuildMember,
+    PermissionString,
+    User as DiscordUser,
+} from 'discord.js';
 import { ApplicationCommandOptionTypes } from 'discord.js/typings/enums';
 import { Config } from '../config.js';
 import * as infiniteFlightLive from '../lib/infinite-flight-live/index.js';
@@ -23,10 +29,9 @@ export class RegisterMeCommand implements Command {
             {
                 name: 'ifc-username',
                 description: 'sup',
-                type: ApplicationCommandOptionTypes.STRING
-
-            }
-        ]
+                type: ApplicationCommandOptionTypes.STRING,
+            },
+        ],
     };
     public requireDev = false;
     public requireGuild = false;
@@ -42,10 +47,9 @@ export class RegisterMeCommand implements Command {
         const discordGuild = commandInteraction.guild;
         const discordMember: GuildMember = commandInteraction.member as GuildMember;
 
-
-
         // first check if user already has a fresh verification ticket to prevent abuse
-        const userHasFreshVerificationTicket: boolean = await this.checkIfUserStillHasFreshVerificationTicket(discordUser.id);
+        const userHasFreshVerificationTicket: boolean =
+            await this.checkIfUserStillHasFreshVerificationTicket(discordUser.id);
         if (userHasFreshVerificationTicket) {
             await MessageUtils.sendIntr(
                 commandInteraction,
@@ -53,7 +57,8 @@ export class RegisterMeCommand implements Command {
                     'validationEmbeds.registerMeuserHadFreshVerificationTicket',
                     data.lang(),
                     {
-                        STALE_MINUTES: Config.modelConstants.verifyInfiniteFlightUserIdTicket.STALE_BY_MINUTES.toString(),
+                        STALE_MINUTES:
+                            Config.modelConstants.verifyInfiniteFlightUserIdTicket.STALE_BY_MINUTES.toString(),
                     }
                 )
             );
@@ -63,114 +68,99 @@ export class RegisterMeCommand implements Command {
         else if (this.ifcUsername == null) {
             await MessageUtils.sendIntr(
                 commandInteraction,
-                Lang.getEmbed(
-                    'validationEmbeds.registerMeIFCUsernameNotSpecified',
-                    data.lang()
-                )
+                Lang.getEmbed('validationEmbeds.registerMeIFCUsernameNotSpecified', data.lang())
             );
-        }
-        else {
+        } else {
             const userHits = await infiniteFlightLive.userStats([], [], [this.ifcUsername]);
 
             // check if the ifc user exists
             if (userHits.length == 0) {
                 await MessageUtils.sendIntr(
                     commandInteraction,
-                    Lang.getEmbed(
-                        'validationEmbeds.registerMeIFCUsernameNotFound',
-                        data.lang(),
-                        {
-                            IFC_USERNAME: this.ifcUsername,
-                        }
-                    ),
-
+                    Lang.getEmbed('validationEmbeds.registerMeIFCUsernameNotFound', data.lang(), {
+                        IFC_USERNAME: this.ifcUsername,
+                    })
                 );
-            }
-            else {
-                const userStats = userHits[0]
-                const infiniteFlightUserAlreadyRegistered: boolean = await this.checkIfInfiniteFlightUserAlreadyRegistered(userStats.userId);
+            } else {
+                const userStats = userHits[0];
+                const infiniteFlightUserAlreadyRegistered: boolean =
+                    await this.checkIfInfiniteFlightUserAlreadyRegistered(userStats.userId);
 
                 // check if the infinite flight user has already been registered
                 if (infiniteFlightUserAlreadyRegistered) {
                     await MessageUtils.sendIntr(
                         commandInteraction,
-                        Lang.getEmbed(
-                            'validationEmbeds.registerMeIFCUsernameTaken',
-                            data.lang(),
-                            {
-                                IFC_USERNAME: this.ifcUsername,
-                            }
-                        )
+                        Lang.getEmbed('validationEmbeds.registerMeIFCUsernameTaken', data.lang(), {
+                            IFC_USERNAME: this.ifcUsername,
+                        })
                     );
-                }
-                else {
+                } else {
                     await prismaClient.user.upsert({
                         where: {
-                            discordUserId: discordUser.id
+                            discordUserId: discordUser.id,
                         },
                         update: {},
                         create: {
-                            discordUserId: discordUser.id
+                            discordUserId: discordUser.id,
                         },
                     });
 
-                    const newVerifyInfiniteFlightUserIdTicket: VerifyInfiniteFlightUserIdTicket = await this.createVerifyInfiniteFlightUserIdTicket(
-                        userStats.userId,
-                        discordUser.id,
-                        discordGuild.id,
-                    );
+                    const newVerifyInfiniteFlightUserIdTicket: VerifyInfiniteFlightUserIdTicket =
+                        await this.createVerifyInfiniteFlightUserIdTicket(
+                            userStats.userId,
+                            discordUser.id,
+                            discordGuild.id
+                        );
 
                     MessageUtils.send(
                         discordUser,
-                        Lang.getEmbed(
-                            'registerMeEmbeds.dmInstructions',
-                            data.lang(),
-                            {
-                                IFC_USERNAME: this.ifcUsername,
-                                STALE_MINUTES: Config.modelConstants.verifyInfiniteFlightUserIdTicket.STALE_BY_MINUTES.toString(),
+                        Lang.getEmbed('registerMeEmbeds.dmInstructions', data.lang(), {
+                            IFC_USERNAME: this.ifcUsername,
+                            STALE_MINUTES:
+                                Config.modelConstants.verifyInfiniteFlightUserIdTicket.STALE_BY_MINUTES.toString(),
 
-                                // We don't randomize these, but maybe in the future.
-                                SERVER: 'Casual Server',
-                                AIRPORT_ICAO: 'Any airport is fine, though my favorite airport is KSMF. But seriously, any airport will do.',
+                            // We don't randomize these, but maybe in the future.
+                            SERVER: 'Casual Server',
+                            AIRPORT_ICAO:
+                                'Any airport is fine, though my favorite airport is KSMF. But seriously, any airport will do.',
 
-                                AIRCRAFT_NAME: newVerifyInfiniteFlightUserIdTicket.aircraftName,
-                                LIVERY_NAME: newVerifyInfiniteFlightUserIdTicket.liveryName,
-                                TRUE_HEADING: newVerifyInfiniteFlightUserIdTicket.heading.toString(),
-                            }
-                        )
-                    )
+                            AIRCRAFT_NAME: newVerifyInfiniteFlightUserIdTicket.aircraftName,
+                            LIVERY_NAME: newVerifyInfiniteFlightUserIdTicket.liveryName,
+                            TRUE_HEADING: newVerifyInfiniteFlightUserIdTicket.heading.toString(),
+                        })
+                    );
 
                     await MessageUtils.sendIntr(
                         commandInteraction,
-                        Lang.getEmbed(
-                            'registerMeEmbeds.commandIntr',
-                            data.lang(),
-                            {
-                                IFC_USERNAME: this.ifcUsername,
-                            }
-                        )
+                        Lang.getEmbed('registerMeEmbeds.commandIntr', data.lang(), {
+                            IFC_USERNAME: this.ifcUsername,
+                        })
                     );
                 }
-
             }
         }
     }
 
-    private async createVerifyInfiniteFlightUserIdTicket(infiniteFlightUserId: string, discordUserId: string, discordGuildId: string): Promise<VerifyInfiniteFlightUserIdTicket> {
+    private async createVerifyInfiniteFlightUserIdTicket(
+        infiniteFlightUserId: string,
+        discordUserId: string,
+        discordGuildId: string
+    ): Promise<VerifyInfiniteFlightUserIdTicket> {
         const randomHeading: number = this.getRandomHeading();
         const randomAircraft: Aircraft = this.getRandomAircraft();
-        const verifyInfiniteFlightUserIdTicket: VerifyInfiniteFlightUserIdTicket = await prismaClient.verifyInfiniteFlightUserIdTicket.create({
-            data: {
-                infiniteFlightUserId,
-                discordUserId,
-                discordGuildId,
-                aircraftId: randomAircraft.aircraftId,
-                aircraftName: randomAircraft.aircraftName,
-                liveryId: randomAircraft.liveryId,
-                liveryName: randomAircraft.liveryName,
-                heading: randomHeading,
-            }
-        })
+        const verifyInfiniteFlightUserIdTicket: VerifyInfiniteFlightUserIdTicket =
+            await prismaClient.verifyInfiniteFlightUserIdTicket.create({
+                data: {
+                    infiniteFlightUserId,
+                    discordUserId,
+                    discordGuildId,
+                    aircraftId: randomAircraft.aircraftId,
+                    aircraftName: randomAircraft.aircraftName,
+                    liveryId: randomAircraft.liveryId,
+                    liveryName: randomAircraft.liveryName,
+                    heading: randomHeading,
+                },
+            });
         return verifyInfiniteFlightUserIdTicket;
     }
 
@@ -180,22 +170,27 @@ export class RegisterMeCommand implements Command {
     }
 
     private getRandomAircraft(): Aircraft {
-        const randomAircraft: Aircraft = InfiniteFlightPlanes[(Math.floor(Math.random() * InfiniteFlightPlanes.length))];
+        const randomAircraft: Aircraft =
+            InfiniteFlightPlanes[Math.floor(Math.random() * InfiniteFlightPlanes.length)];
         return randomAircraft;
     }
 
-    private async checkIfUserStillHasFreshVerificationTicket(discordUserId: string): Promise<boolean> {
-        const freshTicketsCutoffDateTime: Date = VerifyInfiniteFlightUserIdTicketUtils.getFreshTicketsCutoffDateTime();
+    private async checkIfUserStillHasFreshVerificationTicket(
+        discordUserId: string
+    ): Promise<boolean> {
+        const freshTicketsCutoffDateTime: Date =
+            VerifyInfiniteFlightUserIdTicketUtils.getFreshTicketsCutoffDateTime();
 
-        const verificationTicket: VerifyInfiniteFlightUserIdTicket = await prismaClient.verifyInfiniteFlightUserIdTicket.findFirst({
-            where: {
-                discordUserId,
-                created: {
-                    gt: freshTicketsCutoffDateTime
-                }
-            }
-        })
-        return (verificationTicket !== null);
+        const verificationTicket: VerifyInfiniteFlightUserIdTicket =
+            await prismaClient.verifyInfiniteFlightUserIdTicket.findFirst({
+                where: {
+                    discordUserId,
+                    created: {
+                        gt: freshTicketsCutoffDateTime,
+                    },
+                },
+            });
+        return verificationTicket !== null;
     }
 
     /**
@@ -203,17 +198,16 @@ export class RegisterMeCommand implements Command {
      * @param infiniteFlightUserId
      * @returns if Infinite Flight user is already registered
      */
-    private async checkIfInfiniteFlightUserAlreadyRegistered(infiniteFlightUserId: string): Promise<boolean> {
+    private async checkIfInfiniteFlightUserAlreadyRegistered(
+        infiniteFlightUserId: string
+    ): Promise<boolean> {
         const user: User = await prismaClient.user.findUnique({
             where: {
-                infiniteFlightUserId
-            }
+                infiniteFlightUserId,
+            },
         });
 
         // return if user is not null
-        return (user !== null);
+        return user !== null;
     }
-
-
-
 }

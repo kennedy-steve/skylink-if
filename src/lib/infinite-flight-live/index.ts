@@ -25,13 +25,10 @@ export async function getSessionInfos(): Promise<SessionInfo[]> {
             Authorization: `Bearer ${IF_API_KEY}`,
         },
     });
-    const response: ApiResponse<SessionInfo[]> = await req.json() as ApiResponse<SessionInfo[]>;
+    const response: ApiResponse<SessionInfo[]> = (await req.json()) as ApiResponse<SessionInfo[]>;
     if (response.errorCode != 0) {
         await Promise.reject(
-            new Error(
-                'Invalid API Response Code. Expected 0, received ' +
-                response.errorCode
-            )
+            new Error('Invalid API Response Code. Expected 0, received ' + response.errorCode)
         );
     }
 
@@ -39,21 +36,15 @@ export async function getSessionInfos(): Promise<SessionInfo[]> {
 }
 
 export async function getFlights(sessionId: string): Promise<FlightEntry[]> {
-    const req = await fetch(
-        `${URLBASE}/flights/${encodeURIComponent(sessionId)}`,
-        {
-            headers: {
-                Authorization: `Bearer ${IF_API_KEY}`,
-            },
-        }
-    );
-    const response: ApiResponse<FlightEntry[]> = await req.json() as ApiResponse<FlightEntry[]>;
+    const req = await fetch(`${URLBASE}/flights/${encodeURIComponent(sessionId)}`, {
+        headers: {
+            Authorization: `Bearer ${IF_API_KEY}`,
+        },
+    });
+    const response: ApiResponse<FlightEntry[]> = (await req.json()) as ApiResponse<FlightEntry[]>;
     if (response.errorCode != 0) {
         await Promise.reject(
-            new Error(
-                'Invalid API Response Code. Expected 0, received ' +
-                response.errorCode
-            )
+            new Error('Invalid API Response Code. Expected 0, received ' + response.errorCode)
         );
     }
 
@@ -66,13 +57,10 @@ export async function atc(sessionId: string): Promise<AtcEntry[]> {
             Authorization: `Bearer ${IF_API_KEY}`,
         },
     });
-    const response: ApiResponse<AtcEntry[]> = await req.json() as ApiResponse<AtcEntry[]>;
+    const response: ApiResponse<AtcEntry[]> = (await req.json()) as ApiResponse<AtcEntry[]>;
     if (response.errorCode != 0) {
         await Promise.reject(
-            new Error(
-                'Invalid API Response Code. Expected 0, received ' +
-                response.errorCode
-            )
+            new Error('Invalid API Response Code. Expected 0, received ' + response.errorCode)
         );
     }
 
@@ -80,21 +68,15 @@ export async function atc(sessionId: string): Promise<AtcEntry[]> {
 }
 
 export async function gradeTable(userId: string): Promise<UserGradeInfo> {
-    const req = await fetch(
-        `${URLBASE}/user/grade/${encodeURIComponent(userId)}`,
-        {
-            headers: {
-                Authorization: `Bearer ${IF_API_KEY}`,
-            },
-        }
-    );
-    const response: ApiResponse<UserGradeInfo> = await req.json() as ApiResponse<UserGradeInfo>;
+    const req = await fetch(`${URLBASE}/user/grade/${encodeURIComponent(userId)}`, {
+        headers: {
+            Authorization: `Bearer ${IF_API_KEY}`,
+        },
+    });
+    const response: ApiResponse<UserGradeInfo> = (await req.json()) as ApiResponse<UserGradeInfo>;
     if (response.errorCode != 0) {
         await Promise.reject(
-            new Error(
-                'Invalid API Response Code. Expected 0, received ' +
-                response.errorCode
-            )
+            new Error('Invalid API Response Code. Expected 0, received ' + response.errorCode)
         );
     }
 
@@ -125,13 +107,10 @@ export async function userStats(
         method: 'POST',
         body: JSON.stringify(rbody),
     });
-    const response: ApiResponse<UserStats[]> = await req.json() as ApiResponse<UserStats[]>;
+    const response: ApiResponse<UserStats[]> = (await req.json()) as ApiResponse<UserStats[]>;
     if (response.errorCode != ErrorCode.Ok) {
         await Promise.reject(
-            new Error(
-                'Invalid API Response Code. Expected 0, received ' +
-                response.errorCode
-            )
+            new Error('Invalid API Response Code. Expected 0, received ' + response.errorCode)
         );
     }
 
@@ -143,22 +122,17 @@ export async function atis(
     sessionId: string = '7e5dcd44-1fb5-49cc-bc2c-a9aab1f6a856'
 ): Promise<string> {
     const req = await fetch(
-        `${URLBASE}/atis/${encodeURIComponent(
-            airportIcao
-        )}/${encodeURIComponent(sessionId)}`,
+        `${URLBASE}/atis/${encodeURIComponent(airportIcao)}/${encodeURIComponent(sessionId)}`,
         {
             headers: {
                 Authorization: `Bearer ${IF_API_KEY}`,
             },
         }
     );
-    const response: ApiResponse<string> = await req.json() as ApiResponse<string>;
+    const response: ApiResponse<string> = (await req.json()) as ApiResponse<string>;
     if (response.errorCode != ErrorCode.Ok) {
         await Promise.reject(
-            new Error(
-                'Invalid API Response Code. Expected 0, received ' +
-                response.errorCode
-            )
+            new Error('Invalid API Response Code. Expected 0, received ' + response.errorCode)
         );
     }
 
@@ -170,22 +144,17 @@ export async function airportStatus(
     sessionId: string = '7e5dcd44-1fb5-49cc-bc2c-a9aab1f6a856'
 ): Promise<AirportStatus> {
     const req = await fetch(
-        `${URLBASE}/airport/${encodeURIComponent(
-            icao
-        )}/status/${encodeURIComponent(sessionId)}`,
+        `${URLBASE}/airport/${encodeURIComponent(icao)}/status/${encodeURIComponent(sessionId)}`,
         {
             headers: {
                 Authorization: `Bearer ${IF_API_KEY}`,
             },
         }
     );
-    const response: ApiResponse<AirportStatus> = await req.json() as ApiResponse<AirportStatus>;
+    const response: ApiResponse<AirportStatus> = (await req.json()) as ApiResponse<AirportStatus>;
     if (response.errorCode != ErrorCode.Ok) {
         await Promise.reject(
-            new Error(
-                'Invalid API Response Code. Expected 0, received ' +
-                response.errorCode
-            )
+            new Error('Invalid API Response Code. Expected 0, received ' + response.errorCode)
         );
     }
 
@@ -198,44 +167,35 @@ export async function oceanicTracks(): Promise<OceanicTrack[]> {
             Authorization: `Bearer ${IF_API_KEY}`,
         },
     });
-    const response: ApiResponse<OceanicTrack[]> = await req.json() as ApiResponse<OceanicTrack[]>;
+    const response: ApiResponse<OceanicTrack[]> = (await req.json()) as ApiResponse<OceanicTrack[]>;
     if (response.errorCode != ErrorCode.Ok) {
         await Promise.reject(
-            new Error(
-                'Invalid API Response Code. Expected 0, received ' +
-                response.errorCode
-            )
+            new Error('Invalid API Response Code. Expected 0, received ' + response.errorCode)
         );
     }
 
     return response.result;
 }
-
 
 export async function getWorldStatus(
     sessionId: string = '7e5dcd44-1fb5-49cc-bc2c-a9aab1f6a856'
 ): Promise<AirportStatus[]> {
-    const req = await fetch(
-        `${URLBASE}/world/status/${encodeURIComponent(sessionId)}`,
-        {
-            headers: {
-                Authorization: `Bearer ${IF_API_KEY}`,
-            },
-        }
-    );
-    const response: ApiResponse<AirportStatus[]> = await req.json() as ApiResponse<AirportStatus[]>;
+    const req = await fetch(`${URLBASE}/world/status/${encodeURIComponent(sessionId)}`, {
+        headers: {
+            Authorization: `Bearer ${IF_API_KEY}`,
+        },
+    });
+    const response: ApiResponse<AirportStatus[]> = (await req.json()) as ApiResponse<
+        AirportStatus[]
+    >;
     if (response.errorCode != ErrorCode.Ok) {
         await Promise.reject(
-            new Error(
-                'Invalid API Response Code. Expected 0, received ' +
-                response.errorCode
-            )
+            new Error('Invalid API Response Code. Expected 0, received ' + response.errorCode)
         );
     }
 
     return response.result;
 }
-
 
 async function getInfiniteFlightSession(
     sessionId: string = '7e5dcd44-1fb5-49cc-bc2c-a9aab1f6a856'
@@ -254,7 +214,7 @@ async function getInfiniteFlightSession(
         flights,
         airportStatuses: airports,
         atcFacilities,
-    }
+    };
     return infiniteFlightSession;
 }
 
@@ -270,6 +230,6 @@ export async function getInfiniteFlightStatus(): Promise<InfiniteFlightStatus> {
     }
     const infiniteFlightStatus: InfiniteFlightStatus = {
         sessions: infiniteFlightSessions,
-    }
+    };
     return infiniteFlightStatus;
 }

@@ -3,9 +3,7 @@
         "displayEmbeds": {
             "welcome": {
                 "title": "Thank you for using {{COM:bot.name}}!",
-                "description": [
-                    "{{REF:bot.description}}"
-                ],
+                "description": ["{{REF:bot.description}}"],
                 "fields": [
                     {
                         "name": "Important {{REF:fields.commands}}",
@@ -72,9 +70,7 @@
                     },
                     {
                         "name": "Created With",
-                        "value": [
-                            "{{REF:links.websiteEmbed}}"
-                        ]
+                        "value": ["{{REF:links.websiteEmbed}}"]
                     }
                 ]
             },

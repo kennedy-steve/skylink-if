@@ -9,17 +9,16 @@ declare global {
 
 if (global.prismaClient === undefined) {
     Logger.info(`Creating new PrismaClient`);
-}
-else {
+} else {
     Logger.info(`Reusing existing PrismaClient`);
 }
 
-const prismaClient = global.prismaClient || new PrismaClient({
-    log: ['error', 'info', 'warn'],
-});
+const prismaClient =
+    global.prismaClient ||
+    new PrismaClient({
+        log: ['error', 'info', 'warn'],
+    });
 
 global.prismaClient = prismaClient;
 
-export {
-    prismaClient,
-}
+export { prismaClient };

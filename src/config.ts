@@ -4,7 +4,6 @@ import { BaseConfig } from './models/config-models.js';
 
 dotenv.config();
 
-
 const Config: BaseConfig = {
     client: {
         ID: process.env.CLIENT_ID,
@@ -14,7 +13,7 @@ const Config: BaseConfig = {
             'GUILD_MESSAGES',
             'GUILD_MESSAGE_REACTIONS',
             'DIRECT_MESSAGES',
-            'DIRECT_MESSAGE_REACTIONS'
+            'DIRECT_MESSAGE_REACTIONS',
         ],
         PARTIALS: [
             Constants.PartialTypes.MESSAGE,
@@ -22,16 +21,16 @@ const Config: BaseConfig = {
             Constants.PartialTypes.REACTION,
         ],
         CACHES: {
-            'BaseGuildEmojiManager': 0,
-            'GuildBanManager': 0,
-            'GuildInviteManager': 0,
-            'GuildStickerManager': 0,
-            'MessageManager': 0,
-            'PresenceManager': 0,
-            'StageInstanceManager': 0,
-            'ThreadManager': 0,
-            'ThreadMemberManager': 0,
-            'VoiceStateManager': 0,
+            BaseGuildEmojiManager: 0,
+            GuildBanManager: 0,
+            GuildInviteManager: 0,
+            GuildStickerManager: 0,
+            MessageManager: 0,
+            PresenceManager: 0,
+            StageInstanceManager: 0,
+            ThreadManager: 0,
+            ThreadMemberManager: 0,
+            VoiceStateManager: 0,
         },
     },
 
@@ -53,7 +52,6 @@ const Config: BaseConfig = {
     },
 
     clustering: {
-
         // False by default
         ENABLED: process.env.CLUSTERING_ENABLED === 'true',
         SHARD_COUNT: parseInt(process.env.SHARD_COUNT) || 16,
@@ -110,7 +108,8 @@ const Config: BaseConfig = {
 
     modelConstants: {
         verifyInfiniteFlightUserIdTicket: {
-            STALE_BY_MINUTES: parseInt(process.env.VERIFY_INFINITE_FLIGHT_USER_ID_TICKET_STALE_BY_MINUTES) || 15,
+            STALE_BY_MINUTES:
+                parseInt(process.env.VERIFY_INFINITE_FLIGHT_USER_ID_TICKET_STALE_BY_MINUTES) || 15,
         },
     },
 
@@ -118,7 +117,9 @@ const Config: BaseConfig = {
         dummyMode: {
             // False by default
             ENABLED: process.env.DUMMY_MODE_ENABLED === 'true',
-            WHITE_LIST: process.env.DUMMY_MODE_WHITE_LIST ? process.env.DUMMY_MODE_WHITE_LIST.split(',') : [],
+            WHITE_LIST: process.env.DUMMY_MODE_WHITE_LIST
+                ? process.env.DUMMY_MODE_WHITE_LIST.split(',')
+                : [],
         },
 
         // True by default -- it's good to make sure check permissions is working
@@ -130,8 +131,7 @@ const Config: BaseConfig = {
 
             // Process by default
             VALUE: (process.env.SHARD_MODE_VALUE || 'process') as ShardingManagerMode,
-        }
-
+        },
     },
 
     BOT_SITES: [
@@ -140,12 +140,9 @@ const Config: BaseConfig = {
             enabled: process.env.TOPGG_ENABLED === 'true',
             url: `https://top.gg/bot/${process.env.CLIENT_ID}`,
             authorization: process.env.TOPGG_TOKEN,
-            body: '{"server_count":{{SERVER_COUNT}}}'
-        }
-    ]
+            body: '{"server_count":{{SERVER_COUNT}}}',
+        },
+    ],
 };
 
-
-export {
-    Config,
-}
+export { Config };
