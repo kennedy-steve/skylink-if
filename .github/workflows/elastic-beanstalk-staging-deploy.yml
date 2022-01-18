@@ -57,9 +57,6 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
-    - name: Register commands
-      run: npm run register
-
     - name: Run staging migration
       run: npm run migrate:deploy
       env:
