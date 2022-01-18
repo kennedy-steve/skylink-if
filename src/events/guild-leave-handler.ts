@@ -1,8 +1,9 @@
 import { Guild } from 'discord.js';
+import { createRequire } from 'node:module';
+import { Logger } from '../services/index.js';
+import { EventHandler } from './index.js';
 
-import { Logger } from '../services';
-import { EventHandler } from './event-handler';
-
+const require = createRequire(import.meta.url);
 let Logs = require('../../lang/logs.json');
 
 export class GuildLeaveHandler implements EventHandler {

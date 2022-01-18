@@ -1,13 +1,16 @@
 import { MessageEmbed } from 'discord.js';
 import { Linguini, TypeMapper, TypeMappers, Utils } from 'linguini';
-import path from 'path';
-
-import { LangCode } from '../models/enums';
+import path, { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { LangCode } from '../models/enums/index.js';
 
 export class Lang {
     public static Default = LangCode.EN_US;
 
-    private static linguini = new Linguini(path.resolve(__dirname, '../../lang'), 'lang');
+    private static linguini = new Linguini(
+        path.resolve(dirname(fileURLToPath(import.meta.url)), '../../lang'),
+        'lang'
+    );
 
     public static getEmbed(
         location: string,
@@ -63,7 +66,7 @@ export class Lang {
                 iconURL: jsonValue.footer?.icon,
             },
             timestamp: jsonValue.timestamp ? Date.now() : undefined,
-            color: jsonValue.color ?? '#0099ff',
+            color: jsonValue.color ?? Lang.getCom('colors.default'),
         });
     };
 }

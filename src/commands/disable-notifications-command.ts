@@ -1,23 +1,33 @@
 import { ApplicationCommandOptionType } from 'discord-api-types';
-import { ApplicationCommandData, ApplicationCommandOptionChoice, CacheType, CommandInteraction, GuildChannel, PermissionResolvable, Permissions } from 'discord.js';
+import {
+    ApplicationCommandData,
+    CacheType,
+    CommandInteraction,
+    GuildChannel,
+    Permissions,
+    PermissionString,
+} from 'discord.js';
 import { ApplicationCommandOptionTypes, ChannelTypes } from 'discord.js/typings/enums';
-import { EventData } from '../models/internal-models';
-import { Lang, prismaClient } from '../services';
-import { MessageUtils } from '../utils';
-import { Command } from './command';
-import { ActiveControllerNotificationsChannel, ActivePilotNotificationsChannel, Prisma, prisma } from '.prisma/client';
-
+import { EventData } from '../models/internal-models.js';
+import { Lang, prismaClient } from '../services/index.js';
+import { MessageUtils } from '../utils/index.js';
+import { Command, CommandDeferType } from './command.js';
+import {
+    ActiveControllerNotificationsChannel,
+    ActivePilotNotificationsChannel,
+    Prisma,
+} from '.prisma/client/index.js';
 
 // Disable notifications to channel
 export class DisableNotificationsCommand implements Command {
     public requireDev: false;
     public requireGuild: true;
-    public requirePerms: PermissionResolvable[] = [
-        Permissions.FLAGS.MANAGE_CHANNELS,
-    ];
-    public commandEmbedName: string = 'disableNotificationsEmbeds';
+    public deferType = CommandDeferType.PUBLIC;
+    public requireClientPerms: PermissionString[] = [];
+    public requireUserPerms: PermissionString[] = ['MANAGE_CHANNELS'];
+    public commandEmbedName = 'disableNotificationsEmbeds';
 
-    public data: ApplicationCommandData = {
+    public metadata: ApplicationCommandData = {
         name: 'disable-notifications',
         description: 'Disable notifications to a channel',
         options: [
@@ -34,20 +44,20 @@ export class DisableNotificationsCommand implements Command {
                 choices: [
                     {
                         name: 'Active Pilot Notifications',
-                        value: 'PILOT'
+                        value: 'PILOT',
                     },
                     {
                         name: 'Active Controller Notifications',
-                        value: 'CONTROLLER'
+                        value: 'CONTROLLER',
                     },
                     {
                         name: 'All Active User Notifications',
-                        value: 'ALL'
+                        value: 'ALL',
                     },
-                ]
-            }
-        ]
-    }
+                ],
+            },
+        ],
+    };
 
     /**
      * Disables Active Controller notifications to channel by deleting it from the database
@@ -55,15 +65,18 @@ export class DisableNotificationsCommand implements Command {
      * @param channel
      * @returns the deleted Channel ID
      */
-    protected async disableControllerNotifications(intr: CommandInteraction<CacheType>, channel: GuildChannel): Promise<string> {
-        let ActiveControllerNotificationsChannel: ActiveControllerNotificationsChannel = await prismaClient.activeControllerNotificationsChannel.delete({
-            where: {
-                discordChannelId: channel.id
-            }
-        });
+    protected async disableControllerNotifications(
+        intr: CommandInteraction<CacheType>,
+        channel: GuildChannel
+    ): Promise<string> {
+        let ActiveControllerNotificationsChannel: ActiveControllerNotificationsChannel =
+            await prismaClient.activeControllerNotificationsChannel.delete({
+                where: {
+                    discordChannelId: channel.id,
+                },
+            });
         return ActiveControllerNotificationsChannel.discordChannelId;
     }
-
 
     /**
      * Disables Active Pilot notifications to channel by deleting it from the database
@@ -71,12 +84,16 @@ export class DisableNotificationsCommand implements Command {
      * @param channel: The channel to disable notifications
      * @return the deleted Channel ID
      */
-    protected async disablePilotNotifications(intr: CommandInteraction<CacheType>, channel: GuildChannel): Promise<string> {
-        let deletedActivePilotNotificationsChannel: ActivePilotNotificationsChannel = await prismaClient.activePilotNotificationsChannel.delete({
-            where: {
-                discordChannelId: channel.id
-            }
-        })
+    protected async disablePilotNotifications(
+        intr: CommandInteraction<CacheType>,
+        channel: GuildChannel
+    ): Promise<string> {
+        let deletedActivePilotNotificationsChannel: ActivePilotNotificationsChannel =
+            await prismaClient.activePilotNotificationsChannel.delete({
+                where: {
+                    discordChannelId: channel.id,
+                },
+            });
         return deletedActivePilotNotificationsChannel.discordChannelId;
     }
 
@@ -98,29 +115,22 @@ export class DisableNotificationsCommand implements Command {
         notificationTypeDescription: string
     ): void {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
-
             // Check if channel notifications were never enabled
             // This would mean that the channel was never added to the database
             if (error.code === 'P2025') {
                 MessageUtils.sendIntr(
                     intr,
-                    Lang.getEmbed(
-                        `${this.commandEmbedName}.notEnabled`,
-                        data.lang(),
-                        {
-                            CHANNEL_ID: channel.id,
-                            NOTIFICATION_TYPE: notificationTypeDescription,
-                        }
-                    )
+                    Lang.getEmbed(`${this.commandEmbedName}.notEnabled`, data.lang(), {
+                        CHANNEL_ID: channel.id,
+                        NOTIFICATION_TYPE: notificationTypeDescription,
+                    })
                 );
-            }
-            else {
+            } else {
                 // TODO: Have a better error message for prisma error
-                throw (error);
+                throw error;
             }
-        }
-        else {
-            throw (error);
+        } else {
+            throw error;
         }
     }
 
@@ -139,14 +149,10 @@ export class DisableNotificationsCommand implements Command {
     ): Promise<void> {
         MessageUtils.sendIntr(
             intr,
-            Lang.getEmbed(
-                `${this.commandEmbedName}.success`,
-                data.lang(),
-                {
-                    CHANNEL_ID: channel.id,
-                    NOTIFICATION_TYPE: notificationTypeDescription,
-                }
-            )
+            Lang.getEmbed(`${this.commandEmbedName}.success`, data.lang(), {
+                CHANNEL_ID: channel.id,
+                NOTIFICATION_TYPE: notificationTypeDescription,
+            })
         );
     }
 
@@ -157,16 +163,26 @@ export class DisableNotificationsCommand implements Command {
      * @param channel The channel to disable notifications
      * @param notificationType Notification Type
      */
-    protected async disableNotifications(intr: CommandInteraction<CacheType>, data: EventData, channel: GuildChannel, notificationType: string): Promise<void> {
+    protected async disableNotifications(
+        intr: CommandInteraction<CacheType>,
+        data: EventData,
+        channel: GuildChannel,
+        notificationType: string
+    ): Promise<void> {
         // Default notification type is ALL
-        if (notificationType == null) {
+        if (notificationType === null) {
             notificationType = 'ALL';
         }
 
         if (notificationType.toUpperCase() == 'PILOT') {
             try {
                 await this.disablePilotNotifications(intr, channel);
-                await this.sendSuccessfullyDisabledNotificationsMessage(intr, data, channel, 'Active Pilot Notifications');
+                await this.sendSuccessfullyDisabledNotificationsMessage(
+                    intr,
+                    data,
+                    channel,
+                    'Active Pilot Notifications'
+                );
             } catch (error) {
                 this.catchActiveUserNotificationsChannelNotFound(
                     intr,
@@ -176,11 +192,15 @@ export class DisableNotificationsCommand implements Command {
                     'Active Pilot'
                 );
             }
-        }
-        else if (notificationType.toUpperCase() == 'CONTROLLER') {
+        } else if (notificationType.toUpperCase() == 'CONTROLLER') {
             try {
                 await this.disableControllerNotifications(intr, channel);
-                await this.sendSuccessfullyDisabledNotificationsMessage(intr, data, channel, 'Active Controller Notifications');
+                await this.sendSuccessfullyDisabledNotificationsMessage(
+                    intr,
+                    data,
+                    channel,
+                    'Active Controller Notifications'
+                );
             } catch (error) {
                 this.catchActiveUserNotificationsChannelNotFound(
                     intr,
@@ -190,12 +210,16 @@ export class DisableNotificationsCommand implements Command {
                     'Active Controller'
                 );
             }
-        }
-        else {
+        } else {
             // try to disable all notifications
             try {
                 await this.disablePilotNotifications(intr, channel);
-                await this.sendSuccessfullyDisabledNotificationsMessage(intr, data, channel, 'Active Pilot Notifications');
+                await this.sendSuccessfullyDisabledNotificationsMessage(
+                    intr,
+                    data,
+                    channel,
+                    'Active Pilot Notifications'
+                );
             } catch (error) {
                 this.catchActiveUserNotificationsChannelNotFound(
                     intr,
@@ -208,7 +232,12 @@ export class DisableNotificationsCommand implements Command {
 
             try {
                 await this.disableControllerNotifications(intr, channel);
-                await this.sendSuccessfullyDisabledNotificationsMessage(intr, data, channel, 'Active Controller Notifications');
+                await this.sendSuccessfullyDisabledNotificationsMessage(
+                    intr,
+                    data,
+                    channel,
+                    'Active Controller Notifications'
+                );
             } catch (error) {
                 this.catchActiveUserNotificationsChannelNotFound(
                     intr,
@@ -223,8 +252,6 @@ export class DisableNotificationsCommand implements Command {
         return;
     }
 
-
-
     /**
      * Execute command
      * @param intr
@@ -236,55 +263,38 @@ export class DisableNotificationsCommand implements Command {
         // Check if channel is specified
         let channelFromOptions: GuildChannel = intr.options.getChannel('channel') as GuildChannel;
         if (channelFromOptions !== null) {
-
             channel = channelFromOptions;
         }
 
         if (!channel.isText()) {
             MessageUtils.sendIntr(
                 intr,
-                Lang.getEmbed(
-                    `${this.commandEmbedName}.invalidChannel`,
-                    data.lang(),
-                    {
-                        CHANNEL_ID: channel.id,
-                    }
-                )
-            )
-
+                Lang.getEmbed(`${this.commandEmbedName}.invalidChannel`, data.lang(), {
+                    CHANNEL_ID: channel.id,
+                })
+            );
         }
         // Check if bot has permissions to view channel
         else if (!channel.permissionsFor(intr.guild.me).has(Permissions.FLAGS.VIEW_CHANNEL)) {
             MessageUtils.sendIntr(
                 intr,
-                Lang.getEmbed(
-                    `${this.commandEmbedName}.cannotViewChannel`,
-                    data.lang(),
-                    {
-                        CHANNEL_ID: channel.id,
-                    }
-                )
-            )
+                Lang.getEmbed(`${this.commandEmbedName}.cannotViewChannel`, data.lang(), {
+                    CHANNEL_ID: channel.id,
+                })
+            );
         }
         // Check if bot has permissions to send messages in channel
         else if (!channel.permissionsFor(intr.guild.me).has(Permissions.FLAGS.SEND_MESSAGES)) {
             MessageUtils.sendIntr(
                 intr,
-                Lang.getEmbed(
-                    `${this.commandEmbedName}.cannotSendMessages`,
-                    data.lang(),
-                    {
-                        CHANNEL_ID: channel.id,
-                    }
-                )
-            )
-        }
-        else {
+                Lang.getEmbed(`${this.commandEmbedName}.cannotSendMessages`, data.lang(), {
+                    CHANNEL_ID: channel.id,
+                })
+            );
+        } else {
             // Now we can disable notifications
             let notificationType: string = intr.options.getString('notification-type');
             await this.disableNotifications(intr, data, channel, notificationType);
         }
-
-
     }
 }

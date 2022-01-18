@@ -1,23 +1,26 @@
-import djs, { ApplicationCommandData, CommandInteraction } from 'discord.js';
+import djs, { ApplicationCommandData, CommandInteraction, PermissionString } from 'discord.js';
 import fileSize from 'filesize';
-import os from 'os';
+import { createRequire } from 'node:module';
+import os from 'node:os';
 import typescript from 'typescript';
+import { EventData } from '../models/internal-models.js';
+import { Lang } from '../services/index.js';
+import { MessageUtils, ShardUtils } from '../utils/index.js';
+import { Command, CommandDeferType } from './index.js';
 
-import { EventData } from '../models/internal-models';
-import { Lang } from '../services';
-import { MessageUtils, ShardUtils } from '../utils';
-import { Command } from './command';
-
+const require = createRequire(import.meta.url);
 let TsConfig = require('../../tsconfig.json');
 
 export class DevCommand implements Command {
-    public data: ApplicationCommandData = {
+    public metadata: ApplicationCommandData = {
         name: Lang.getCom('commands.dev'),
         description: Lang.getRef('commandDescs.dev', Lang.Default),
     };
+    public deferType = CommandDeferType.PUBLIC;
     public requireDev = true;
     public requireGuild = false;
-    public requirePerms = [];
+    public requireClientPerms: PermissionString[] = [];
+    public requireUserPerms: PermissionString[] = [];
 
     public async execute(intr: CommandInteraction, data: EventData): Promise<void> {
         let shardCount = intr.client.shard?.count ?? 1;
@@ -70,7 +73,7 @@ export class DevCommand implements Command {
                 HOSTNAME: os.hostname(),
                 SHARD_ID: (intr.guild?.shardId ?? 0).toString(),
                 SERVER_ID: intr.guild?.id ?? Lang.getRef('other.na', data.lang()),
-                BOT_ID: intr.client.user.id,
+                BOT_ID: intr.client.user?.id,
                 USER_ID: intr.user.id,
             })
         );

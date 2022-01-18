@@ -1,10 +1,20 @@
-import { ApplicationCommandData, CommandInteraction, PermissionResolvable } from 'discord.js';
-import { EventData } from '../models/internal-models';
+import { ApplicationCommandData, CommandInteraction, PermissionString } from 'discord.js';
+import { RateLimiter } from 'discord.js-rate-limiter';
+import { EventData } from '../models/internal-models.js';
 
 export interface Command {
-    data: ApplicationCommandData;
+    metadata: ApplicationCommandData;
+    cooldown?: RateLimiter;
+    deferType: CommandDeferType;
     requireDev: boolean;
     requireGuild: boolean;
-    requirePerms: PermissionResolvable[];
+    requireClientPerms: PermissionString[];
+    requireUserPerms: PermissionString[];
     execute(intr: CommandInteraction, data: EventData): Promise<void>;
+}
+
+export enum CommandDeferType {
+    PUBLIC = 'PUBLIC',
+    HIDDEN = 'HIDDEN',
+    NONE = 'NONE',
 }

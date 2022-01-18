@@ -1,8 +1,9 @@
 import { REST } from '@discordjs/rest';
-import { Routes } from 'discord-api-types/rest/v9';
+import { Routes } from 'discord-api-types/v9';
 import { Options } from 'discord.js';
-
-import { Bot } from './bot';
+import { createRequire } from 'node:module';
+import { Bot } from './bot.js';
+import { Button } from './buttons/index.js';
 import {
     AdminRegisterMeCommand,
     Command,
@@ -17,23 +18,28 @@ import {
     RegisterMeCommand,
     TestCommand,
     TranslateCommand,
-} from './commands';
-import { Config } from './config';
+} from './commands/index.js';
+import { Config } from './config.js';
 import {
+    ButtonHandler,
     CommandHandler,
     GuildJoinHandler,
     GuildLeaveHandler,
     MessageHandler,
     ReactionHandler,
     TriggerHandler,
-} from './events';
-import { CustomClient } from './extensions';
-import { NotifyActiveInfiniteFlightUsersJob } from './jobs';
-import { JobService, Logger } from './services';
+} from './events/index.js';
+import { CustomClient } from './extensions/index.js';
+import { NotifyActiveInfiniteFlightUsersJob, Job } from './jobs/index.js';
+import { Reaction } from './reactions/index.js';
+import { JobService, Logger } from './services/index.js';
+import { Trigger } from './triggers/index.js';
 
+const require = createRequire(import.meta.url);
 let Logs = require('../lang/logs.json');
 
 async function start(): Promise<void> {
+    // Client
     let client = new CustomClient({
         intents: Config.client.INTENTS,
         partials: Config.client.PARTIALS,
@@ -57,20 +63,37 @@ async function start(): Promise<void> {
         new InfiniteFlightStatusCommand(),
         new AdminRegisterMeCommand(),
         new DisableNotificationsCommand(),
-        new EnableNotificationsCommand,
-    ].sort((a, b) => (a.data.name > b.data.name ? 1 : -1));
+        new EnableNotificationsCommand(),
+    ].sort((a, b) => (a.metadata.name > b.metadata.name ? 1 : -1));
+
+    // Buttons
+    let buttons: Button[] = [
+        // TODO: Add new buttons here
+    ];
+
+    // Reactions
+    let reactions: Reaction[] = [
+        // TODO: Add new reactions here
+    ];
+
+    // Triggers
+    let triggers: Trigger[] = [
+        // TODO: Add new triggers here
+    ];
+
+    let jobs: Job[] = [new NotifyActiveInfiniteFlightUsersJob(client)];
 
     // Event handlers
     let guildJoinHandler = new GuildJoinHandler();
     let guildLeaveHandler = new GuildLeaveHandler();
     let commandHandler = new CommandHandler(commands);
-    let triggerHandler = new TriggerHandler([]);
+    let buttonHandler = new ButtonHandler(buttons);
+    let triggerHandler = new TriggerHandler(triggers);
     let messageHandler = new MessageHandler(triggerHandler);
-    let reactionHandler = new ReactionHandler([]);
-    let jobService = new JobService([
-        new NotifyActiveInfiniteFlightUsersJob(client),
-    ]);
+    let reactionHandler = new ReactionHandler(reactions);
+    let jobService = new JobService([new NotifyActiveInfiniteFlightUsersJob(client)]);
 
+    // Bot
     let bot = new Bot(
         Config.client.TOKEN,
         client,
@@ -78,10 +101,12 @@ async function start(): Promise<void> {
         guildLeaveHandler,
         messageHandler,
         commandHandler,
+        buttonHandler,
         reactionHandler,
-        jobService,
+        new JobService(jobs)
     );
 
+    // Register
     if (process.argv[2] === '--register') {
         await registerCommands(commands);
         process.exit();
@@ -91,7 +116,7 @@ async function start(): Promise<void> {
 }
 
 async function registerCommands(commands: Command[]): Promise<void> {
-    let cmdDatas = commands.map(cmd => cmd.data);
+    let cmdDatas = commands.map(cmd => cmd.metadata);
     let cmdNames = cmdDatas.map(cmdData => cmdData.name);
 
     Logger.info(
@@ -114,7 +139,7 @@ async function registerCommands(commands: Command[]): Promise<void> {
     Logger.info(Logs.info.commandsRegistered);
 }
 
-process.on('unhandledRejection', (reason, promise) => {
+process.on('unhandledRejection', (reason, _promise) => {
     Logger.error(Logs.error.unhandledRejection, reason);
 });
 

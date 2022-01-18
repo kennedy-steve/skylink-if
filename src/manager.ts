@@ -1,12 +1,13 @@
 import { Shard, ShardingManager } from 'discord.js';
+import { createRequire } from 'node:module';
+import { Config } from './config.js';
+import { JobService, Logger } from './services/index.js';
 
-import { Config } from './config';
-import { JobService, Logger } from './services';
-
+const require = createRequire(import.meta.url);
 let Logs = require('../lang/logs.json');
 
 export class Manager {
-    constructor(private shardManager: ShardingManager, private jobService: JobService) { }
+    constructor(shardManager: ShardingManager, jobService: JobService) {}
 
     public async start(): Promise<void> {
         this.registerListeners();

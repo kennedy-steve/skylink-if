@@ -1,12 +1,13 @@
 import schedule from 'node-schedule';
+import { createRequire } from 'node:module';
+import { Job } from '../jobs/index.js';
+import { Logger } from './index.js';
 
-import { Logger } from '.';
-import { Job } from '../jobs';
-
+const require = createRequire(import.meta.url);
 let Logs = require('../../lang/logs.json');
 
 export class JobService {
-    constructor(private jobs: Job[]) { }
+    constructor(jobs: Job[]) {}
 
     public start(): void {
         for (let job of this.jobs) {
