@@ -2,7 +2,7 @@ import { Message } from 'discord.js';
 import { EventHandler, TriggerHandler } from './index.js';
 
 export class MessageHandler implements EventHandler {
-    constructor(triggerHandler: TriggerHandler) {}
+    constructor(private triggerHandler: TriggerHandler) {}
 
     public async process(msg: Message): Promise<void> {
         // Don't respond to system messages or self

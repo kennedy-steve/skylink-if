@@ -65,7 +65,7 @@ export class RegisterMeCommand implements Command {
         }
 
         // check if the user specified an ifc username
-        else if (this.ifcUsername === null) {
+        else if (this.ifcUsername == null) {
             await MessageUtils.sendIntr(
                 commandInteraction,
                 Lang.getEmbed('validationEmbeds.registerMeIFCUsernameNotSpecified', data.lang())

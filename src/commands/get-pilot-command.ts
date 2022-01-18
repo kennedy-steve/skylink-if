@@ -27,7 +27,7 @@ export class GetPilotCommand implements Command {
     public async execute(intr: CommandInteraction, data: EventData): Promise<void> {
         const ifcUsername = intr.options.getString('ifc-username');
 
-        if (ifcUsername === null) {
+        if (ifcUsername == null) {
             await MessageUtils.sendIntr(
                 intr,
                 `Please specify ifc-username (infinite flight username)`

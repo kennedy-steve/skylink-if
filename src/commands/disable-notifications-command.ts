@@ -170,7 +170,7 @@ export class DisableNotificationsCommand implements Command {
         notificationType: string
     ): Promise<void> {
         // Default notification type is ALL
-        if (notificationType === null) {
+        if (notificationType == null) {
             notificationType = 'ALL';
         }
 

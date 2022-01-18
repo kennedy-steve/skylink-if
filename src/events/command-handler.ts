@@ -17,7 +17,7 @@ export class CommandHandler implements EventHandler {
         Config.rateLimiting.commands.INTERVAL * 1000
     );
 
-    constructor(commands: Command[]) {}
+    constructor(public commands: Command[]) {}
 
     public async process(intr: CommandInteraction): Promise<void> {
         // Don't respond to self, or other bots

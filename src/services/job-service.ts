@@ -7,7 +7,7 @@ const require = createRequire(import.meta.url);
 let Logs = require('../../lang/logs.json');
 
 export class JobService {
-    constructor(jobs: Job[]) {}
+    constructor(private jobs: Job[]) {}
 
     public start(): void {
         for (let job of this.jobs) {

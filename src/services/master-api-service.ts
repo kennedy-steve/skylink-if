@@ -13,7 +13,7 @@ const require = createRequire(import.meta.url);
 export class MasterApiService {
     private clusterId: string;
 
-    constructor(httpService: HttpService) {}
+    constructor(private httpService: HttpService) {}
 
     public async register(): Promise<void> {
         let reqBody: RegisterClusterRequest = {

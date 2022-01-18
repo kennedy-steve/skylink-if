@@ -31,7 +31,7 @@ export class AdminRegisterMeCommand implements Command {
     public async execute(commandInteraction: CommandInteraction, data: EventData): Promise<void> {
         const ifcUsername = commandInteraction.options.getString('ifc-username');
 
-        if (ifcUsername === null) {
+        if (ifcUsername == null) {
             await MessageUtils.sendIntr(
                 commandInteraction,
                 `Please specify ifc-username (infinite flight username)`

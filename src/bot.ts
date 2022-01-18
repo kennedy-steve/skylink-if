@@ -32,15 +32,15 @@ export class Bot {
     private ready = false;
 
     constructor(
-        token: string,
-        client: Client,
-        guildJoinHandler: GuildJoinHandler,
-        guildLeaveHandler: GuildLeaveHandler,
-        messageHandler: MessageHandler,
-        commandHandler: CommandHandler,
-        buttonHandler: ButtonHandler,
-        reactionHandler: ReactionHandler,
-        jobService: JobService
+        private token: string,
+        private client: Client,
+        private guildJoinHandler: GuildJoinHandler,
+        private guildLeaveHandler: GuildLeaveHandler,
+        private messageHandler: MessageHandler,
+        private commandHandler: CommandHandler,
+        private buttonHandler: ButtonHandler,
+        private reactionHandler: ReactionHandler,
+        private jobService: JobService
     ) {}
 
     public async start(): Promise<void> {
