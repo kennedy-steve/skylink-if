@@ -20,7 +20,7 @@ export default class Terminal extends React.Component {
 
     restartDiscordTerminal(discordTerminal, inView) {
        
-       if (inView && discordTerminal != null && !this.startedAlready) {
+       if (inView && discordTerminal !== null && !this.startedAlready) {
            discordTerminal.start();
            this.startedAlready = true;
        }

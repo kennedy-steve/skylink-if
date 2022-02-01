@@ -17,7 +17,7 @@ export default class Terminal extends React.Component {
 
     restartTerminal(terminal, inView) {
        
-       if (inView && terminal != null && !this.startedAlready) {
+       if (inView && terminal !== null && !this.startedAlready) {
            terminal.start();
            this.startedAlready = true;
        }
